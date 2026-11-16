@@ -1,125 +1,49 @@
 # Lesson 08: Methods (Reusable Blocks of Code)
 
-| | |
-|---|---|
-| **Part** | 2: Intermediate |
-| **Time** | About 75 minutes |
-| **Before this** | [Lesson 07](07-lists.md) |
+**Part 2: Intermediate** · About 75 minutes
 
-## 🎯 Goal
+## What You Will Learn
 
-By the end of this lesson, you will:
+- How to make your own **methods**: named blocks of code you can use again and again
+- How to **give** information to a method
+- How to get an answer **back** from a method
+- How to write a `ReadNumber` method that **never crashes**, whatever the user types
 
-- Create your own **methods** (named blocks of code you can use again and again)
-- Give information **to** a method using **parameters**
-- Get an answer **back** from a method using `return`
-- Write a `ReadNumber` method that **never crashes**, no matter what the user types
+## The Idea
 
----
-
-## 🧠 The Big Idea
-
-Imagine a recipe card titled **"How to Cook Rice"**. You write it once. Every time you need rice, you just say *"follow the rice card."* You do not rewrite the steps every time.
+Think of a recipe card called **"How to Cook Rice"**. You write it once. Every time you need rice, you just say *"follow the rice card."* You do not write the steps again.
 
 A **method** is a recipe card for code:
 
 - You **write** the steps once and give them a **name**.
-- You **call** (use) the method by its name whenever you need it.
+- You **use** the method by its name whenever you need it. Programmers say you **call** the method.
 
-You have already been using methods made by others:
+You have already used methods that other people wrote: `Console.WriteLine(...)`, `int.Parse(...)`, `names.Add(...)`. Now you will write your own.
 
-| Method | What it does |
-|---|---|
-| `Console.WriteLine("Hi")` | Shows text |
-| `int.Parse("18")` | Turns text into a number |
-| `names.Add("Ana")` | Adds to a list |
-
-Now you will make your **own**.
-
-### Why use methods?
+Why use methods?
 
 1. **No repeating.** Write once, use many times.
 2. **Easier to read.** `ComputeAverage(a, b, c)` explains itself.
-3. **Easier to fix.** If there is a bug, you fix it in **one** place.
+3. **Easier to fix.** A mistake is fixed in **one** place.
 
 ---
 
-## 🧠 The Parts of a Method
+## Step by Step
 
-```cs
-double ComputeAverage(double a, double b, double c)
-{
-    double total = a + b + c;
-    return total / 3;
-}
-```
+### Step 1: Create a new project named `Lesson08`
 
-| Part | In the example | Meaning |
-|---|---|---|
-| **Return type** | `double` | What kind of value the method **gives back** |
-| **Name** | `ComputeAverage` | What you call it. Methods use **PascalCase**: every word starts with a capital letter |
-| **Parameters** | `(double a, double b, double c)` | The information you **give** the method. Each one has a type and a name |
-| **Body** | `{ ... }` | The steps |
-| **`return`** | `return total / 3;` | **Give back** the answer and leave the method |
+1. Open **Visual Studio**. (If it is already open, close it first and open it again.)
+2. Click **Create a new project**.
+3. Click **Console App** (the one with **C#**, not ".NET Framework"), then click **Next**.
+4. In **Project name**, type `Lesson08`. Check that **Location** says `C:\CSharpCourse`. Click **Next**.
+5. Click **Create**.
 
-To **call** it:
+### Step 2: Type the code
 
-```cs
-double average = ComputeAverage(85, 90, 88);
-```
+1. Clear the editor (**Ctrl + A**, **Delete**).
+2. Type the code below. The **main program** is at the top. The **methods** are at the bottom.
 
-The values `85`, `90`, `88` go into `a`, `b`, `c`. The method gives back `87.666...`, which goes into the box `average`.
-
-### Methods that give nothing back: `void`
-
-Some methods just **do** something, like showing text, and do not give back an answer. Their return type is **`void`** (meaning "nothing"):
-
-```cs
-void PrintHeader(string title)
-{
-    Console.WriteLine("==============================");
-    Console.WriteLine($"  {title}");
-    Console.WriteLine("==============================");
-}
-```
-
-Call it like this:
-
-```cs
-PrintHeader("GRADE CALCULATOR");
-```
-
-### Where do methods go?
-
-In this course, put your methods at the **bottom** of `Program.cs`, **after** your main code. C# finds them there automatically.
-
-```text
-Program.cs
-┌──────────────────────────────┐
-│ // ----- Main program -----  │  ← runs from top to bottom
-│ PrintHeader("...");          │
-│ ...                          │
-│                              │
-│ // ----- Methods -----       │  ← recipe cards, used by the code above
-│ void PrintHeader(...) {...}  │
-│ double ReadNumber(...) {...} │
-└──────────────────────────────┘
-```
-
----
-
-## 🛠️ Let's Build It: A Crash-Proof Grade Calculator
-
-### Step 1: Create the project
-
-```cmd
-cd C:\CSharpCourse
-dotnet new console -n Lesson08
-cd Lesson08
-code .
-```
-
-### Step 2: Write the code
+## The Code
 
 ```csharp
 // Lesson 8: Grade calculator organized with methods
@@ -183,9 +107,11 @@ string GetRemarks(double grade)
 
 ### Step 3: Run it
 
-Try typing letters on purpose for one of the grades.
+Press **Ctrl + F5**. For one of the grades, type letters on purpose (like `abc`).
 
-✅ **You should see:**
+## The Output
+
+✅ **You will see:**
 
 ```text
 ==============================
@@ -205,22 +131,44 @@ The program did **not** crash when you typed `abc`. It just asked again. 🎉
 
 ---
 
-## 🔎 Line by Line
+## What the Code Means
 
-### The main program reads like a story
+### The parts of a method
 
 ```cs
-PrintHeader("GRADE CALCULATOR");
-
-double prelim = ReadNumber("Prelim grade: ");
-double midterm = ReadNumber("Midterm grade: ");
-double finals = ReadNumber("Finals grade: ");
-
-double average = ComputeAverage(prelim, midterm, finals);
-string remarks = GetRemarks(average);
+double ComputeAverage(double a, double b, double c)
+{
+    double total = a + b + c;
+    return total / 3;
+}
 ```
 
-Even without reading the methods, you can tell what this program does. That is the power of good method names.
+- `double` (the first word) → the kind of answer the method **gives back**.
+- `ComputeAverage` → the method's **name**. Method names start each word with a capital letter.
+- `(double a, double b, double c)` → the information you **give** the method. These are called **parameters**.
+- `{ ... }` → the steps.
+- `return total / 3;` → **give back** the answer and leave the method.
+
+To use it:
+
+```cs
+double average = ComputeAverage(prelim, midterm, finals);
+```
+
+The three grades go into `a`, `b`, and `c`. The method gives back the average, and it goes into the box `average`.
+
+### A method that gives nothing back: `void`
+
+```cs
+void PrintHeader(string title)
+{
+    Console.WriteLine("==============================");
+    Console.WriteLine($"  {title}");
+    Console.WriteLine("==============================");
+}
+```
+
+Some methods just **do** something, like showing text. They do not give back an answer. Their first word is **`void`**, which means "nothing".
 
 ### `ReadNumber`: the most useful method in this course
 
@@ -242,19 +190,14 @@ double ReadNumber(string prompt)
 }
 ```
 
-1. It loops **forever** (`while (true)`).
-2. Each round, it shows the question (`prompt`) and reads the answer.
-3. If the answer is a number, `return number;` gives it back **and leaves the method**. This also ends the loop.
-4. If not, it shows a message and the loop asks again.
+1. It repeats forever (`while (true)`).
+2. Each round, it shows the question and reads the answer.
+3. If the answer is a number, `return number;` gives it back **and leaves the method**. That also ends the loop.
+4. If not, it shows a message, and the loop asks again.
 
-Notice that `TryParse` is written **directly inside** the `if (...)`. It gives `true` or `false`, so it can be used as a condition. This is the same as:
+Here, `TryParse` is written directly inside `if ( ... )`. It gives `true` or `false`, so it can be used as a condition.
 
-```cs
-bool isNumber = double.TryParse(input, out double number);
-if (isNumber)
-```
-
-### `GetRemarks`: more than one `return`
+### A method with two `return` lines
 
 ```cs
 string GetRemarks(double grade)
@@ -268,50 +211,47 @@ string GetRemarks(double grade)
 }
 ```
 
-If the grade is 75 or more, the method returns `"PASSED"` and **stops there**. It only reaches the last line if the grade is below 75.
+If the grade is 75 or more, the method gives back `"PASSED"` and **stops right there**. It reaches the last line only when the grade is below 75.
+
+### Where do methods go?
+
+Put your methods at the **bottom** of `Program.cs`, after the main program. C# finds them there.
+
+Now read the main program again:
+
+```cs
+PrintHeader("GRADE CALCULATOR");
+
+double prelim = ReadNumber("Prelim grade: ");
+double midterm = ReadNumber("Midterm grade: ");
+double finals = ReadNumber("Finals grade: ");
+
+double average = ComputeAverage(prelim, midterm, finals);
+string remarks = GetRemarks(average);
+```
+
+It reads almost like a story. That is what good method names do.
 
 ---
 
-## ⚠️ Common Mistakes
+## If Something Goes Wrong
 
-### Mistake 1: Forgetting to `return` a value
+**Error List: `CS0161  'ComputeAverage(double, double, double)': not all code paths return a value`**
+A method that is not `void` must always `return` something. You forgot the `return` line.
 
-```cs
-double ComputeAverage(double a, double b, double c)
-{
-    double total = a + b + c;
-}
-```
+**Error List: `CS7036  There is no argument given that corresponds to the required parameter 'c'...`**
+The method needs 3 values, and you gave it fewer, like `ComputeAverage(85, 90)`. Give exactly as many values as the method asks for, in the same order.
 
-```text
-error CS0161: 'ComputeAverage(double, double, double)': not all code paths return a value
-```
-
-**Fix:** A method that is not `void` **must** `return` a value.
-
-### Mistake 2: Giving the wrong number of values
-
-```cs
-double average = ComputeAverage(85, 90);
-```
-
-```text
-error CS7036: There is no argument given that corresponds to the required parameter 'c' of 'ComputeAverage(double, double, double)'
-```
-
-**Fix:** Give exactly as many values as the method has parameters, in the same order.
-
-### Mistake 3: Using a variable from inside another method
-
-Variables created **inside** a method only exist inside that method. `total` inside `ComputeAverage` cannot be used in the main program. If you need the value outside, `return` it.
+**Error List: `CS0103  The name 'total' does not exist in the current context`**
+A variable made **inside** a method lives only inside that method. If the main program needs the value, the method must `return` it.
 
 ---
 
-## 🏋️ Practice
+## Exercise
 
-Add these methods to your `Lesson08` project (at the bottom), and call them from the main program to test.
+Add each method at the **bottom** of the file, and call it from the top to test it.
 
-**Exercise 1.** Write a method `bool IsEven(int number)` that returns `true` if the number is even.
+**Exercise 1.** Write a method `bool IsEven(int number)`. It gives back `true` if the number is even.
 
 <details>
 <summary>Show answer</summary>
@@ -326,11 +266,11 @@ bool IsEven(int number)
 }
 ```
 
-`number % 2 == 0` is already `true` or `false`, so we can return it directly.
+`number % 2 == 0` is already `true` or `false`, so the method can give it back directly.
 
 </details>
 
-**Exercise 2.** Write a method `void PrintLine(int length)` that prints a line of dashes (`-`) of the given length. `PrintLine(10)` should print `----------`.
+**Exercise 2.** Write a method `void PrintLine(int length)`. It shows a line of dashes. `PrintLine(10)` shows `----------`.
 
 <details>
 <summary>Show answer</summary>
@@ -352,7 +292,7 @@ void PrintLine(int length)
 
 </details>
 
-**Exercise 3.** Write a method `int ReadWholeNumber(string prompt)` that works like `ReadNumber`, but for whole numbers (`int`). Use it to ask for the user's age.
+**Exercise 3.** Write a method `int ReadWholeNumber(string prompt)`. It works like `ReadNumber`, but for whole numbers (`int`). Use it to ask for the user's age.
 
 <details>
 <summary>Show answer</summary>
@@ -380,16 +320,80 @@ int ReadWholeNumber(string prompt)
 
 </details>
 
+## ⭐ Bonus Challenge
+
+Write a method `string GetLetterGrade(double grade)` that gives back a letter:
+
+- 90 or more → `"A"`
+- 80 or more → `"B"`
+- 75 or more → `"C"`
+- below 75 → `"F"`
+
+Then use `ReadNumber` (from this lesson) to ask for a grade, and show its letter.
+
+```text
+Enter a grade: 82
+Letter grade: B
+```
+
+<details>
+<summary>Show answer</summary>
+
+```csharp
+double grade = ReadNumber("Enter a grade: ");
+Console.WriteLine($"Letter grade: {GetLetterGrade(grade)}");
+
+string GetLetterGrade(double grade)
+{
+    if (grade >= 90)
+    {
+        return "A";
+    }
+
+    if (grade >= 80)
+    {
+        return "B";
+    }
+
+    if (grade >= 75)
+    {
+        return "C";
+    }
+
+    return "F";
+}
+
+double ReadNumber(string prompt)
+{
+    while (true)
+    {
+        Console.Write(prompt);
+        string input = Console.ReadLine() ?? "";
+
+        if (double.TryParse(input, out double number))
+        {
+            return number;
+        }
+
+        Console.WriteLine("Please type a valid number.");
+    }
+}
+```
+
+No `else` is needed. Each `return` leaves the method, so the next `if` runs only when the one before it was false.
+
+</details>
+
 ---
 
-## 📌 Recap
+## Remember
 
-- A **method** is a named block of code: `returnType Name(parameters) { body }`
-- **Parameters** are the information you give it. **`return`** gives an answer back.
+- A **method** is a named block of code: `answerType Name(parameters) { steps }`
+- **Parameters** are what you give it. **`return`** gives the answer back.
 - `void` means the method gives nothing back.
-- Method names use **PascalCase** (`ComputeAverage`). Variable names use **camelCase** (`totalScore`).
+- Method names: `ComputeAverage` (every word capitalized). Variable names: `totalScore`.
 - Put methods at the **bottom** of `Program.cs`.
-- `ReadNumber` with `while (true)` + `TryParse` + `return` = input that never crashes.
+- `ReadNumber` = `while (true)` + `TryParse` + `return`. Input that never crashes.
 
 ---
 

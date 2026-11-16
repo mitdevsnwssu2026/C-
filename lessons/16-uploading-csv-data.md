@@ -1,103 +1,93 @@
 # Lesson 16: Uploading Many Records From a CSV File
 
-| | |
-|---|---|
-| **Part** | 3: Databases |
-| **Time** | About 90 minutes |
-| **Before this** | [Lesson 15](15-crud-app.md) |
+**Part 3: Databases** · About 90 minutes
 
-## 🎯 Goal
+## What You Will Learn
 
-By the end of this lesson, you will build an **upload tool** that:
+You will build an **upload tool** that:
 
-- Reads a **CSV file** (like one exported from Excel)
-- **Checks** every row and reports the problems, with line numbers
-- **Uploads** all the good rows into the database at once, using a **transaction**
+- Reads a **CSV file** (like one saved from Excel)
+- **Checks** every row, and reports the problems with their line numbers
+- **Uploads** all the good rows into the database at once
 - **Skips** students who are already saved, instead of crashing
 
----
-
-## 🧠 The Big Idea
+## The Idea
 
 The registrar sends you an Excel file with **500 new students**. Typing them one by one into the Lesson 15 program would take all day, and you would surely make typing mistakes.
 
-Instead, real systems have an **upload** (or **import**) feature:
+Real systems have an **upload** feature instead:
 
 ```text
  students.csv  ──►  1. Read every line
-                    2. Check every row (report problems)
+                    2. Check every row, and report the problems
                     3. Ask: "Upload the good rows?"
-                    4. Save them all at once  ──►  school.db
+                    4. Save them all at once  ──►  the database
 ```
 
-### New idea 1: Never trust a file
+Three new ideas make this work.
 
-Files made by people **always** have mistakes: a missing name, letters where a number should be, the same student twice. A good upload tool **checks every row** and tells the user exactly which lines have problems, so they can fix them.
+**New idea 1: Never trust a file.** Files made by people **always** have mistakes: a missing name, letters where a number should be, the same student twice. A good upload tool **checks every row** and tells the user which lines are wrong.
 
-### New idea 2: Transactions (all or nothing)
+**New idea 2: Transactions (all or nothing).** A **transaction** groups many database changes into **one**. Either **all** of them are saved, or **none** of them are.
 
-A **transaction** groups many database changes together, so that they are treated as **one** change:
+Think of sending money with GCash. The money must leave your account **and** arrive in your friend's account. If only half of that happened, someone would lose money. A transaction makes sure it is **all or nothing**. As a bonus, saving 500 rows in one transaction is also much **faster**.
 
-- If everything works, `Commit()` saves **all** the changes.
-- If anything crashes in the middle, **none** of the changes are saved. The database goes back to how it was.
-
-Think of sending money with a mobile wallet: the money must leave your account **and** arrive in your friend's account. If only half of that happened, someone would lose money. A transaction makes sure it is **all or nothing**.
-
-There is a bonus: saving 500 rows **inside one transaction** is much **faster** than saving them one at a time.
-
-### New idea 3: `INSERT OR IGNORE`
-
-```sql
-INSERT OR IGNORE INTO Students (...) VALUES (...);
-```
-
-`OR IGNORE` means: *"If this row would break a rule (like the `UNIQUE` student number), **skip it quietly** instead of crashing."* Then `ExecuteNonQuery()` gives back **0** (no rows changed), so we know it was skipped.
+**New idea 3: `INSERT OR IGNORE`.** This SQL means: *"If this row breaks a rule (like a duplicate student number), **skip it quietly** instead of crashing."*
 
 ---
 
-## 🛠️ Let's Build It
+## Step by Step
 
-### Step 1: Create the project and add SQLite
+### Step 1: Create a new project named `Lesson16`
 
-```cmd
-cd C:\CSharpCourse
-dotnet new console -n Lesson16
-cd Lesson16
-dotnet add package Microsoft.Data.Sqlite
+1. Open **Visual Studio**. (If it is already open, close it first and open it again.)
+2. Click **Create a new project**.
+3. Click **Console App** (the one with **C#**, not ".NET Framework"), then click **Next**.
+4. In **Project name**, type `Lesson16`. Check that **Location** says `C:\CSharpCourse`. Click **Next**.
+5. Click **Create**.
+
+### Step 2: Add the SQLite package
+
+1. In the **Solution Explorer**, right-click the project line **Lesson16**.
+2. Click **Manage NuGet Packages...**
+3. Click **Browse**. In the search box, type `Microsoft.Data.Sqlite`.
+4. Click the result named exactly **Microsoft.Data.Sqlite**. Then click **Install**.
+5. If **Preview Changes** appears, click **Apply**. If **License Acceptance** appears, click **I Accept**.
+6. Close the NuGet tab.
+
+### Step 3: Bring in two files from Lesson 15
+
+You already wrote `Student.cs` and `StudentDatabase.cs`. Do not type them again. **Reuse them!**
+
+**1.** In the **Solution Explorer**, right-click the project line **Lesson16**.
+
+**2.** Move to **Add**, then click **Existing Item...**
+
+✅ **You will see:** a window for choosing files.
+
+**3.** Click the **address bar** at the top of that window. Type `C:\CSharpCourse\Lesson15` and press **Enter**.
+
+**4.** Click **Student.cs** once. Then hold the **Ctrl** key and click **StudentDatabase.cs**. Both files are now highlighted.
+
+**5.** Click **Add**.
+
+✅ **You will see:** `Student.cs` and `StudentDatabase.cs` appear in the Solution Explorer, under **Lesson16**. Visual Studio made **copies** of them for this project.
+
+> This project has its **own new database**, so it starts with **no students**. Your Lesson 15 data is safe in the Lesson 15 project.
+
+### Step 4: Add one new method to `StudentDatabase.cs`
+
+**1.** In the Solution Explorer, double-click **StudentDatabase.cs**.
+
+**2.** Scroll down and find this line, near the bottom:
+
+```cs
+    // Helper: turns the rows returned by a SELECT into a List of Student objects
 ```
 
-### Step 2: Copy the files from Lesson 15
+**3.** Click at the very start of that line, and press **Enter** twice to make some empty space above it.
 
-You already wrote `Student.cs` and `StudentDatabase.cs`. Reuse them! In the Command Prompt (inside `Lesson16`), type:
-
-```cmd
-copy ..\Lesson15\Student.cs .
-```
-
-```cmd
-copy ..\Lesson15\StudentDatabase.cs .
-```
-
-After each command, you should see `1 file(s) copied.`
-
-| Part | Meaning |
-|---|---|
-| `copy` | Copy a file |
-| `..\Lesson15\Student.cs` | The file to copy. `..` means "go up one folder", so this is `C:\CSharpCourse\Lesson15\Student.cs` |
-| `.` | Copy it **here** (the current folder) |
-
-> [!NOTE]
-> This project gets its **own new** `school.db` file, so it starts with **no** students. Your Lesson 15 data is safe in the `Lesson15` folder.
-
-Now open VS Code:
-
-```cmd
-code .
-```
-
-### Step 3: Add the `ImportStudents` method to `StudentDatabase.cs`
-
-Open `StudentDatabase.cs`. Find the line that says `// Helper: turns the rows returned by a SELECT into a List of Student objects`. **Just above** that line, add this new method:
+**4.** In that empty space, paste this new method:
 
 ```cs
     // IMPORT: save many students at once, inside one transaction.
@@ -128,11 +118,12 @@ Open `StudentDatabase.cs`. Find the line that says `// Helper: turns the rows re
         transaction.Commit();
         return addedCount;
     }
-
 ```
 
 <details>
-<summary>Show the complete <code>StudentDatabase.cs</code> after this change</summary>
+<summary>Not sure where it goes? Show the complete <code>StudentDatabase.cs</code></summary>
+
+You can replace the whole file with this (**Ctrl + A**, **Delete**, then paste):
 
 ```csharp
 // StudentDatabase.cs - every database command for students lives here
@@ -330,9 +321,21 @@ public static class StudentDatabase
 
 </details>
 
-### Step 4: Create the CSV file
+### Step 5: Create the CSV file
 
-In VS Code, create a new file named **`students.csv`** (in the same folder as `Program.cs`) and type these lines **exactly**. Some lines have mistakes **on purpose**, so you can see the checks work.
+**1.** In the Solution Explorer, right-click the project line **Lesson16**.
+
+**2.** Move to **Add**, then click **New Item...**
+
+**3.** In the **Name** box, type `students.csv`
+
+> If the window shows a big list of file types, click **Text File** in the list first. Then type the name.
+
+**4.** Click **Add**.
+
+✅ **You will see:** an empty tab named **students.csv**.
+
+**5.** Type (or paste) these lines into it, exactly. Some lines have mistakes **on purpose**, so you can see the checks work.
 
 ```text
 StudentNumber,FullName,Course,YearLevel
@@ -346,18 +349,36 @@ StudentNumber,FullName,Course,YearLevel
 2026-0107,Carlo Mendoza,BSCS
 ```
 
-The first line is the **header**: it names the columns. Here are the mistakes hidden in this file:
+The first line is the **header**. It names the columns. Here are the mistakes hidden in the file:
 
-| Line | Problem |
-|---|---|
-| 5 | The full name is missing (`,,`) |
-| 6 | The year level is `abc`, not a number |
-| 8 | Maria Santos (`2026-0101`) appears **twice** |
-| 9 | Only 3 values. The year level is missing |
+- **Line 5:** the full name is missing (`,,`)
+- **Line 6:** the year level is `abc`, not a number
+- **Line 8:** Maria Santos (`2026-0101`) appears a **second time**
+- **Line 9:** there are only 3 values. The year level is missing
 
-### Step 5: Write `Program.cs`
+### Step 6: Tell Visual Studio to put the CSV file next to your program
 
-Replace everything in `Program.cs` with:
+Remember Lesson 11? Your program runs inside the **bin → Debug → net10.0** folder. The CSV file must be there too. This setting makes Visual Studio copy it there for you, every time you run.
+
+**1.** In the Solution Explorer, click **students.csv** once, so it is highlighted.
+
+**2.** Look at the **Properties** panel. It is just below the Solution Explorer.
+
+> No Properties panel? Press the **F4** key.
+
+**3.** In the Properties panel, find the line **Copy to Output Directory**.
+
+**4.** Click the box to the right of it (it says **Do not copy**), and choose **Copy if newer**.
+
+### Step 7: Put the main program in `Program.cs`
+
+1. In the Solution Explorer, double-click **Program.cs**.
+2. Press **Ctrl + A**, then **Delete**.
+3. Put in this code:
+
+## The Code
+
+**File: `Program.cs`**
 
 ```csharp
 // Lesson 16: Uploading many students from a CSV file into the database
@@ -483,15 +504,15 @@ foreach (Student s in StudentDatabase.GetAllStudents())
 }
 ```
 
-### Step 6: Run it
+### Step 8: Run it
 
-```cmd
-dotnet run
-```
+1. Press **Ctrl + F5**.
+2. When it asks for the file name, just press **Enter**.
+3. When it asks to upload, type `Y` and press **Enter**.
 
-When asked for the file name, just press **Enter**. When asked to upload, type **`Y`**.
+## The Output
 
-✅ **You should see:**
+✅ **You will see:**
 
 ```text
 ===== IMPORT STUDENTS FROM A CSV FILE =====
@@ -517,14 +538,14 @@ Done! 4 student(s) added.
 
 Look closely:
 
-- **3 bad rows** were reported with their **line numbers**, and were **not** saved.
-- **5 rows** passed the checks. But one was the duplicate Maria Santos, so only **4** were added and **1** was skipped.
+- **3 bad rows** were reported with their **line numbers**. They were **not** saved.
+- **5 rows** passed the checks. One of them was the second Maria Santos. So **4** were added, and **1** was skipped.
 
-**Run it again** and answer `Y`. This time, `0 student(s) added` and `5 ... skipped`, because they are all saved already. No crash, no duplicates. 🎉
+**Run it again** and answer `Y`. This time it says `0 student(s) added` and `5 ... skipped`, because they are all saved already. No crash. No duplicates. 🎉
 
 ---
 
-## 🔎 Line by Line
+## What the Code Means
 
 ### Stopping the program early
 
@@ -537,7 +558,7 @@ if (!File.Exists(fileName))
 }
 ```
 
-In the main program (not inside a method), `return;` **ends the whole program**. There is no point continuing if the file does not exist.
+In the main program (not inside a method), `return;` **ends the whole program**. There is no point in continuing if the file does not exist.
 
 ### Skipping the header
 
@@ -545,15 +566,15 @@ In the main program (not inside a method), `return;` **ends the whole program**.
 for (int i = 1; i < lines.Length; i++)
 ```
 
-The loop starts at **`i = 1`**, not 0. Line 0 is the header (`StudentNumber,FullName,...`), which is not a student.
+The loop starts at **`i = 1`**, not 0. Line 0 is the header, and the header is not a student.
 
 ```cs
 int lineNumber = i + 1;
 ```
 
-Array indexes start at 0, but people (and Notepad) count lines starting from 1. We add 1 so the problem report matches what the user sees in the file.
+Indexes start at 0, but people count lines from 1. Adding 1 makes the problem report match what the user sees in the file.
 
-### Checking each row: `continue`
+### Checking each row
 
 ```cs
 if (parts.Length != 4)
@@ -563,7 +584,7 @@ if (parts.Length != 4)
 }
 ```
 
-If a check fails, we write down the problem and use `continue` (Lesson 06) to **skip to the next line**. Only rows that pass **every** check reach the end of the loop and are added to `validStudents`.
+If a check fails, the program writes down the problem, and `continue` **skips to the next line** (Lesson 06). Only rows that pass **every** check reach the end of the loop and are added to `validStudents`.
 
 ### Two lists
 
@@ -572,7 +593,7 @@ List<Student> validStudents = new List<Student>();
 List<string> problems = new List<string>();
 ```
 
-Good rows go into `validStudents`. Problem messages go into `problems`. Nothing is saved to the database while checking.
+Good rows go into `validStudents`. Problem messages go into `problems`. Nothing is saved to the database during the checking.
 
 ### Asking before saving
 
@@ -582,7 +603,7 @@ string answer = (Console.ReadLine() ?? "").Trim().ToUpper();
 if (answer != "Y")
 ```
 
-Uploading changes the database, so we show the report and **ask first**. `.ToUpper()` lets the user type `y` or `Y`.
+An upload changes the database. So the program shows the report and **asks first**. `.ToUpper()` lets the user type `y` or `Y`.
 
 ### The transaction (in `ImportStudents`)
 
@@ -593,64 +614,63 @@ using var transaction = connection.BeginTransaction();
 transaction.Commit();
 ```
 
-1. `BeginTransaction()` starts the "all or nothing" group. Every command on this connection is now part of it.
+1. `BeginTransaction()` starts the "all or nothing" group.
 2. The loop inserts each student.
 3. `Commit()` saves everything **for real**.
 
-If the program crashes **before** `Commit()`, the `using` automatically **cancels** the transaction (this is called a **rollback**), and nothing is saved.
+If the program crashes **before** `Commit()`, the transaction is cancelled automatically, and nothing is saved.
 
 ```cs
 int rowsChanged = command.ExecuteNonQuery();
 addedCount = addedCount + rowsChanged;
 ```
 
-With `INSERT OR IGNORE`, `rowsChanged` is **1** if the student was added and **0** if skipped. Adding them all up gives the number of students actually added.
+With `INSERT OR IGNORE`, `rowsChanged` is **1** if the student was added, and **0** if the student was skipped. Adding them all up gives the number of students that were really added.
 
 ---
 
-## 🧠 Real Life: Making the CSV in Excel
+## Real Life: Making the CSV in Excel
 
-In real work, you will get the data in Excel. To turn an Excel sheet into a CSV file:
+At work, the data usually comes in Excel. To save an Excel sheet as a CSV file:
 
 1. Make sure row 1 has the headers: `StudentNumber`, `FullName`, `Course`, `YearLevel`.
-2. Click **File** → **Save As**.
-3. In **"Save as type"**, choose **CSV UTF-8 (Comma delimited) (\*.csv)**.
-4. Save it in your project folder (`C:\CSharpCourse\Lesson16`).
-5. If Excel asks about features that may be lost, click **Yes** (keep the CSV format).
+2. Click **File**, then **Save As**.
+3. In **Save as type**, choose **CSV UTF-8 (Comma delimited) (\*.csv)**.
+4. Save it somewhere easy to find, like your Desktop.
+5. Run the upload tool. When it asks for the file name, type the **full path** of the file, like `C:\Users\Juan\Desktop\students.csv`.
 
 > [!WARNING]
-> Our simple program splits lines at **every comma**. A name that contains a comma (like `Dela Cruz, Juan`) would break that row. Write names without commas, like `Juan Dela Cruz`.
+> Our simple program cuts each line at **every comma**. A name with a comma inside (like `Dela Cruz, Juan`) would break that row. Write names without commas: `Juan Dela Cruz`.
 
 ---
 
-## ⚠️ Common Mistakes
+## If Something Goes Wrong
 
-### Mistake 1: `File not found: students.csv`
+**`File not found: students.csv`**
+Step 6 was skipped. Click `students.csv` in the Solution Explorer, and set **Copy to Output Directory** to **Copy if newer** in the Properties panel. Then run again.
 
-The file must be in the **project folder**, the same folder as `Program.cs`. In the Command Prompt, type `dir` and check that `students.csv` is in the list.
+**Every row says `needs 4 values`.**
+Your file may use **semicolons** (`;`) instead of commas. Open the file and check. Replace the semicolons with commas.
 
-### Mistake 2: Every row says `needs 4 values`
+**The first student is reported as a problem, or is missing.**
+The program always skips line 1. Make sure the first line of the file is the header: `StudentNumber,FullName,Course,YearLevel`
 
-Your file may use **semicolons** (`;`) instead of commas. This happens with Excel on some computers. **Fix:** Open the file in Notepad and check. Save it again from Excel as **CSV UTF-8 (Comma delimited)**.
+**Error List: `CS0117  'StudentDatabase' does not contain a definition for 'ImportStudents'`**
+The new method is missing, or it was pasted **outside** the class. It must be **inside** the class's `{ }`. Use the complete file from Step 4.
 
-### Mistake 3: The first student is reported as a problem
-
-You may have forgotten the **header line**. The program always skips line 1. **Fix:** Make sure the first line of the file is `StudentNumber,FullName,Course,YearLevel`.
-
-### Mistake 4: `error CS0117: 'StudentDatabase' does not contain a definition for 'ImportStudents'`
-
-The new method is missing, or was pasted **outside** the class. **Fix:** It must be **inside** the class's `{ }`, just above the `ReadStudents` helper. Compare with the complete file in Step 3.
+**I changed `students.csv`, but the program still shows the old data.**
+Make sure **Copy to Output Directory** is set to **Copy if newer** (Step 6), then run again.
 
 ---
 
-## 🏋️ Practice
+## Exercise
 
-**Exercise 1.** Fix the 3 problem lines in `students.csv` (give them a name, a number year level, and a 4th value). Run the upload again. How many students are added now?
+**Exercise 1.** Fix the 3 problem lines in `students.csv`: give line 5 a name, give line 6 a real year level, and give line 9 a 4th value. Run the upload again. How many students are added now?
 
 <details>
 <summary>Show answer</summary>
 
-For example, change the lines to:
+For example, change those lines to:
 
 ```text
 2026-0104,Rico Dizon,BSIT,1
@@ -658,11 +678,11 @@ For example, change the lines to:
 2026-0107,Carlo Mendoza,BSCS,1
 ```
 
-Now all 8 rows are valid. The 4 students already saved (plus the duplicate Maria Santos row) are skipped, and the **3** fixed ones are added: `Done! 3 student(s) added.` and `5 student(s) skipped...`
+Now all 8 rows are valid. The 4 students already saved (plus the second Maria Santos row) are skipped, and the **3** fixed ones are added. You see `Done! 3 student(s) added.` and `5 student(s) skipped...`
 
 </details>
 
-**Exercise 2.** Add a check: the course must be `BSIT`, `BSCS`, or `BSIS`. Otherwise, report `Line X: unknown course.` (Hint: make a `List<string>` of allowed courses and use `.Contains`.)
+**Exercise 2.** Add a new check: the course must be `BSIT`, `BSCS`, or `BSIS`. For anything else, report `Line X: unknown course`. (Hint: make a `List<string>` of allowed courses, and use `.Contains`.)
 
 <details>
 <summary>Show answer</summary>
@@ -676,7 +696,7 @@ allowedCourses.Add("BSCS");
 allowedCourses.Add("BSIS");
 ```
 
-Inside the loop, after the "required" check, add:
+Inside the loop, right after the "required" check, add:
 
 ```cs
 if (!allowedCourses.Contains(course.ToUpper()))
@@ -688,40 +708,47 @@ if (!allowedCourses.Contains(course.ToUpper()))
 
 </details>
 
-**Exercise 3.** **Export.** Write the opposite tool: a program (in a new project, `Lesson16Export`, with the same `Student.cs` and `StudentDatabase.cs`) that saves every student in the database into `export.csv`, with a header line. (Hint: build a `List<string>` of lines, then `File.WriteAllLines("export.csv", lines);`)
+## ⭐ Bonus Challenge
+
+**Build the opposite tool: an export.** Change `Program.cs` so that, after the upload, it also saves **every student in the database** into a new file named `export.csv`, with a header line. Then find the file (project → **bin** → **Debug** → **net10.0**) and open it in Excel or Notepad.
+
+Hint: build a `List<string>` of lines, then save them all with `File.WriteAllLines("export.csv", lines);`
 
 <details>
 <summary>Show answer</summary>
 
-Copy `Student.cs`, `StudentDatabase.cs`, and `school.db` from `Lesson16` into the new project. Add the SQLite package. Then `Program.cs`:
+Add this at the very end of `Program.cs`:
 
 ```cs
-List<string> lines = new List<string>();
-lines.Add("StudentNumber,FullName,Course,YearLevel");
+// ----- Step 6: Export everything to a new CSV file -----
+List<string> exportLines = new List<string>();
+exportLines.Add("StudentNumber,FullName,Course,YearLevel");
 
 foreach (Student s in StudentDatabase.GetAllStudents())
 {
-    lines.Add($"{s.StudentNumber},{s.FullName},{s.Course},{s.YearLevel}");
+    exportLines.Add($"{s.StudentNumber},{s.FullName},{s.Course},{s.YearLevel}");
 }
 
-File.WriteAllLines("export.csv", lines);
-Console.WriteLine($"Exported {lines.Count - 1} student(s) to export.csv");
+File.WriteAllLines("export.csv", exportLines);
+Console.WriteLine();
+Console.WriteLine($"Exported {exportLines.Count - 1} student(s) to export.csv");
 ```
 
-`lines.Count - 1` because the header line is not a student. You can open `export.csv` in Excel!
+`exportLines.Count - 1`, because the header line is not a student.
 
 </details>
 
 ---
 
-## 📌 Recap
+## Remember
 
-- An **upload/import** tool reads a file, **checks every row**, reports problems with **line numbers**, and saves the good rows.
-- Skip the header by starting the loop at index 1. Show `i + 1` as the line number.
-- `continue` skips a bad row. Keep good rows and problem messages in separate lists.
-- A **transaction** (`BeginTransaction()` ... `Commit()`) is **all or nothing**, and much faster for many rows.
-- `INSERT OR IGNORE` skips rows that break a rule. `ExecuteNonQuery()` returns 0 for a skipped row.
-- In Excel, use **Save As → CSV UTF-8 (Comma delimited)**.
+- An **upload** tool reads a file, **checks every row**, reports problems with **line numbers**, and saves the good rows.
+- Start the loop at index 1 to skip the header. Show `i + 1` as the line number.
+- `continue` skips a bad row. Keep good rows and problem messages in two lists.
+- A **transaction** (`BeginTransaction()` ... `Commit()`) is **all or nothing**.
+- `INSERT OR IGNORE` skips rows that break a rule.
+- To reuse files: right-click the project → **Add** → **Existing Item...**
+- A data file needs **Copy to Output Directory** = **Copy if newer**.
 
 ---
 

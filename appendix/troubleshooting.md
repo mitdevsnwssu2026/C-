@@ -1,72 +1,123 @@
 # 🛟 Troubleshooting Guide
 
-Something is not working? Find your problem below. They are grouped by **when** they happen.
+Something is not working? Find your problem below.
 
 > [!TIP]
-> **Before anything else, check these three things.** They fix most problems:
-> 1. Is your Command Prompt in the **right folder**? The prompt should show your project, like `C:\CSharpCourse\Lesson05>`.
-> 2. Did you **save** your file? Turn on **File → Auto Save** in VS Code.
-> 3. Did you read the **first** error message? Fix that one first, then run again.
+> **Check these three things first.** They fix most problems.
+> 1. Did you click **No** on the "build errors" message, and read the **Error List**?
+> 2. Are you typing in the right **tab** (the right file)?
+> 3. Is an old **black window** still open? Close it.
 
 ---
 
-## 🔧 Setup Problems
+## Installing and Opening Visual Studio
 
-### `'dotnet' is not recognized as an internal or external command`
+**I installed "Visual Studio Code" (blue icon). The steps don't match.**
+That is a different program. Install **Visual Studio Community** (purple icon). See [Lesson 00](../lessons/00-before-you-start.md).
 
-The Command Prompt cannot find .NET.
+**The installation stopped or failed.**
+Check your internet connection, then open the downloaded installer file again. It continues where it stopped.
 
-1. **Close** the Command Prompt and open a **new** one. A window that was open during the installation does not know about .NET yet.
-2. Still not working? **Restart your computer**.
-3. Still not working? Install the .NET SDK again (see [Lesson 00](../lessons/00-before-you-start.md)). Make sure you downloaded the **SDK**, not the "Runtime".
+**I did not click ".NET desktop development" during installation.**
+Click **Start**, type `Visual Studio Installer`, and open it. Click **Modify**, click the **.NET desktop development** box, then click **Modify** at the bottom-right.
 
-### `'code' is not recognized as an internal or external command`
-
-The Command Prompt cannot find VS Code.
-
-1. Close the Command Prompt and open a new one.
-2. If it still fails, open VS Code from the Start menu, then click **File → Open Folder...** and choose your project folder (for example `C:\CSharpCourse\Lesson05`). This does the same thing as `code .`.
-3. To fix `code` for good, install VS Code again and make sure **"Add to PATH"** is checked.
-
-### `dotnet add package` fails, or says it cannot find the package
-
-- Check your **internet connection**. Packages are downloaded from the internet.
-- Check the spelling: `Microsoft.Data.Sqlite` (capital M, D, and S; dots between the words).
-- Make sure you are **inside** your project folder (where the `.csproj` file is). Type `dir` to check.
+**Visual Studio asks me to sign in.**
+You do not need an account. Look for the word **Skip**, and click it.
 
 ---
 
-## 🏃 Problems When You Type `dotnet run`
+## Creating a Project
 
-### `Couldn't find a project to run`
+**I can't find "Console App" in the list.**
+Type `console` in the search box at the top. Set the first small menu under it to **C#**. If the list is still empty, the **.NET desktop development** workload is missing. See the answer above.
 
-You are in the wrong folder. Go into your project folder:
+**The code Visual Studio wrote is long, with `namespace`, `class Program`, and `static void Main`.**
+You chose **Console App (.NET Framework)**, or the box **Do not use top-level statements** was checked. Close Visual Studio and create the project again. Choose **Console App** (with the **C#** label, and **without** ".NET Framework"), and leave that box **empty**.
 
-```cmd
-cd C:\CSharpCourse\Lesson05
-```
+**It says a project with this name already exists.**
+You already created this lesson's project. Either open it (start window → **Open recent**), or use a new name, like `Lesson05b`.
 
-Type `dir`. You should see a file ending in `.csproj`.
+**Where are my projects saved?**
+In `C:\CSharpCourse`. Each lesson has its own folder there.
 
-### "I changed my code, but the program still does the old thing"
+**How do I open an old project?**
+Open Visual Studio. On the left side of the start window, under **Open recent**, click the project's name.
 
-Your file was not saved. In VS Code, an unsaved file shows a **dot (●)** on its tab instead of an **X**. Press **Ctrl + S**, or turn on **File → Auto Save**.
+---
 
-### The program seems frozen
+## The Visual Studio Window
 
-It is probably **waiting for you to type something**. Type an answer and press **Enter**.
+**I can't see the Solution Explorer.**
+Click **View** on the menu bar, then **Solution Explorer**.
 
-If the screen keeps printing the same thing over and over, you have an **infinite loop**. Press **Ctrl + C** to stop it, and check that your loop's condition can become `false` (see [Lesson 06](../lessons/06-loops.md)).
+**I can't see the Error List.**
+Click **View** on the menu bar, then **Error List**.
 
-### Yellow `warning` messages
+**I can't see the Properties panel.**
+Click a file in the Solution Explorer, then press **F4**.
 
-Warnings do **not** stop your program, but you should fix them. The most common one in this course:
+**I closed the tab with my code.**
+In the Solution Explorer, double-click the file (for example `Program.cs`). It opens again. Nothing is lost.
+
+**The panels are all in strange places.**
+Click **Window** on the menu bar, then **Reset Window Layout**, then **Yes**.
+
+---
+
+## Running a Program
+
+**A message asks: "There were build errors. Would you like to continue and run the last successful build?"**
+Click **No**. There is a mistake in your code. Read the **Error List** at the bottom, double-click the first row to jump to the mistake, fix it, and run again.
+
+**An error says a file "is being used by another process", or "Could not copy ... apphost.exe".**
+An old black window is still open, with your program still running. Close **every** black window, then run again.
+
+**Nothing happens after I run the program.**
+The program is probably **waiting for you to type**. Click the black window, type an answer, and press **Enter**.
+
+**The black window keeps printing the same thing forever.**
+That is an **infinite loop**. Close the black window with the **X** at its top-right corner. Then fix your loop (see [Lesson 06](../lessons/06-loops.md)).
+
+**Ctrl + F5 does nothing.**
+On some laptops, you must also hold the **Fn** key: **Ctrl + Fn + F5**. Or use the menu: **Debug** → **Start Without Debugging**.
+
+**The program pauses, and a box says "Exception Unhandled".**
+You started the program with the solid green ▶ button (or **F5**), which runs it in *debugging* mode. Click the red square **■** (Stop) on the toolbar. Then run with **Ctrl + F5** instead.
+
+**The black window closes immediately.**
+You started with the solid green ▶ button. Use **Ctrl + F5** (**Debug** → **Start Without Debugging**). Then the window stays open until you press a key.
+
+---
+
+## Mistakes in the Code (the Error List)
+
+Each row in the Error List has a **Code**, a **Description**, and a **Line** number. **Double-click a row** to jump to the mistake. Always fix the **first** row first.
+
+| Code | The description says... | What it means | How to fix it |
+|---|---|---|---|
+| `CS1002` | ; expected | A `;` is missing | Type `;` at the end of that line (or the line above it) |
+| `CS0103` | The name '...' does not exist in the current context | C# does not know that name | Check the spelling and the capital letters. Was the variable made **before** this line, inside the same `{ }`? |
+| `CS1010` | Newline in constant | A text is missing its closing `"` | Add the missing `"` |
+| `CS1513` | } expected | A `{` was opened but never closed | Every `{` needs a matching `}` |
+| `CS1026` | ) expected | A `(` was opened but never closed | Add the missing `)` |
+| `CS0029` | Cannot implicitly convert type 'string' to 'int' | Text was used where a number is needed | Use `int.Parse(...)` or `int.TryParse(...)` |
+| `CS0128` | A local variable ... named '...' is already defined | The same variable was made twice | The second time, leave out the type: `x = 5;` |
+| `CS0165` | Use of unassigned local variable | A variable was used before it got a value | Give it a value first, for example `= new List<string>();` |
+| `CS0161` | not all code paths return a value | A method does not always `return` | Every path through the method must end with `return something;` |
+| `CS0163` | Control cannot fall through from one case label | A `case` is missing `break;` | Add `break;` at the end of every `case` |
+| `CS0246` | The type or namespace name '...' could not be found | C# cannot find that class | Is the class file in the Solution Explorer? Is the name spelled the same? Did you delete the starter code in the file? |
+| `CS0234` | 'Data' does not exist in the namespace 'Microsoft' | The SQLite package is missing | Install it: right-click the project → **Manage NuGet Packages...** (see [Lesson 12](../lessons/12-what-is-a-database.md)) |
+| `CS1061` | '...' does not contain a definition for '...' | That property or method does not exist | Check the exact name in the class |
+| `CS0117` | '...' does not contain a definition for '...' | That method is missing from the class | Add the method **inside** the class's `{ }` |
+| `CS0160` | A previous catch clause already catches all exceptions | `catch (Exception)` is not last | Move `catch (Exception ex)` to the end |
+
+**Green wavy lines** are **warnings**. The program still runs, but fix them. The most common one:
 
 ```text
-warning CS8600: Converting null literal or possible null value to non-nullable type.
+CS8600  Converting null literal or possible null value to non-nullable type.
 ```
 
-**Fix:** Add `?? ""` after `Console.ReadLine()`:
+**Fix:** add `?? ""` after `Console.ReadLine()`:
 
 ```cs
 string name = Console.ReadLine() ?? "";
@@ -74,81 +125,71 @@ string name = Console.ReadLine() ?? "";
 
 ---
 
-## ❌ Build Errors (Red Errors)
+## Crashes While the Program Runs
 
-The message always tells you the **file**, **line**, and **position**. For example, `Program.cs(7,35)` means *line 7, character 35*. In VS Code, the line number is shown on the left side of the editor.
+A crash shows `Unhandled exception.` in the black window. The first line says **what** went wrong.
 
-| Error | What it means | How to fix it |
+| The black window says... | What it means | How to fix it |
 |---|---|---|
-| `CS1002: ; expected` | A `;` is missing | Add `;` at the end of the instruction on that line (or the line before) |
-| `CS0103: The name 'xyz' does not exist in the current context` | C# does not know that name | Check the spelling and capital letters. Check that the variable was created **before** this line, and inside the same `{ }` |
-| `CS1010: Newline in constant` | A text value is missing its closing `"` | Add the missing `"` |
-| `CS1513: } expected` | A `{` was opened but never closed | Count your `{` and `}`. Every `{` needs a matching `}` |
-| `CS1026: ) expected` | A `(` was opened but never closed | Add the missing `)` |
-| `CS0029: Cannot implicitly convert type 'string' to 'int'` | You put text where a number is needed | Use `int.Parse(...)` or `int.TryParse(...)`, or fix the variable's type |
-| `CS0128: A local variable ... named 'x' is already defined` | You created the same variable twice | The second time, leave out the type: `x = 5;` not `int x = 5;` |
-| `CS0165: Use of unassigned local variable 'x'` | You used a variable before giving it a value | Give it a value when you create it, for example `= new List<string>();` |
-| `CS0161: not all code paths return a value` | A method that should give back a value does not always `return` | Make sure every path through the method ends with `return something;` |
-| `CS0163: Control cannot fall through from one case label` | A `case` in a `switch` is missing `break;` | Add `break;` at the end of every `case` |
-| `CS0246: The type or namespace name 'Student' could not be found` | C# cannot find that class | Check that the class file exists, is in the **same folder** as `Program.cs`, and the class name is spelled the same (with the same capital letters) |
-| `CS0234: The type or namespace name 'Data' does not exist in the namespace 'Microsoft'` | The SQLite package is missing | Run `dotnet add package Microsoft.Data.Sqlite` in the project folder |
-| `CS1061: 'Student' does not contain a definition for 'Name'` | That property or method does not exist | Check the exact name in the class (for example `FullName`, not `Name`) |
-| `CS0117: 'StudentDatabase' does not contain a definition for 'ImportStudents'` | That method is missing from the class | Add the method **inside** the class's `{ }` |
+| `FormatException: The input string '...' was not in a correct format.` | `int.Parse` got text that is not a number | Use `TryParse` (see [Lesson 05](../lessons/05-decisions.md) and [Lesson 08](../lessons/08-methods.md)) |
+| `DivideByZeroException` | A whole number was divided by 0 | Check that the number is not 0 first |
+| `ArgumentOutOfRangeException: Index was out of range.` | A List index that does not exist | The last index is `Count - 1` |
+| `IndexOutOfRangeException` | An array index that does not exist | The last index is `Length - 1` |
+| `FileNotFoundException: Could not find file '...'` | The file is not where the program looks | Check with `File.Exists(...)` first. For a data file in your project, set **Copy to Output Directory** to **Copy if newer** (see [Lesson 16](../lessons/16-uploading-csv-data.md)) |
+| `NullReferenceException` | Something that is `null` (nothing) was used | Check `if (x == null)` first |
+| `ExecuteNonQuery can only be called when the connection is open.` | `connection.Open()` is missing | Add `connection.Open();` |
+| `Must add values for the following parameters: $name` | A SQL placeholder was not filled in | Add `command.Parameters.AddWithValue("$name", value);` with **exactly** the same spelling |
 
 ---
 
-## 💥 Crashes While the Program Runs
+## Files and Folders
 
-A crash starts with `Unhandled exception.` The first line tells you **what** went wrong. Look for `line` in the message to see **where**.
+**Where is the file my program created (a `.csv`, `.txt`, or `.db` file)?**
+Right-click the project in the Solution Explorer → **Open Folder in File Explorer**. Then open **bin** → **Debug** → **net10.0**.
 
-| Exception | What it means | How to fix it |
+**My program can't find a file that I added to the project.**
+Click the file in the Solution Explorer. In the **Properties** panel (press **F4**), set **Copy to Output Directory** to **Copy if newer**.
+
+**I copied a file with "Add → Existing Item", but changes in the old lesson don't appear.**
+That is correct. Visual Studio made a **copy**. The two files are now separate.
+
+---
+
+## Database Problems
+
+| The black window says... | What it means | How to fix it |
 |---|---|---|
-| `FormatException: The input string 'abc' was not in a correct format.` | `int.Parse` or `double.Parse` got text that is not a number | Use `TryParse` instead (see [Lesson 05](../lessons/05-decisions.md) and [Lesson 08](../lessons/08-methods.md)) |
-| `DivideByZeroException` | You divided a whole number by 0 | Check that the number is not 0 before dividing |
-| `ArgumentOutOfRangeException: Index was out of range.` | You used a List index that does not exist | The last index is `Count - 1` |
-| `IndexOutOfRangeException: Index was outside the bounds of the array.` | You used an array index that does not exist | The last index is `Length - 1` |
-| `FileNotFoundException: Could not find file '...'` | The file does not exist in that folder | Check with `File.Exists(...)` first. Check the file is in your **project folder** |
-| `NullReferenceException` | You used something that is `null` (nothing) | Check `if (x == null)` before using it |
-| `InvalidOperationException: ... connection is open` | You forgot `connection.Open()` | Call `connection.Open();` right after creating the connection |
-| `InvalidOperationException: Must add values for the following parameters: $name` | A SQL placeholder was not filled in | Add `command.Parameters.AddWithValue("$name", value);` and check that the spelling matches **exactly** |
+| `SQLite Error 1: 'no such table: Students'` | The table does not exist, or its name is misspelled | Check the spelling. Make sure the method that creates the table runs **first** |
+| `SQLite Error 1: 'no such column: Email'` | The table does not have that column | You changed `CREATE TABLE`, but the old table is still there. Delete the database file (see below) |
+| `SQLite Error 1: 'near "...": syntax error'` | A typing mistake in your SQL | Look at the word after `near` |
+| `SQLite Error 19: 'UNIQUE constraint failed: ...'` | A duplicate was saved | Check first if it exists (see [Lesson 14](../lessons/14-inserting-data.md)) |
+| `SQLite Error 19: 'NOT NULL constraint failed: ...'` | A required column got no value | Give every `NOT NULL` column a value in your `INSERT` |
+| `SQLite Error 5: 'database is locked'` | Another program is using the database | In **DB Browser for SQLite**, click **Close Database**. Close other black windows |
+
+**How do I delete a database and start fresh?**
+Right-click the project → **Open Folder in File Explorer** → **bin** → **Debug** → **net10.0**. Right-click the `.db` file and click **Delete**. ⚠️ This deletes all the data in it.
+
+**My data from another lesson is not here.**
+Each project has its **own** database file. `Lesson15` and `Lesson16` do not share data.
 
 ---
 
-## 🗄️ Database Problems
+## The Account System (Lessons 19 and 20)
 
-| Error | What it means | How to fix it |
-|---|---|---|
-| `SQLite Error 1: 'no such table: Students'` | The table does not exist, or its name is misspelled | Check the spelling (`Students` with an s). Make sure `CreateTable()` runs **first** |
-| `SQLite Error 1: 'no such column: Email'` | The table does not have that column | If you added a column to `CREATE TABLE`, the old table did not change. While practicing, delete the database file (`del school.db`) and run again |
-| `SQLite Error 1: 'near "TABEL": syntax error'` | A typo in your SQL | Look at the word after `near`. That is where the mistake is |
-| `SQLite Error 19: 'UNIQUE constraint failed: Students.StudentNumber'` | You tried to save a duplicate | Check if it exists first (see [Lesson 14](../lessons/14-inserting-data.md)), or use `INSERT OR IGNORE` (see [Lesson 16](../lessons/16-uploading-csv-data.md)) |
-| `SQLite Error 19: 'NOT NULL constraint failed: ...'` | A required column got no value | Make sure every `NOT NULL` column gets a value in your `INSERT` |
-| `SQLite Error 5: 'database is locked'` | Another program is using the database | Close **DB Browser for SQLite** (or click **Close Database** in it), and make sure the program is not running in another Command Prompt window |
+**I can't log in.**
+- In Lesson 20, register an account **in that project** first. It has its own new database.
+- Usernames are saved in small letters. Use **View all accounts** to see them.
+- Forgot the password? Nobody can see it. Register a new account.
 
-### "My data disappeared!"
-
-Each project folder has its **own** database file. `Lesson15\school.db` and `Lesson16\school.db` are **different** databases. Make sure you are running the program in the folder you think you are.
+**Installing the NuGet package fails.**
+Check your internet connection. In the search box, the name must be exactly `Microsoft.Data.Sqlite`.
 
 ---
 
-## 🔐 Account System Problems (Lessons 19–20)
-
-### The password shows letters instead of `*`
-
-Run the program with `dotnet run` in the **Command Prompt**, not from a VS Code "Output" panel.
-
-### "I can't log in"
-
-- Usernames are saved in small letters. Use option **3 (View all accounts)** to see the exact usernames.
-- In Lesson 20, did you copy `accounts.db` from Lesson 19? Type `dir` to check.
-- Forgot the password? Nobody can see it, not even you. Register a new account.
-
----
-
-## 🙋 Still Stuck?
+## Still Stuck?
 
 1. Compare your code, line by line, with the finished program in the [`code/`](../code/) folder for that lesson.
-2. Copy the **finished** program into your project and run it. If it works, the difference between the two files is your bug.
-3. Ask your instructor or a classmate. Show them the **full error message**.
+2. Copy the finished code into your file, and run it. If it works, the difference between the two is your mistake.
+3. Ask your instructor or a classmate. Show them the **Error List** or the full message in the black window.
 
 [🏠 Course Home](../README.md)

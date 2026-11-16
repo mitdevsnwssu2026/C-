@@ -1,92 +1,53 @@
 # Lesson 11: Saving Data to a File
 
-| | |
-|---|---|
-| **Part** | 2: Intermediate |
-| **Time** | About 60 minutes |
-| **Before this** | [Lesson 10](10-handling-errors.md) |
+**Part 2: Intermediate** · About 60 minutes
 
-## 🎯 Goal
+## What You Will Learn
 
-By the end of this lesson, you will:
+- Why information **disappears** when a program closes
+- How to save text to a file, and read it back
+- What a **CSV** file is
+- Why real systems use a **database** instead of plain files
 
-- Understand why data **disappears** when a program closes
-- Save text to a file and read it back
-- Use the **CSV** format to store records
-- Understand why real systems use a **database** instead of plain files
+## The Idea
 
----
-
-## 🧠 The Big Idea
-
-Run your Lesson 09 student list again. Add a student. Exit. Run it again.
+Open your Lesson 09 student list. Add a student. Exit. Run it again.
 
 **The student you added is gone!** 😱
 
-That is because variables live in the computer's **memory** (RAM). Memory is like a **whiteboard**: fast and easy to write on, but it is **erased** when the program ends.
+Why? Variables live in the computer's **memory**. Memory is like a **whiteboard**: fast and easy to write on, but it is **wiped clean** when the program ends.
 
-To keep information, you must save it somewhere **permanent**, like a **notebook**. On a computer, the simplest notebook is a **file**.
+To keep information, you must save it somewhere permanent, like a **notebook**. On a computer, the simplest notebook is a **file**.
 
-| | Memory (variables) | File |
-|---|---|---|
-| Like a... | Whiteboard | Notebook |
-| Speed | Very fast | Slower |
-| When the program closes | **Erased** | **Kept** |
+### CSV files
 
-### Reading and writing files in C#
-
-| You want to... | Write |
-|---|---|
-| Add a line to the end of a file (creates the file if needed) | `File.AppendAllText("data.txt", "Hello" + Environment.NewLine);` |
-| Replace everything in a file | `File.WriteAllText("data.txt", "Hello");` |
-| Read all lines (gives an array of strings) | `string[] lines = File.ReadAllLines("data.txt");` |
-| Check if a file exists | `File.Exists("data.txt")` (gives `true` or `false`) |
-
-`Environment.NewLine` is the "Enter key" for files. It makes the next text start on a new line.
-
-> [!NOTE]
-> **Where is the file saved?** In the folder where you typed `dotnet run`, which is your project folder (for example `C:\CSharpCourse\Lesson11`).
-
-### The CSV format
-
-**CSV** means **Comma-Separated Values**. Each line is one record, and each value is separated by a comma:
+**CSV** means **Comma-Separated Values**. Each line is one record. The values are separated by commas:
 
 ```text
 2026-0001,Juan Dela Cruz,BSIT
 2026-0002,Maria Santos,BSCS
 ```
 
-CSV files are plain text, so Notepad can open them. **Microsoft Excel** can open them too, and shows them as a table. That makes CSV a very popular way to share data.
-
-### Splitting a line into pieces
-
-`.Split(',')` cuts text at every comma and gives back an **array**:
-
-```cs
-string line = "2026-0001,Juan Dela Cruz,BSIT";
-string[] parts = line.Split(',');
-
-// parts[0] is "2026-0001"
-// parts[1] is "Juan Dela Cruz"
-// parts[2] is "BSIT"
-```
-
-Notice: `','` uses **single quotes** because it is a single **character**, not text.
+A CSV file is plain text, so Notepad can open it. Excel can open it too, and shows it as a table. That is why CSV is a very popular way to share data.
 
 ---
 
-## 🛠️ Let's Build It: A Student File Saver
+## Step by Step
 
-### Step 1: Create the project
+### Step 1: Create a new project named `Lesson11`
 
-```cmd
-cd C:\CSharpCourse
-dotnet new console -n Lesson11
-cd Lesson11
-code .
-```
+1. Open **Visual Studio**. (If it is already open, close it first and open it again.)
+2. Click **Create a new project**.
+3. Click **Console App** (the one with **C#**, not ".NET Framework"), then click **Next**.
+4. In **Project name**, type `Lesson11`. Check that **Location** says `C:\CSharpCourse`. Click **Next**.
+5. Click **Create**.
 
-### Step 2: Write the code
+### Step 2: Type the code
+
+1. Clear the editor (**Ctrl + A**, **Delete**).
+2. Type the code below.
+
+## The Code
 
 ```csharp
 // Lesson 11: Saving students to a CSV file so they are not forgotten
@@ -126,9 +87,13 @@ foreach (string savedLine in lines)
 Console.WriteLine($"Total saved: {lines.Length}");
 ```
 
-### Step 3: Run it twice
+### Step 3: Run it two times
 
-**First run:**
+**First time.** Press **Ctrl + F5** and add a student.
+
+## The Output
+
+✅ **You will see:**
 
 ```text
 === SAVE A STUDENT ===
@@ -142,7 +107,9 @@ Number: 2026-0001 | Name: Juan Dela Cruz | Course: BSIT
 Total saved: 1
 ```
 
-**Second run** (with a different student):
+Close the black window.
+
+**Second time.** Press **Ctrl + F5** again and add a different student.
 
 ```text
 === SAVE A STUDENT ===
@@ -157,41 +124,58 @@ Number: 2026-0002 | Name: Maria Santos | Course: BSCS
 Total saved: 2
 ```
 
-**Juan is still there!** The data survived after the program closed. 🎉
+**Juan is still there!** The information stayed, even after the program closed. 🎉
 
-### Step 4: Look at the file
+### Step 4: Find the file and open it
 
-In the Command Prompt, type:
+Where is `students.csv`? Visual Studio keeps your running program, and the files it makes, in a folder deep inside your project. Let's go there.
 
-```cmd
-notepad students.csv
-```
+**1.** In the **Solution Explorer**, **right-click** the project line **Lesson11**.
 
-Notepad opens and shows:
+**2.** Click **Open Folder in File Explorer** (near the bottom of the menu).
+
+✅ **You will see:** a Windows folder window opens. It shows your project's files.
+
+**3.** Double-click the folder **bin**.
+
+**4.** Double-click the folder **Debug**.
+
+**5.** Double-click the folder whose name starts with **net** (for example **net10.0**).
+
+✅ **You will see:** several files. One of them is **students.csv** (it may show as just **students**).
+
+**6.** **Right-click** `students.csv`, move to **Open with**, and click **Notepad**.
+
+✅ **You will see:**
 
 ```text
 2026-0001,Juan Dela Cruz,BSIT
 2026-0002,Maria Santos,BSCS
 ```
 
-Close Notepad when you are done.
+That is your saved data. Close Notepad and the folder window.
+
+> [!NOTE]
+> Remember this folder: **your project → bin → Debug → net10.0**. Every file your programs create (including databases, later) is saved there.
 
 ---
 
-## 🔎 Line by Line
+## What the Code Means
 
 ```cs
 string line = $"{studentNumber},{fullName},{course}";
 File.AppendAllText(filePath, line + Environment.NewLine);
 ```
 
-Join the three values with commas into one line, then add it to the **end** of the file. If `students.csv` does not exist yet, C# creates it.
+Join the three values with commas into one line. Then add that line to the **end** of the file. If the file does not exist yet, C# creates it.
+
+`Environment.NewLine` is like pressing **Enter** in the file. It makes the next text start on a new line.
 
 ```cs
 string[] lines = File.ReadAllLines(filePath);
 ```
 
-Read **every** line in the file. Each line becomes one item in the array.
+Read **every** line of the file. Each line becomes one item in an array.
 
 ```cs
 foreach (string savedLine in lines)
@@ -201,49 +185,58 @@ foreach (string savedLine in lines)
 }
 ```
 
-For each line, split it at the commas and show each part.
+For each line, `.Split(',')` **cuts** the text at every comma and gives back the pieces:
+
+- `parts[0]` is the student number
+- `parts[1]` is the full name
+- `parts[2]` is the course
+
+Notice that `','` uses **single quotes**. Single quotes are for **one character**. Double quotes are for text.
+
+### The file tools
+
+- `File.AppendAllText("data.txt", "Hello")` → add text to the end of a file
+- `File.WriteAllText("data.txt", "Hello")` → replace everything in the file
+- `File.ReadAllLines("data.txt")` → read all the lines
+- `File.Exists("data.txt")` → does the file exist? Gives `true` or `false`
+
+### Why not use files for everything?
+
+Files work. But imagine your school's enrollment system with **10,000 students** in one CSV file:
+
+- **Searching is slow.** To find one student, the program must read every line.
+- **There are no rules.** Nothing stops two students from having the same student number, or an empty name.
+- **Changing data is hard.** To fix one typing mistake, the whole file must be written again.
+- **Many users at once is a problem.** If two people save at the same moment, data can be lost.
+- **Commas break it.** A name like `Dela Cruz, Juan` has a comma, so `.Split(',')` cuts it in the wrong place.
+
+A **database** solves all of these. Starting in the next lesson, you will learn to use one. This is where your programs start to look like **real systems**.
 
 ---
 
-## 🧠 Why Not Just Use Files Forever?
+## If Something Goes Wrong
 
-Files work, but imagine your school's real enrollment system with **10,000 students** stored in a CSV file:
+**I can't find `students.csv`.**
+Follow Step 4 again, slowly: right-click the project → **Open Folder in File Explorer** → **bin** → **Debug** → **net10.0**.
 
-| Problem | Example |
-|---|---|
-| **Searching is slow** | To find one student, the program must read every line |
-| **No rules** | Nothing stops two students from having the same student number, or a blank name |
-| **Changing data is hard** | To fix one typo, you must rewrite the entire file |
-| **Many users at once** | If two people save at the same time, data can get lost or mixed up |
-| **Commas break it** | A name like `Dela Cruz, Juan` has a comma, so `.Split(',')` cuts it in the wrong place |
+**The output looks wrong after I typed a name with a comma.**
+A comma inside a value breaks the line into too many pieces. For now, do **not** type commas inside the answers.
 
-**Databases** solve all of these problems. Starting next lesson, you will learn how to use one. This is where your programs start to look like **real systems**.
-
----
-
-## ⚠️ Common Mistakes
-
-### Mistake 1: "I can't find my file"
-
-The file is in your **project folder**. In the Command Prompt, make sure you are in `C:\CSharpCourse\Lesson11`, then type `dir` to see it.
-
-### Mistake 2: Typing a comma inside a value
-
-If you type `Dela Cruz, Juan` as the name, the line becomes `2026-0003,Dela Cruz, Juan,BSIT`, which has **4** parts instead of 3. The display will be wrong. For now, **do not type commas** inside values.
-
-### Mistake 3: `FileNotFoundException`
+**The black window shows a crash:**
 
 ```text
-Unhandled exception. System.IO.FileNotFoundException: Could not find file 'C:\CSharpCourse\Lesson11\students.csv'.
+Unhandled exception. System.IO.FileNotFoundException: Could not find file '...'
 ```
 
-This happens if you read a file before it exists. **Fix:** Check first with `if (File.Exists(filePath))`.
+The program tried to read a file that does not exist yet. Check first with `if (File.Exists(filePath))`.
 
 ---
 
-## 🏋️ Practice
+## Exercise
 
-**Exercise 1.** **A tiny diary.** Ask the user to type one sentence. Add it to `diary.txt` with today's date in front, like `2026-11-16: I learned about files.` Then show the whole diary. (Hint: `DateTime.Now.ToString("yyyy-MM-dd")` gives today's date as text.)
+**Exercise 1.** **A tiny diary.** Ask the user to type one sentence. Add it to `diary.txt` with today's date in front, like `2026-11-16: I learned about files.` Then show the whole diary.
+
+Hint: `DateTime.Now.ToString("yyyy-MM-dd")` gives today's date as text.
 
 <details>
 <summary>Show answer</summary>
@@ -266,7 +259,33 @@ foreach (string line in File.ReadAllLines("diary.txt"))
 
 </details>
 
-**Exercise 2.** Write a program that reads `students.csv` and counts how many students are in `BSIT`. If the file does not exist, show `No students saved yet.`
+**Exercise 2.** Change the lesson's program so it **refuses to save** if any of the three answers is empty. Show `All fields are required. Nothing was saved.` (Hint: use `||`.)
+
+<details>
+<summary>Show answer</summary>
+
+Replace the three lines that build and save the line with this:
+
+```cs
+if (studentNumber == "" || fullName == "" || course == "")
+{
+    Console.WriteLine("All fields are required. Nothing was saved.");
+}
+else
+{
+    string line = $"{studentNumber},{fullName},{course}";
+    File.AppendAllText(filePath, line + Environment.NewLine);
+    Console.WriteLine("Saved to students.csv!");
+}
+```
+
+</details>
+
+## ⭐ Bonus Challenge
+
+Write a program that reads `students.csv` and counts how many students are in `BSIT`. If the file does not exist, show `No students saved yet.` instead of crashing.
+
+(Write it in your `Lesson11` project, so it reads the file you already made.)
 
 <details>
 <summary>Show answer</summary>
@@ -298,37 +317,15 @@ else
 
 </details>
 
-**Exercise 3.** Make the Lesson 11 program refuse to save if any of the three values is empty. Show `All fields are required. Nothing was saved.` (Hint: use `||`.)
-
-<details>
-<summary>Show answer</summary>
-
-Wrap the saving part in an `if`:
-
-```cs
-if (studentNumber == "" || fullName == "" || course == "")
-{
-    Console.WriteLine("All fields are required. Nothing was saved.");
-}
-else
-{
-    string line = $"{studentNumber},{fullName},{course}";
-    File.AppendAllText(filePath, line + Environment.NewLine);
-    Console.WriteLine("Saved to students.csv!");
-}
-```
-
-</details>
-
 ---
 
-## 📌 Recap
+## Remember
 
-- Variables are erased when the program ends. **Files** keep data permanently.
-- `File.AppendAllText`, `File.WriteAllText`, `File.ReadAllLines`, `File.Exists`.
-- Files are saved in your **project folder**.
-- **CSV** = one record per line, values separated by commas. Use `.Split(',')` to read them.
-- Files have limits. **Databases** fix them, and that is what you will learn next.
+- Variables are wiped when the program ends. **Files** keep information.
+- `File.AppendAllText`, `File.ReadAllLines`, `File.Exists`
+- Files made by your program are in **your project → bin → Debug → net10.0**.
+- **CSV** = one record per line, with commas between the values. `.Split(',')` cuts a line into pieces.
+- Files have limits. A **database** fixes them. That is next!
 
 ---
 

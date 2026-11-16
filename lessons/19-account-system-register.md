@@ -1,88 +1,94 @@
 # Lesson 19: Account System, Part 1 (Registering Accounts)
 
-| | |
-|---|---|
-| **Part** | 4: Security and Accounts |
-| **Time** | About 2 hours (you can split it into two sessions) |
-| **Before this** | [Lesson 18](18-password-hashing.md) |
+**Part 4: Security and Accounts** · About 2 hours (you can split it into two sittings)
 
-## 🎯 Goal
+## What You Will Learn
 
-In Lessons 19 and 20, you will build the **final project**: a complete **account system** with hashed passwords.
+In Lessons 19 and 20, you build the **final project**: a complete **account system** with hashed passwords.
 
 In this lesson (Part 1), you will build:
 
-- A `Users` table in a SQLite database
-- A **Register** screen with username and password **rules**
+- A `Users` table in a database
+- A **Register** screen, with rules for usernames and passwords
 - **Hidden password typing**: the screen shows `*****` instead of the password
 - A screen that proves the database holds **only hashes**, never real passwords
 
----
+## The Idea
 
-## 🧠 The Big Idea
+Everything you have learned comes together here:
 
-Here is everything you have learned, coming together:
-
-| Lesson | What you will use from it |
-|---|---|
-| 06 | The menu loop |
-| 08 | Crash-proof input methods |
-| 09 | Classes (`User`) |
-| 13–15 | Database connection, parameters, reading rows, one job per file |
-| 17–18 | `PasswordHasher` |
+- The **menu loop** (Lesson 06)
+- **Input methods** that never crash (Lesson 08)
+- **Classes** (Lesson 09)
+- **Database** connection, parameters, and reading rows (Lessons 13 to 15)
+- The **`PasswordHasher`** (Lesson 18)
 
 ### The plan: six files, one job each
 
 | File | Its job |
 |---|---|
-| `User.cs` | Describes what a user account **is** |
+| `PasswordHasher.cs` | Hashes and checks passwords (you wrote it in Lesson 18) |
+| `User.cs` | Says what a user account **is** |
 | `Database.cs` | Opens the database and creates the `Users` table |
-| `PasswordHasher.cs` | Hashes and verifies passwords (from Lesson 18) |
-| `ConsoleHelper.cs` | Reads input from the keyboard, including **hidden** passwords |
+| `ConsoleHelper.cs` | Reads what the user types, including **hidden** passwords |
 | `AccountService.cs` | The account **rules** and the account **SQL** |
 | `Program.cs` | The menu and the screens |
 
 ### What happens when someone registers
 
 ```text
-User types:  username "Juan_DC", name "Juan Dela Cruz", password "MyPass123"
-                │
-                ▼
-1. Clean up:      "Juan_DC" ──► "juan_dc" (small letters)
-2. Check rules:   4 to 20 characters? Only letters, numbers, _ ? Not taken?
-3. Check password: at least 8 characters? Has a letter and a number? Typed the same twice?
-4. Hash it:       "MyPass123" ──► "600000.PCVKUp7z...==.5gsZQvtz...="
-5. Save:          INSERT INTO Users (Username, FullName, PasswordHash, CreatedAt) ...
+The user types:  username "Juan_DC", name "Juan Dela Cruz", password "MyPass123"
+                   │
+                   ▼
+1. Clean up:        "Juan_DC" ──► "juan_dc" (small letters)
+2. Check username:  4 to 20 characters? Only letters, numbers, and _ ? Not taken yet?
+3. Check password:  at least 8 characters? Has a letter and a number? Typed the same twice?
+4. Hash it:         "MyPass123" ──► "600000.PCVKUp7z...==.5gsZQvtz...="
+5. Save:            INSERT INTO Users (Username, FullName, PasswordHash, CreatedAt) ...
 ```
 
-The real password exists only **in memory**, for a moment. It is **never** written to the database.
+The real password exists only for a moment, in memory. It is **never** written to the database.
 
 ---
 
-## 🛠️ Let's Build It
+## Step by Step
 
-### Step 1: Create the project and add SQLite
+### Step 1: Create a new project named `Lesson19`
 
-```cmd
-cd C:\CSharpCourse
-dotnet new console -n Lesson19
-cd Lesson19
-dotnet add package Microsoft.Data.Sqlite
-```
+1. Open **Visual Studio**. (If it is already open, close it first and open it again.)
+2. Click **Create a new project**.
+3. Click **Console App** (the one with **C#**, not ".NET Framework"), then click **Next**.
+4. In **Project name**, type `Lesson19`. Check that **Location** says `C:\CSharpCourse`. Click **Next**.
+5. Click **Create**.
 
-### Step 2: Copy `PasswordHasher.cs` from Lesson 18
+### Step 2: Add the SQLite package
 
-```cmd
-copy ..\Lesson18\PasswordHasher.cs .
-```
+1. In the **Solution Explorer**, right-click the project line **Lesson19**.
+2. Click **Manage NuGet Packages...**
+3. Click **Browse**. In the search box, type `Microsoft.Data.Sqlite`.
+4. Click the result named exactly **Microsoft.Data.Sqlite**. Then click **Install**.
+5. If **Preview Changes** appears, click **Apply**. If **License Acceptance** appears, click **I Accept**.
+6. Close the NuGet tab.
 
-You should see `1 file(s) copied.` Now open VS Code:
+### Step 3: Bring in `PasswordHasher.cs` from Lesson 18
 
-```cmd
-code .
-```
+1. In the Solution Explorer, right-click the project line **Lesson19**.
+2. Move to **Add**, then click **Existing Item...**
+3. Click the address bar at the top of the window. Type `C:\CSharpCourse\Lesson18` and press **Enter**.
+4. Click **PasswordHasher.cs**, then click **Add**.
 
-### Step 3: Create `User.cs`
+✅ **You will see:** `PasswordHasher.cs` in the Solution Explorer, under **Lesson19**.
+
+### Step 4: Add the file `User.cs`
+
+1. Right-click the project line **Lesson19** → **Add** → **Class...**
+2. In the **Name** box, type `User.cs`. Click **Add**.
+3. In the new tab, press **Ctrl + A**, then **Delete**.
+4. Put in this code:
+
+## The Code
+
+**File: `User.cs`**
 
 ```csharp
 // User.cs - the blueprint for one user account
@@ -97,7 +103,14 @@ public class User
 }
 ```
 
-### Step 4: Create `Database.cs`
+### Step 5: Add the file `Database.cs`
+
+1. Right-click the project line **Lesson19** → **Add** → **Class...**
+2. In the **Name** box, type `Database.cs`. Click **Add**.
+3. In the new tab, press **Ctrl + A**, then **Delete**.
+4. Put in this code:
+
+**File: `Database.cs`**
 
 ```csharp
 // Database.cs - opens the database and creates the tables
@@ -132,9 +145,16 @@ public static class Database
 }
 ```
 
-This time, the database file is named **`accounts.db`**.
+This time, the database file is named `accounts.db`.
 
-### Step 5: Create `ConsoleHelper.cs`
+### Step 6: Add the file `ConsoleHelper.cs`
+
+1. Right-click the project line **Lesson19** → **Add** → **Class...**
+2. In the **Name** box, type `ConsoleHelper.cs`. Click **Add**.
+3. In the new tab, press **Ctrl + A**, then **Delete**.
+4. Put in this code:
+
+**File: `ConsoleHelper.cs`**
 
 ```csharp
 // ConsoleHelper.cs - reusable methods for reading what the user types
@@ -204,7 +224,14 @@ public static class ConsoleHelper
 }
 ```
 
-### Step 6: Create `AccountService.cs`
+### Step 7: Add the file `AccountService.cs`
+
+1. Right-click the project line **Lesson19** → **Add** → **Class...**
+2. In the **Name** box, type `AccountService.cs`. Click **Add**.
+3. In the new tab, press **Ctrl + A**, then **Delete**.
+4. Put in this code:
+
+**File: `AccountService.cs`**
 
 ```csharp
 // AccountService.cs - the rules and database commands for user accounts
@@ -327,9 +354,13 @@ public static class AccountService
 }
 ```
 
-### Step 7: Write `Program.cs`
+### Step 8: Put the main program in `Program.cs`
 
-Replace everything in `Program.cs` with:
+1. In the Solution Explorer, double-click **Program.cs**.
+2. Press **Ctrl + A**, then **Delete**.
+3. Put in this code:
+
+**File: `Program.cs`**
 
 ```csharp
 // Lesson 19: Account System - Part 1 (Registering accounts with hashed passwords)
@@ -450,28 +481,28 @@ string AskForNewPassword()
 }
 ```
 
-### Step 8: Check your files
+### Step 9: Check your files
+
+Look at the Solution Explorer. Under **Lesson19**, you should see these six files:
 
 ```text
-LESSON19
-├── AccountService.cs
-├── ConsoleHelper.cs
-├── Database.cs
-├── Lesson19.csproj
-├── PasswordHasher.cs
-├── Program.cs
-└── User.cs
+Lesson19
+   Dependencies
+   AccountService.cs
+   ConsoleHelper.cs
+   Database.cs
+   PasswordHasher.cs
+   Program.cs
+   User.cs
 ```
 
-### Step 9: Run it
+### Step 10: Run it
 
-```cmd
-dotnet run
-```
+Press **Ctrl + F5**. Choose `1` and register an account. **Break the rules on purpose**, to see the checks work. When you type a password, you will see stars (`*`) instead of letters.
 
-Register an account. **Break the rules on purpose** to see the checks work. When you type a password, you will see stars (`*`) instead of letters.
+## The Output
 
-✅ **You should see something like this:**
+✅ **You will see something like this:**
 
 ```text
 ========= ACCOUNT SYSTEM =========
@@ -501,7 +532,7 @@ Creating your account...
 Account created! You can now log in as "juan_dc".
 ```
 
-Register a **second** account (for example, username `maria`, full name `Maria Santos`). Then choose **option 2**:
+Now register a **second** account (for example: username `maria`, full name `Maria Santos`). Then choose option `2`:
 
 ```text
 Choose an option: 2
@@ -514,21 +545,21 @@ ID 2: maria (Maria Santos) - created 2026-11-16 14:45:42
 Notice: the real passwords are NOT saved anywhere. Only their hashes.
 ```
 
-Look at what is saved. There is **no password** anywhere. Even you, the programmer, cannot see what password Juan chose. 🔒 (Your dates, salts, and hashes will be different.)
+Look at what is saved. There is **no password** anywhere. Even you, the programmer, cannot see which password Juan chose. 🔒 (Your dates, salts, and hashes will be different.)
 
-**Try one more thing:** register again with the username `JUAN_DC`. You will see `That username is already taken.` because usernames are saved in small letters.
+**Try one more thing:** register again with the username `JUAN_DC`. You will see `That username is already taken.`, because usernames are saved in small letters.
 
 ---
 
-## 🔎 Line by Line: `ConsoleHelper.ReadPassword`
+## What the Code Means: `ConsoleHelper.cs`
 
-This method shows `*` for each key the user presses, so nobody looking at the screen can read the password.
+`ReadPassword` shows a `*` for each key the user presses. Nobody looking at the screen can read the password.
 
 ```cs
 ConsoleKeyInfo key = Console.ReadKey(true);
 ```
 
-`Console.ReadKey` reads **one key** at a time, instead of a whole line. The `true` means *"do not show the key on the screen."*
+`Console.ReadKey` reads **one key** at a time, not a whole line. The `true` means *"do not show the key on the screen."*
 
 ```cs
 if (key.Key == ConsoleKey.Enter)
@@ -538,7 +569,7 @@ if (key.Key == ConsoleKey.Enter)
 }
 ```
 
-When the user presses **Enter**, the password is finished. Move to a new line and leave the loop.
+When the user presses **Enter**, the password is finished. Go to a new line and leave the loop.
 
 ```cs
 if (key.Key == ConsoleKey.Backspace)
@@ -554,7 +585,7 @@ if (key.Key == ConsoleKey.Backspace)
 When the user presses **Backspace**, remove the last character:
 
 - `password.Substring(0, password.Length - 1)` keeps every character **except the last one**.
-- `"\b \b"` erases one `*` from the screen: move back one space (`\b`), write a space over the star, and move back again.
+- `"\b \b"` erases one `*` from the screen: step back, write a space over the star, step back again.
 
 ```cs
 else if (!char.IsControl(key.KeyChar))
@@ -564,7 +595,7 @@ else if (!char.IsControl(key.KeyChar))
 }
 ```
 
-For any normal key (a letter, a number, a symbol), add the character to the password and show a `*`. `char.IsControl` filters out special keys like **Tab** and the arrow keys.
+For a normal key (a letter, a number, a symbol), add the character to the password and show a `*`.
 
 ```cs
 if (Console.IsInputRedirected)
@@ -573,19 +604,19 @@ if (Console.IsInputRedirected)
 }
 ```
 
-You can ignore this part while learning. When a program's input comes from a **file** instead of a person typing (for example, when teachers test programs automatically), `ReadKey` cannot work, so we read the whole line instead.
+You can skip this part while learning. It is only used when a teacher tests the program automatically, with answers that come from a file instead of a keyboard.
 
 ---
 
-## 🔎 Line by Line: `AccountService.cs`
+## What the Code Means: `AccountService.cs`
 
-### Rules that give back an error message
+### Rules that give back a message
 
 ```cs
 public static string ValidateUsername(string username)
 ```
 
-This method returns an **error message** if something is wrong, or `""` (empty text) if everything is OK. The screen then decides what to do:
+"Validate" means *check that something follows the rules*. This method gives back an **error message** when something is wrong, or `""` (empty text) when everything is OK. The screen then decides what to do:
 
 ```cs
 string error = AccountService.ValidateUsername(username);
@@ -597,8 +628,6 @@ if (error == "")
 
 Console.WriteLine(error); // show what is wrong, then ask again
 ```
-
-Keeping the **rules** in `AccountService` and the **asking** in `Program.cs` means the rules can be reused anywhere. For example, a future website version of this system could use the same `ValidateUsername`.
 
 ### Checking every character
 
@@ -612,7 +641,7 @@ foreach (char c in username)
 }
 ```
 
-A `string` is made of **characters** (`char`), and `foreach` can go through them one by one. If a character is **not** a letter or digit **and not** an underscore, the username is rejected.
+A `string` is made of **characters**. A single character has the type `char`. `foreach` can go through them one by one. If a character is **not** a letter or number, **and** it is **not** an underscore, the username is refused.
 
 ### `Register`: hash first, then save
 
@@ -621,19 +650,19 @@ string passwordHash = PasswordHasher.Hash(password);
 string createdAt = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 ```
 
-The password is hashed **before** anything touches the database. `DateTime.Now` is the current date and time. `.ToString("yyyy-MM-dd HH:mm:ss")` writes it like `2026-11-16 14:24:20`.
+The password is hashed **before** anything goes to the database. `DateTime.Now` is the date and time right now. `.ToString("yyyy-MM-dd HH:mm:ss")` writes it like `2026-11-16 14:45:42`.
 
-Then the `INSERT` saves the **hash**, never the password. And, of course, every value goes in as a **parameter** (Lesson 14).
+Then the `INSERT` saves the **hash**, never the password. And every value goes in as a **parameter** (Lesson 14).
 
 ---
 
-## 🔎 Line by Line: `Program.cs`
+## What the Code Means: `Program.cs`
 
 ```cs
 string username = ConsoleHelper.ReadRequired("Username: ").ToLower();
 ```
 
-Usernames are saved in **small letters**. That way, `Juan_DC`, `JUAN_DC`, and `juan_dc` are all the same account, and nobody can create a look-alike account by changing capital letters.
+Usernames are saved in **small letters**. That way `Juan_DC`, `JUAN_DC`, and `juan_dc` are all the same account. Nobody can make a look-alike account by changing capital letters.
 
 ```cs
 string AskForNewPassword()
@@ -650,38 +679,34 @@ string AskForNewPassword()
 }
 ```
 
-If the password breaks a rule, `continue` goes back to the top of the loop and asks again. If it passes, the user types it **again** to confirm. This catches typing mistakes, which is important because the user cannot see what they typed.
+If the password breaks a rule, `continue` goes back to the top of the loop and asks again. If it passes, the user types it **a second time**. That catches typing mistakes, which matters because the user cannot see what they typed.
 
 ---
 
-## ⚠️ Common Mistakes
+## If Something Goes Wrong
 
-### Mistake 1: `The name 'PasswordHasher' does not exist`
+**Error List: `CS0103  The name 'PasswordHasher' does not exist in the current context`**
+`PasswordHasher.cs` is not in this project. Do Step 3 again.
 
-You forgot to copy `PasswordHasher.cs` into this project. **Fix:** `copy ..\Lesson18\PasswordHasher.cs .`
+**Error List: many errors right after adding a file.**
+You probably did not delete **all** of the starter code in the new file. Open the file, press **Ctrl + A**, then **Delete**, and paste the code again.
 
-### Mistake 2: `no such table: Users`
+**The black window shows: `SQLite Error 1: 'no such table: Users'.`**
+`Database.CreateTables();` must be the **first line** of code in `Program.cs`. The table has to exist before anything uses it.
 
-`Database.CreateTables()` must be the **first** line of `Program.cs`, so the table exists before anything else uses it.
-
-### Mistake 3: The password shows letters, not stars
-
-This happens if you run the program in a place where `ReadKey` does not work, like some editor "output" panels. **Fix:** Always run with `dotnet run` in the **Command Prompt**.
-
-### Mistake 4: "I forgot the password I registered"
-
-Nobody can see it, not even you. That is the point! While practicing, just register a **new** account with a different username. (In a real system, there would be a "reset password" feature that sets a **new** password.)
+**I forgot the password I registered.**
+Nobody can see it. Not even you. That is the whole point! While practicing, just register a **new** account with a different username.
 
 ---
 
-## 🏋️ Practice
+## Exercise
 
-**Exercise 1.** Change the password rule so that passwords must be at least **10** characters.
+**Exercise 1.** Change the password rule: passwords must now be at least **10** characters long.
 
 <details>
 <summary>Show answer</summary>
 
-In `AccountService.ValidatePassword`, change the number and the message:
+In `AccountService.cs`, in `ValidatePassword`, change the number and the message:
 
 ```cs
 if (password.Length < 10)
@@ -690,16 +715,29 @@ if (password.Length < 10)
 }
 ```
 
-Also update the hint in `Program.cs` (`AskForNewPassword`) so it says `at least 10 characters`.
+Also change the hint in `Program.cs` (in `AskForNewPassword`) so it says `at least 10 characters`.
 
 </details>
 
-**Exercise 2.** Add a rule: the password must **not contain the username**. For example, user `juan_dc` cannot use `juan_dc2026`. (Hint: change `ValidatePassword` to also take the username, and use `password.ToLower().Contains(username)`.)
+**Exercise 2.** Register **two** accounts with **exactly the same password**. Then choose option 2 and compare the two saved values. Are they the same? Why?
 
 <details>
 <summary>Show answer</summary>
 
-In `AccountService.cs`, change the method's first line and add a check at the start:
+They are **different**. Each account got its own random **salt**, so the hashes are different, even though the passwords are the same. A hacker who steals the database cannot even tell that the two users share a password.
+
+</details>
+
+## ⭐ Bonus Challenge
+
+Add a new password rule: the password must **not contain the username**. For example, the user `juan_dc` may not use the password `juan_dc2026`.
+
+Hint: `ValidatePassword` must now receive the username too. Use `password.ToLower().Contains(username)`. You will change two files.
+
+<details>
+<summary>Show answer</summary>
+
+In `AccountService.cs`, change the first line of the method, and add a check at the start:
 
 ```cs
 public static string ValidatePassword(string password, string username)
@@ -712,7 +750,7 @@ public static string ValidatePassword(string password, string username)
     // ... the rest of the checks stay the same ...
 ```
 
-In `Program.cs`, give `AskForNewPassword` a `username` parameter and pass it along:
+In `Program.cs`, give `AskForNewPassword` a `username` parameter, and pass it along:
 
 ```cs
 string AskForNewPassword(string username)
@@ -731,24 +769,15 @@ string password = AskForNewPassword(username);
 
 </details>
 
-**Exercise 3.** Install **DB Browser for SQLite** (see [Lesson 13](13-connecting-to-a-database.md#-optional-see-inside-your-database)) and open `accounts.db`. Look at the `Users` table in **Browse Data**. Can you find any real password? (Remember to **Close Database** before running your program again.)
-
-<details>
-<summary>Show answer</summary>
-
-No. The `PasswordHash` column only contains values like `600000.xxxx==.yyyy=`. There is no way to read the real passwords from them. This is exactly what a hacker would see if they stole the database, and it does not help them log in.
-
-</details>
-
 ---
 
-## 📌 Recap
+## Remember
 
-- A real project is split into files with **one job each**: model, database, hashing, input, rules, and screens.
-- **Validate** usernames and passwords with methods that return an error message or `""`.
+- A real project is split into files with **one job each**.
+- **Validate** usernames and passwords with methods that give back an error message, or `""`.
 - Save usernames in **small letters** with `.ToLower()`.
 - `Console.ReadKey(true)` reads one key without showing it. Use it to show `*` for passwords.
-- Ask for the password **twice** to catch typing mistakes.
+- Ask for the password **twice**, to catch typing mistakes.
 - **Hash first, then save.** The database only ever sees the hash.
 
 ---

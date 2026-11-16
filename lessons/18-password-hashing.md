@@ -1,30 +1,23 @@
 # Lesson 18: Safe Password Hashing With PBKDF2
 
-| | |
-|---|---|
-| **Part** | 4: Security and Accounts |
-| **Time** | About 75 minutes |
-| **Before this** | [Lesson 17](17-what-is-hashing.md) |
+**Part 4: Security and Accounts** · About 75 minutes
 
-## 🎯 Goal
+## What You Will Learn
 
-By the end of this lesson, you will:
+- How to write a `PasswordHasher` that hashes passwords the **safe** way
+- The three parts of a saved hash: **rounds**, **salt**, and **hash**
+- How to **check** a password at login
 
-- Write a reusable `PasswordHasher` class that hashes passwords the **safe** way
-- Understand every part of the saved hash: **iterations**, **salt**, and **hash**
-- **Verify** a password at login
-- Be ready to build a real account system in the next two lessons
+After this lesson, you are ready to build a real account system.
 
----
+## The Idea
 
-## 🧠 The Big Idea
+In Lesson 17, you learned the rules. A safe password hash needs:
 
-In Lesson 17 you learned the rules. A safe password hash needs:
+1. A **random salt** for every user
+2. A **slow** hash, repeated many times
 
-1. A **random salt** for every user ✅
-2. A **slow** hash, repeated many times ✅
-
-**PBKDF2** (Password-Based Key Derivation Function 2) does both. It is built into .NET, it is trusted by governments and banks, and you only need **one line** to use it.
+**PBKDF2** does both. It is built into C#, it is trusted by banks and governments, and using it takes just **one instruction**.
 
 ### What we will save in the database
 
@@ -33,33 +26,38 @@ Our `PasswordHasher` turns a password into **one** piece of text with **three pa
 ```text
 600000.YfP/qcgBYfn2ogwpjbGHag==.K3Ff0YjQdFrLMTz1BO873eteLDFdtRsNrpIvIfLvesU=
 └─┬──┘ └──────────┬───────────┘ └──────────────────┬───────────────────────┘
-iterations       salt                              hash
+rounds           salt                              hash
 ```
 
-| Part | What it is | Why we save it |
-|---|---|---|
-| `600000` | How many times the hash was repeated | To repeat it the **same** number of times at login |
-| `YfP/qcg...` | The random **salt** for this user | To use the **same** salt at login |
-| `K3Ff0Yj...` | The final **hash** | To compare with at login |
+- **`600000`** → how many times the hashing was repeated. Saved so that login can repeat it the **same** number of times.
+- **The salt** → this user's random salt. Saved so that login can use the **same** salt.
+- **The hash** → the final fingerprint, to compare with at login.
 
-Everything needed to check the password later is in this one value, but the **password itself is not**. 🔒
+Everything needed to check the password later is in this one value. But the **password itself is not**. 🔒
 
 ---
 
-## 🛠️ Let's Build It
+## Step by Step
 
-### Step 1: Create the project
+### Step 1: Create a new project named `Lesson18`
 
-```cmd
-cd C:\CSharpCourse
-dotnet new console -n Lesson18
-cd Lesson18
-code .
-```
+1. Open **Visual Studio**. (If it is already open, close it first and open it again.)
+2. Click **Create a new project**.
+3. Click **Console App** (the one with **C#**, not ".NET Framework"), then click **Next**.
+4. In **Project name**, type `Lesson18`. Check that **Location** says `C:\CSharpCourse`. Click **Next**.
+5. Click **Create**.
 
-### Step 2: Create `PasswordHasher.cs`
+### Step 2: Add the file `PasswordHasher.cs`
 
-Create a new file named **`PasswordHasher.cs`** and write:
+1. In the **Solution Explorer**, right-click the project line **Lesson18**.
+2. Move to **Add**, then click **Class...**
+3. In the **Name** box, type `PasswordHasher.cs`. Click **Add**.
+4. In the new **PasswordHasher.cs** tab, press **Ctrl + A**, then **Delete**.
+5. Put in this code:
+
+## The Code
+
+**File: `PasswordHasher.cs`**
 
 ```csharp
 // PasswordHasher.cs - safely turns passwords into hashes, and checks them later.
@@ -118,9 +116,13 @@ public static class PasswordHasher
 }
 ```
 
-### Step 3: Write `Program.cs` to try it out
+### Step 3: Put the test program in `Program.cs`
 
-Replace everything in `Program.cs` with:
+1. In the Solution Explorer, double-click **Program.cs**.
+2. Press **Ctrl + A**, then **Delete**.
+3. Put in this code:
+
+**File: `Program.cs`**
 
 ```csharp
 // Lesson 18: Trying out the PasswordHasher
@@ -155,13 +157,13 @@ else
 
 ### Step 4: Run it
 
-```cmd
-dotnet run
-```
+1. Press **Ctrl + F5**.
+2. Type a password and press **Enter**.
+3. When it asks you to log in, type **the same password** again.
 
-Type a password, and then type **the same password** again to log in.
+## The Output
 
-✅ **You should see something like this:**
+✅ **You will see something like this:**
 
 ```text
 ===== PASSWORD HASHER DEMO =====
@@ -177,23 +179,22 @@ Now type your password again to log in: MySecret123
 Correct password. Access granted!
 ```
 
-Your salts and hashes will be **different** from these, because the salt is random every time. That is correct.
+Your salts and hashes will be **different** from these, because a salt is random. That is correct.
 
-**Run it again** and type a **wrong** password at the end (for example `mysecret123` with a small m):
+**Run it again.** This time, type a **wrong** password at the end (for example, `mysecret123` with a small m):
 
 ```text
 Now type your password again to log in: mysecret123
 Wrong password. Access denied!
 ```
 
-Did you notice a tiny pause after you typed the password? That is the **600,000 rounds** at work. It is about a quarter of a second for you, and a **huge** problem for a hacker. 🐢
+Did you notice a tiny pause after typing the password? That is the **600,000 rounds** at work. It is a quarter of a second for you, and a **huge** problem for a hacker. 🐢
 
-> [!NOTE]
-> In this demo, the password is **visible** while you type. In Lesson 19 you will make it show `*****` instead.
+> In this demo, the password is **visible** while you type. In Lesson 19, you will make it show `*****` instead.
 
 ---
 
-## 🔎 Line by Line: `PasswordHasher.cs`
+## What the Code Means
 
 ### The settings
 
@@ -203,10 +204,10 @@ private const int HashSize = 32;
 private const int Iterations = 600_000;
 ```
 
-- `const`: values that never change (Lesson 14).
-- `private`: only this class uses them.
-- `600_000` is the same as `600000`. C# lets you put `_` inside numbers to make them **easier to read**, like a comma when you write "600,000" by hand.
-- **600,000** is the number recommended by **OWASP**, a respected worldwide organization for web security, for PBKDF2 with SHA-256.
+- `const` → values that never change (Lesson 14).
+- `private` → only this class uses them (Lesson 15).
+- `600_000` is the same as `600000`. C# lets you put `_` inside a number to make it easier to read, like the comma in "600,000".
+- **Iterations** is the programmer's word for "rounds". **600,000** is the number recommended by **OWASP**, a respected worldwide group for web security.
 
 ### `Hash`: making a new hash
 
@@ -225,23 +226,21 @@ byte[] hash = Rfc2898DeriveBytes.Pbkdf2(
     HashSize);
 ```
 
-This is the **one line** that does all the hard work. (`Rfc2898DeriveBytes` is .NET's name for PBKDF2. "RFC 2898" is the name of the official document that describes it.)
+This is the **one instruction** that does all the hard work. (`Rfc2898DeriveBytes` is C#'s long name for PBKDF2.) You give it five things:
 
-| What we give it | Meaning |
-|---|---|
-| `password` | The password to hash |
-| `salt` | The random salt |
-| `Iterations` | Repeat 600,000 times (the "slow on purpose" part) |
-| `HashAlgorithmName.SHA256` | Use SHA-256 inside each round |
-| `HashSize` | Give back 32 bytes |
+1. `password` → the password to hash
+2. `salt` → the random salt
+3. `Iterations` → repeat 600,000 times (the "slow on purpose" part)
+4. `HashAlgorithmName.SHA256` → use SHA-256 inside each round
+5. `HashSize` → give back 32 bytes
 
-The code is split over several lines only to make it easier to read. It is still **one** instruction, ending with `;`.
+It is spread over several lines only to be easier to read. It is still **one** instruction, ending with `;`.
 
 ```cs
 return $"{Iterations}.{Convert.ToBase64String(salt)}.{Convert.ToBase64String(hash)}";
 ```
 
-Join the three parts with dots. **Base64** is a way to write bytes as normal text, using letters, numbers, `+`, `/`, and `=`. It is shorter than the hexadecimal you saw in Lesson 17. Because Base64 never uses a dot, the dot is a safe separator.
+Join the three parts with dots. **Base64** is a way to write bytes as normal text, using letters, numbers, `+`, `/`, and `=`. Base64 never uses a dot, so the dot is a safe separator.
 
 ### `Verify`: checking a password at login
 
@@ -254,7 +253,7 @@ if (parts.Length != 3)
 }
 ```
 
-Split the saved value back into its 3 parts. If it does not have exactly 3 parts, something is wrong with the saved value, so the answer is "no match".
+Cut the saved value back into its 3 parts. If there are not exactly 3 parts, something is wrong with the saved value, so the answer is "no match".
 
 ```cs
 int iterations = int.Parse(parts[0]);
@@ -273,67 +272,43 @@ byte[] actualHash = Rfc2898DeriveBytes.Pbkdf2(
     expectedHash.Length);
 ```
 
-Hash the password the user **just typed**, using the **same salt** and the **same number of rounds** as when the account was created. If the password is the same, the hash will be the same.
+Hash the password the user **just typed**, with the **same salt** and the **same number of rounds** as before. If the password is the same, the hash will be the same.
 
 ```cs
 return CryptographicOperations.FixedTimeEquals(actualHash, expectedHash);
 ```
 
-Compare the two hashes. `true` = correct password.
+Compare the two hashes. `true` means the password is correct.
 
-**Why not just use `==`?** A normal comparison stops at the **first** difference, so a wrong guess that starts out right takes a tiny bit **longer** to reject. Very clever hackers can measure those tiny time differences to learn things. `FixedTimeEquals` always takes the **same** amount of time, so the timing gives away nothing. It is a small detail, but security is made of small details.
-
-> [!TIP]
-> **Why save the iterations instead of always using 600,000?** Computers get faster every year, so in the future you may want to increase it to, say, 1,000,000. Because every saved hash remembers its **own** number, old accounts will still log in correctly while new accounts use the new number.
+**Why not just use `==`?** A normal comparison stops at the **first** difference. So some wrong guesses take a tiny bit longer to reject than others, and very clever hackers can measure that. `FixedTimeEquals` always takes the **same** time, so the timing tells them nothing. It is a small detail, but security is made of small details.
 
 ---
 
-## ⚠️ Common Mistakes
+## If Something Goes Wrong
 
-### Mistake 1: Forgetting `using System.Security.Cryptography;`
+**Error List: `CS0103  The name 'RandomNumberGenerator' does not exist in the current context`**
+The `using` line is missing. `PasswordHasher.cs` must have this line near the top:
 
-```text
-error CS0103: The name 'RandomNumberGenerator' does not exist in the current context
+```cs
+using System.Security.Cryptography;
 ```
 
-**Fix:** Add `using System.Security.Cryptography;` as the first line of `PasswordHasher.cs`.
+**Error List: `CS0103  The name 'PasswordHasher' does not exist in the current context`**
+Check that `PasswordHasher.cs` is in the Solution Explorer, that its code has `public static class PasswordHasher`, and that you deleted **all** the starter code before pasting.
 
-### Mistake 2: Comparing new hashes with `==`
+**I compared two hashes with `==`, and it is never true.**
 
 ```cs
 if (PasswordHasher.Hash(typedPassword) == savedHash)   // ❌ never true!
 ```
 
-Every call to `Hash` uses a **new random salt**, so the result is always different. **Fix:** Always check passwords with `PasswordHasher.Verify(typedPassword, savedHash)`.
-
-### Mistake 3: Making the iterations very small "to be faster"
-
-With `Iterations = 1`, logins are instant, and so are the hacker's guesses. **Keep 600,000.** A quarter of a second at login is a fair price for safety.
+Every call to `Hash` uses a **new random salt**, so the result is different every time. Always check a password with `PasswordHasher.Verify(typedPassword, savedHash)`.
 
 ---
 
-## 🏋️ Practice
+## Exercise
 
-**Exercise 1.** Measure how long hashing takes. Add this to the top of `Program.cs` and run it:
-
-```cs
-System.Diagnostics.Stopwatch timer = System.Diagnostics.Stopwatch.StartNew();
-PasswordHasher.Hash("test1234");
-Console.WriteLine($"Hashing took {timer.ElapsedMilliseconds} milliseconds.");
-```
-
-(A `Stopwatch` works like a real stopwatch: `StartNew()` starts it, and `ElapsedMilliseconds` tells you how much time has passed.)
-
-Then temporarily change `Iterations` to `1_000` and run it again. What changes? (Change it back to `600_000` afterward!)
-
-<details>
-<summary>Show answer</summary>
-
-With `600_000`, it takes a few hundred milliseconds (around a quarter of a second, depending on your computer). With `1_000`, it takes almost 0 milliseconds. That means a hacker could also guess about **600 times faster**. This is exactly why we use a high number.
-
-</details>
-
-**Exercise 2.** What does `Verify` return if the saved hash has been damaged? Try it:
+**Exercise 1.** What does `Verify` give back when the saved hash is damaged? Add this line at the end of `Program.cs`, run it, and see:
 
 ```cs
 Console.WriteLine(PasswordHasher.Verify("MySecret123", "this is not a real hash"));
@@ -342,29 +317,54 @@ Console.WriteLine(PasswordHasher.Verify("MySecret123", "this is not a real hash"
 <details>
 <summary>Show answer</summary>
 
-It shows `False`. The text has no dots, so `Split('.')` gives only 1 part, not 3, and `Verify` returns `false` right away.
+It shows `False`. The text has no dots, so `Split('.')` gives only 1 part, not 3. `Verify` gives back `false` right away.
 
 </details>
 
-**Exercise 3.** Explain in your own words: two users both choose the password `Summer2026`. Why are their saved values different, and how can the system still check each user's login correctly?
+**Exercise 2.** Two users both choose the password `Summer2026`. Explain in your own words: why are their saved values different? And how can the system still check each user's login correctly?
 
 <details>
 <summary>Show answer</summary>
 
-Each user gets a **different random salt**, so their hashes are different, even with the same password. The salt is saved **inside** each user's saved value. At login, `Verify` takes **that user's** salt from the saved value, hashes the typed password with it, and compares. The result matches only if the typed password is correct.
+Each user gets a **different random salt**, so their hashes are different, even with the same password. The salt is saved **inside** each user's saved value. At login, `Verify` takes **that user's** salt out of the saved value, hashes the typed password with it, and compares. They match only when the typed password is correct.
+
+</details>
+
+## ⭐ Bonus Challenge
+
+**Measure the slowness.** Add these three lines at the **top** of `Program.cs`, then run the program:
+
+```cs
+System.Diagnostics.Stopwatch timer = System.Diagnostics.Stopwatch.StartNew();
+PasswordHasher.Hash("test1234");
+Console.WriteLine($"Hashing took {timer.ElapsedMilliseconds} milliseconds.");
+```
+
+A `Stopwatch` works like a real stopwatch: `StartNew()` starts it, and `ElapsedMilliseconds` tells you how much time has passed. (1,000 milliseconds = 1 second.)
+
+Now open `PasswordHasher.cs`, change `600_000` to `1_000`, and run again. What changes? What does that mean for a hacker?
+
+**Important: change it back to `600_000` when you are done!**
+
+<details>
+<summary>Show answer</summary>
+
+With `600_000`, hashing takes a few hundred milliseconds (about a quarter of a second, depending on your computer). With `1_000`, it takes almost 0 milliseconds.
+
+For a hacker, that means they could guess about **600 times faster**. This is exactly why we use a high number of rounds.
 
 </details>
 
 ---
 
-## 📌 Recap
+## Remember
 
-- **PBKDF2** = salt + many rounds of hashing. It is built into .NET: `Rfc2898DeriveBytes.Pbkdf2(...)`.
-- We save `iterations.salt.hash` as one text value. The real password is **never** saved.
+- **PBKDF2** = salt + many rounds of hashing. In C#: `Rfc2898DeriveBytes.Pbkdf2(...)`
+- We save `rounds.salt.hash` as one text value. The real password is **never** saved.
 - `PasswordHasher.Hash(password)` → the value to save when an account is created.
 - `PasswordHasher.Verify(typedPassword, savedValue)` → `true` or `false` at login.
-- Compare hashes with `CryptographicOperations.FixedTimeEquals`, not `==`.
-- Use **600,000** iterations (the OWASP recommendation for PBKDF2 with SHA-256).
+- Never compare two new hashes with `==`. Always use `Verify`.
+- Use **600,000** rounds.
 
 ---
 

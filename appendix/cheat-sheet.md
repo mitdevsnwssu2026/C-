@@ -1,51 +1,59 @@
 # 📋 Cheat Sheet
 
-Everything from the course on one page. Print it and keep it next to your keyboard!
+Everything from the course on one page. Print it, and keep it next to your keyboard!
 
 ---
 
-## Command Prompt
+## Visual Studio: What to Click
 
-| Command | What it does |
+### Start a new lesson
+
+1. Open **Visual Studio**.
+2. Click **Create a new project**.
+3. Click **Console App** (with **C#**, not ".NET Framework") → **Next**.
+4. Type the **Project name** (like `Lesson05`). Location: `C:\CSharpCourse` → **Next**.
+5. Click **Create**.
+
+### Everyday actions
+
+| I want to... | Do this |
 |---|---|
-| `cd C:\CSharpCourse` | Go to the course folder |
-| `cd FolderName` | Go into a folder |
-| `cd ..` | Go up one folder |
-| `dir` | List the files here |
-| `mkdir Name` | Make a folder |
-| `cls` | Clear the screen |
-| `copy ..\Lesson15\Student.cs .` | Copy a file from another folder to here |
-| `del school.db` | Delete a file (⚠️ careful!) |
-| `notepad file.csv` | Open a file in Notepad |
-| **↑** / **Tab** / **Ctrl + C** | Previous command / finish a name / stop a program |
+| **Run** my program | **Ctrl + F5** (or **Debug** → **Start Without Debugging**) |
+| Close the black window | Press any key |
+| Stop a program that will not stop | Click the **X** on the black window |
+| Clear the editor | **Ctrl + A**, then **Delete** |
+| Undo my last change | **Ctrl + Z** |
+| Save | **Ctrl + S** (Visual Studio also saves when you run) |
+| See my mistakes | Look at the **Error List** at the bottom. Double-click a row to jump to it |
+| Open an old project | Start window → **Open recent** → click its name |
 
-## .NET Commands
+### Working with files
 
-| Command | What it does |
+| I want to... | Do this |
 |---|---|
-| `dotnet --version` | Check that .NET is installed |
-| `dotnet new console -n Lesson05` | Create a new project |
-| `dotnet run` | Build and run the project in this folder |
-| `dotnet add package Microsoft.Data.Sqlite` | Add SQLite to this project |
-| `code .` | Open this folder in VS Code |
+| Add a **new class file** | Right-click the project → **Add** → **Class...** → type the name → **Add** |
+| **Copy a file** from another lesson | Right-click the project → **Add** → **Existing Item...** → find the file → **Add** |
+| Add a **new data file** (like a `.csv`) | Right-click the project → **Add** → **New Item...** → type the name → **Add** |
+| Make a data file available to my program | Click the file → **Properties** panel (**F4**) → **Copy to Output Directory** → **Copy if newer** |
+| Add the **SQLite package** | Right-click the project → **Manage NuGet Packages...** → **Browse** → `Microsoft.Data.Sqlite` → **Install** |
+| Find files **made by my program** | Right-click the project → **Open Folder in File Explorer** → **bin** → **Debug** → **net10.0** |
 
-## The Lesson Routine
+### Panels gone missing?
 
-```cmd
-cd C:\CSharpCourse
-dotnet new console -n LessonXX
-cd LessonXX
-code .
-dotnet run
-```
+| Panel | How to bring it back |
+|---|---|
+| Solution Explorer | **View** → **Solution Explorer** |
+| Error List | **View** → **Error List** |
+| Properties | Click a file, then press **F4** |
+| Everything is messed up | **Window** → **Reset Window Layout** |
 
 ---
 
 ## C# Basics
 
 ```cs
-// Output
-Console.WriteLine("Hello!");           // show text, then a new line
+// Showing text
+Console.WriteLine("Hello!");           // show text, then go to a new line
 Console.Write("Name: ");               // show text, stay on the same line
 
 // Variables
@@ -56,9 +64,9 @@ bool isEnrolled = true;                // true or false
 Console.WriteLine($"{name} is {age}"); // put variables inside text
 Console.WriteLine($"{grade:F2}");      // 2 decimal places
 
-// Input
+// Reading what the user types
 string text = (Console.ReadLine() ?? "").Trim();
-int number = int.Parse(text);                        // crashes on bad input
+int number = int.Parse(text);                        // crashes on letters
 bool ok = int.TryParse(text, out int safeNumber);    // never crashes
 
 // Math
@@ -95,9 +103,8 @@ switch (choice)
 }
 ```
 
-| Compare | `==` `!=` `>` `<` `>=` `<=` |
-|---|---|
-| **Combine** | `&&` (and) `\|\|` (or) `!` (not) |
+- **Compare:** `==` `!=` `>` `<` `>=` `<=`
+- **Combine:** `&&` (and), `||` (or), `!` (not)
 
 ## Loops
 
@@ -140,11 +147,11 @@ while (running)
 
 ```cs
 List<string> names = new List<string>();
-names.Add("Ana");               // add
-string first = names[0];        // index starts at 0
-int howMany = names.Count;      // count
-bool has = names.Contains("Ana");
-names.Remove("Ana");
+names.Add("Ana");                   // add
+string first = names[0];            // positions start at 0
+int howMany = names.Count;          // how many
+bool has = names.Contains("Ana");   // is it in the list?
+names.Remove("Ana");                // remove
 ```
 
 ## Methods
@@ -179,7 +186,7 @@ Student s = new Student { Id = 1, FullName = "Juan Dela Cruz" };
 s.Display();
 ```
 
-## Errors
+## Catching Crashes
 
 ```cs
 try
@@ -228,7 +235,7 @@ INSERT OR IGNORE INTO ...                         -- skip rows that break a rule
 SELECT last_insert_rowid();                       -- the Id of the row just added
 ```
 
-## C# + SQLite
+## C# and SQLite Together
 
 ```cs
 using Microsoft.Data.Sqlite;   // at the very top of the file
@@ -250,7 +257,7 @@ while (reader.Read())
     string fullName = reader.GetString(1);
 }
 
-// Transaction (all or nothing):
+// All or nothing:
 // using var transaction = connection.BeginTransaction();
 // ... run commands ...
 // transaction.Commit();
@@ -263,6 +270,12 @@ string savedHash = PasswordHasher.Hash(password);           // when registering
 bool correct = PasswordHasher.Verify(typed, savedHash);     // when logging in
 ```
 
-**The rules:** never save real passwords · always salt · always use a slow hash (PBKDF2, bcrypt, Argon2) · same error message for a wrong username or password · always use SQL parameters.
+**The rules:**
+
+- Never save real passwords
+- Always use a salt
+- Always use a slow hash (PBKDF2, bcrypt, or Argon2)
+- Use the same message for a wrong username and a wrong password
+- Always use SQL parameters
 
 [🏠 Course Home](../README.md)

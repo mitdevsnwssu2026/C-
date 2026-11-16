@@ -1,87 +1,53 @@
 # Lesson 04: Math and Operators
 
-| | |
-|---|---|
-| **Part** | 1: Beginner |
-| **Time** | About 60 minutes |
-| **Before this** | [Lesson 03](03-user-input.md) |
+**Part 1: Beginner** · About 60 minutes
 
-## 🎯 Goal
+## What You Will Learn
 
-By the end of this lesson, you will:
+- How to add, subtract, multiply, and divide in C#
+- How to avoid the most common math mistake (losing the decimals)
+- How to show a number with exactly 2 decimal places
+- How to build a grade average calculator
 
-- Add, subtract, multiply, and divide in C#
-- Avoid the most common math trap (whole-number division)
-- Show a number with exactly 2 decimal places
-- Build a grade average calculator
+## The Idea
 
----
+A computer is a very good calculator. The math symbols are called **operators**.
 
-## 🧠 The Big Idea
-
-Computers are excellent calculators. The symbols you use for math are called **operators**.
-
-| Operator | Meaning | Example | Result |
+| Symbol | Meaning | Example | Result |
 |---|---|---|---|
 | `+` | Add | `10 + 3` | `13` |
 | `-` | Subtract | `10 - 3` | `7` |
 | `*` | Multiply | `10 * 3` | `30` |
-| `/` | Divide | `10 / 4` | `2` (see the trap below!) |
-| `%` | **Remainder** after dividing | `10 % 3` | `1` (10 ÷ 3 = 3, remainder **1**) |
+| `/` | Divide | `10.0 / 4` | `2.5` |
+| `%` | **Remainder** after dividing | `10 % 3` | `1` |
 
-### ⚠️ The division trap
+`%` gives what is **left over**. 10 divided by 3 is 3, with **1** left over. So `10 % 3` is `1`.
 
-When you divide **two whole numbers** (`int`), C# gives back a **whole number**. It simply **cuts off** the decimal part.
+### ⚠️ Watch out: dividing whole numbers
 
-| Code | Result | Why |
-|---|---|---|
-| `7 / 2` | `3` | Both are `int`, so the `.5` is cut off |
-| `7.0 / 2` | `3.5` | `7.0` is a `double`, so the answer keeps its decimals |
-| `7.0 / 2.0` | `3.5` | Both are `double` |
+When you divide **two whole numbers** (`int`), C# **cuts off** the decimals.
 
-**Rule:** If you need decimals in your answer, make sure at least one number is a `double`.
+- `7 / 2` gives `3` (the `.5` is cut off!)
+- `7.0 / 2` gives `3.5` (because `7.0` is a `double`)
 
-### Order of operations
-
-C# follows the same order you learned in math class: `*` and `/` first, then `+` and `-`. Use **parentheses `( )`** to control the order.
-
-| Code | Result |
-|---|---|
-| `2 + 3 * 4` | `14` (3 × 4 first, then + 2) |
-| `(2 + 3) * 4` | `20` (2 + 3 first) |
-
-### Shortcuts
-
-| Shortcut | Same as | Meaning |
-|---|---|---|
-| `score += 5;` | `score = score + 5;` | Add 5 to `score` |
-| `score -= 5;` | `score = score - 5;` | Subtract 5 from `score` |
-| `count++;` | `count = count + 1;` | Add 1 |
-| `count--;` | `count = count - 1;` | Subtract 1 |
-
-### Showing exactly 2 decimal places
-
-```cs
-double average = 87.666666;
-Console.WriteLine($"{average:F2}");   // Shows: 87.67
-```
-
-Adding **`:F2`** after the variable name inside `{ }` means *"show 2 decimal places, rounded."* `:F1` shows 1 decimal place, `:F3` shows 3, and so on.
+**The rule:** if you want decimals in the answer, use `double`.
 
 ---
 
-## 🛠️ Try It: An Operator Playground
+## Step by Step
 
-Create the project and try all the operators:
+### Step 1: Create a new project named `Lesson04`
 
-```cmd
-cd C:\CSharpCourse
-dotnet new console -n Lesson04
-cd Lesson04
-code .
-```
+1. Open **Visual Studio**. (If it is already open, close it first and open it again.)
+2. Click **Create a new project**.
+3. Click **Console App** (the one with **C#**, not ".NET Framework"), then click **Next**.
+4. In **Project name**, type `Lesson04`. Check that **Location** says `C:\CSharpCourse`. Click **Next**.
+5. Click **Create**.
 
-Replace `Program.cs` with:
+### Step 2: Try every operator
+
+1. Click inside the editor. Press **Ctrl + A**, then **Delete**.
+2. Type this code:
 
 ```csharp
 int a = 17;
@@ -102,9 +68,9 @@ score++;
 Console.WriteLine($"Score: {score}");
 ```
 
-Run it with `dotnet run`.
+3. Press **Ctrl + F5**.
 
-✅ **You should see:**
+✅ **You will see:**
 
 ```text
 17 + 5 = 22
@@ -116,13 +82,21 @@ Run it with `dotnet run`.
 Score: 16
 ```
 
-Look at lines 4 and 6. Both say "17 / 5", but the first one uses `int` (answer `3`) and the second one uses `double` (answer `3.4`).
+Look at the 4th and 6th lines. Both say `17 / 5`. The first one used `int`, so the answer is `3`. The second one used `double`, so the answer is `3.4`.
 
----
+The last part shows two shortcuts:
 
-## 🛠️ Let's Build It: Grade Average Calculator
+- `score += 5;` means "add 5 to `score`". (10 becomes 15.)
+- `score++;` means "add 1 to `score`". (15 becomes 16.)
 
-Replace everything in `Program.cs` with:
+Press any key to close the black window.
+
+### Step 3: Build the grade average calculator
+
+1. Click inside the editor. Press **Ctrl + A**, then **Delete**.
+2. Type the code below.
+
+## The Code
 
 ```csharp
 // Lesson 4: Grade average calculator
@@ -146,13 +120,13 @@ Console.WriteLine($"Total:   {total}");
 Console.WriteLine($"Average: {average:F2}");
 ```
 
-Run it:
+### Step 4: Run it
 
-```cmd
-dotnet run
-```
+Press **Ctrl + F5**. Type three grades. Press **Enter** after each one.
 
-✅ **You should see** (the numbers after each `:` are what you type):
+## The Output
+
+✅ **You will see** (here the user typed `85`, `90`, and `88`):
 
 ```text
 === GRADE AVERAGE CALCULATOR ===
@@ -166,57 +140,52 @@ Average: 87.67
 
 ---
 
-## 🔎 Line by Line
+## What the Code Means
 
 ```cs
 double prelim = double.Parse(Console.ReadLine() ?? "");
 ```
 
-We use `double` (not `int`) because grades can have decimals, like `89.5`.
+Read the answer and turn it into a decimal number. We use `double` because a grade can have decimals, like `89.5`.
 
 ```cs
 double total = prelim + midterm + finals;
 double average = total / 3;
 ```
 
-Because `total` is a `double`, `total / 3` keeps the decimals. No trap here!
+Add the three grades, then divide by 3. `total` is a `double`, so the decimals are kept.
 
 ```cs
 Console.WriteLine($"Average: {average:F2}");
 ```
 
-The real average is `87.6666666...`. `:F2` shows it as `87.67`.
+The real average is `87.6666666...`. Adding **`:F2`** after the name means *"show 2 decimal places."* So the screen shows `87.67`. (`:F1` shows 1 decimal place, `:F3` shows 3.)
+
+### The order of math
+
+C# follows the same order as in math class: `*` and `/` first, then `+` and `-`. Use **parentheses** `( )` to choose what happens first.
+
+- `2 + 3 * 4` gives `14` (3 × 4 first)
+- `(2 + 3) * 4` gives `20` (2 + 3 first)
 
 ---
 
-## ⚠️ Common Mistakes
+## If Something Goes Wrong
 
-### Mistake 1: Losing decimals because of `int`
+**My average has no decimals (87 instead of 87.67).**
+You used `int` somewhere. Use `double` for `total` and `average`.
 
-```cs
-int total = 263;
-int average = total / 3;     // average is 87, not 87.67!
-```
+**My average is far too big.**
+You may have written `prelim + midterm + finals / 3`. That divides only `finals` by 3. Use parentheses: `(prelim + midterm + finals) / 3`.
 
-**Fix:** Use `double` for values that can have decimals.
-
-### Mistake 2: Forgetting parentheses
-
-```cs
-double average = prelim + midterm + finals / 3;
-```
-
-This divides **only** `finals` by 3, then adds the others. **Fix:** `(prelim + midterm + finals) / 3`
-
-### Mistake 3: Using a comma for decimals
-
-Type `89.5`, not `89,5`. C# code always uses a **dot** for decimals.
+**The program crashed when I typed `89,5`.**
+Type decimals with a **dot**: `89.5`, not a comma.
 
 ---
 
-## 🏋️ Practice
+## Exercise
 
-**Exercise 1.** Ask for the **length** and **width** of a rectangle (decimals allowed). Show its **area** (length × width) and **perimeter** (2 × length + 2 × width).
+**Exercise 1.** Ask for the **length** and **width** of a rectangle. Show its **area** (length × width) and its **perimeter** (2 × length + 2 × width), with 2 decimal places.
 
 <details>
 <summary>Show answer</summary>
@@ -237,7 +206,7 @@ Console.WriteLine($"Perimeter: {perimeter:F2}");
 
 </details>
 
-**Exercise 2.** **Bill splitter.** Ask for the total restaurant bill and the number of friends. Show how much each friend pays, with 2 decimal places.
+**Exercise 2.** **Bill splitter.** Ask for the total restaurant bill and the number of friends. Show how much each friend pays.
 
 ```text
 Total bill: 1250
@@ -259,16 +228,18 @@ double eachPays = bill / friends;
 Console.WriteLine($"Each friend pays: {eachPays:F2}");
 ```
 
-`bill` is a `double`, so `bill / friends` keeps its decimals.
-
 </details>
 
-**Exercise 3.** Ask for a number of **minutes** and show it in hours and minutes. Use `/` and `%`.
+## ⭐ Bonus Challenge
+
+Ask for a number of **minutes**. Show it as hours and minutes. You will need both `/` and `%`.
 
 ```text
 Minutes: 135
 135 minutes = 2 hour(s) and 15 minute(s)
 ```
+
+Hint: this time, cutting off the decimals is exactly what you want.
 
 <details>
 <summary>Show answer</summary>
@@ -277,25 +248,23 @@ Minutes: 135
 Console.Write("Minutes: ");
 int totalMinutes = int.Parse(Console.ReadLine() ?? "");
 
-int hours = totalMinutes / 60;     // whole-number division: 135 / 60 = 2
-int minutes = totalMinutes % 60;   // remainder: 135 % 60 = 15
+int hours = totalMinutes / 60;     // 135 / 60 = 2  (decimals cut off)
+int minutes = totalMinutes % 60;   // 135 % 60 = 15 (what is left over)
 
 Console.WriteLine($"{totalMinutes} minutes = {hours} hour(s) and {minutes} minute(s)");
 ```
-
-Here, whole-number division is exactly what we want!
 
 </details>
 
 ---
 
-## 📌 Recap
+## Remember
 
 - `+ - * /` work like in math. `%` gives the **remainder**.
-- `int / int` cuts off decimals. Use `double` when you need decimals.
-- Use parentheses to control the order: `(a + b) / 2`.
+- Dividing two `int` numbers cuts off the decimals. Use `double` to keep them.
+- Use parentheses to choose the order: `(a + b) / 2`
 - `x += 5;` adds 5 to `x`. `x++;` adds 1.
-- `{value:F2}` shows a number with 2 decimal places.
+- `{value:F2}` shows 2 decimal places.
 
 ---
 

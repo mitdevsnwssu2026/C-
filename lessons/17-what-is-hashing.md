@@ -1,25 +1,17 @@
 # Lesson 17: What Is Hashing? (Why We Never Save Real Passwords)
 
-| | |
-|---|---|
-| **Part** | 4: Security and Accounts |
-| **Time** | About 75 minutes |
-| **Before this** | [Lesson 16](16-uploading-csv-data.md) |
+**Part 4: Security and Accounts** · About 75 minutes
 
-## 🎯 Goal
+## What You Will Learn
 
-By the end of this lesson, you will:
-
-- Understand why saving real passwords in a database is **dangerous**
-- Know what a **hash** is, and its four important properties
-- See with your own eyes how hackers **guess** plain hashes
-- Understand what **salt** is and why passwords need a **slow** hash
+- Why saving real passwords in a database is **dangerous**
+- What a **hash** is
+- How hackers **guess** passwords (you will see it with your own eyes)
+- What **salt** is, and why password hashing must be **slow**
 
 This lesson is about **understanding**. In the next lesson, you will write the real, safe code.
 
----
-
-## 🧠 The Big Idea
+## The Idea
 
 ### The danger
 
@@ -30,64 +22,62 @@ Imagine your school's system saves passwords like this:
 | juan_dc | `sunshine123` |
 | maria | `Maria2008!` |
 
-One day, a hacker steals a copy of the database. (This happens to big companies every year.) Now the hacker knows **everyone's password**. And because many people use the **same password everywhere**, the hacker can now try them on Facebook, email, and online banking too.
+One day, a hacker steals a copy of the database. (This happens to big companies every year.) Now the hacker knows **everyone's password**. And many people use the **same password everywhere**. So the hacker can now try those passwords on Facebook, email, and online banking too.
 
 > [!CAUTION]
-> **Never save real passwords in a database.** Not in a file, not anywhere. Not even "just for now." This is one of the most important rules in programming.
+> **Never save real passwords.** Not in a database, not in a file, not anywhere. Not even "just for now." This is one of the most important rules in programming.
 
-### Then how can we check a password at login?
+### The solution: save a hash instead
 
-We save a **hash** of the password instead.
-
-A **hash** is like a **fingerprint** of some text. A **hash function** takes any text and turns it into a fixed-length "fingerprint" made of letters and numbers:
+A **hash** is like a **fingerprint** of some text. A **hash function** turns any text into a jumble of letters and numbers:
 
 ```text
 "sunshine"  ──► hash function ──►  A941A4C4FD0C01CDDEF61B8BE963BF4C1E2B0811C037CE3F1835FDDF6EF6C223
 ```
 
-Think of a **blender**. You put in a mango and it becomes a mango shake. You can make the shake from a mango, but you can **never** turn the shake back into the mango.
+Think of a **blender**. Put in a mango, and you get a mango shake. But you can **never** turn the shake back into the mango.
 
-### The four properties of a hash
+A hash has four important features:
 
-| Property | What it means | Why it matters |
-|---|---|---|
-| **One-way** | You **cannot** turn a hash back into the original text | A stolen hash does not directly reveal the password |
-| **Same input → same hash** | `"sunshine"` always gives the same hash | We can check a password by hashing it again and comparing |
-| **Tiny change → totally different hash** | `"sunshine"` and `"Sunshine"` look nothing alike | You cannot "get close" to a password by looking at hashes |
-| **Fixed length** | A 1-letter word and a whole book both give a hash of the same length | The hash reveals nothing about the password's length |
+1. **One-way.** You cannot turn a hash back into the original text.
+2. **Same text, same hash.** `"sunshine"` always gives the same hash.
+3. **A tiny change gives a totally different hash.** `"sunshine"` and `"Sunshine"` look nothing alike.
+4. **Always the same length.** One letter or a whole book: the hash is the same length.
 
 ### How login works with hashes
 
 ```text
-REGISTER:   password "sunshine"  ──► hash ──►  save A941A4C4...  in the database
+REGISTER:  password "sunshine"   ──► hash ──►  save  A941A4C4...  in the database
 
-LOG IN:     user types "sunshine" ──► hash ──►  A941A4C4...
-            Does it match the saved hash?  YES ──► Correct password! ✅
+LOG IN:    user types "sunshine" ──► hash ──►  A941A4C4...
+           Same as the saved hash?  YES ──► Correct password! ✅
 
-            user types "sunshin3" ──► hash ──►  4C5514A1...
-            Does it match the saved hash?  NO  ──► Wrong password! ❌
+           user types "sunshin3" ──► hash ──►  4C5514A1...
+           Same as the saved hash?  NO  ──► Wrong password! ❌
 ```
 
 The system **never** needs to know the real password. It only compares fingerprints.
 
 ---
 
-## 🛠️ Let's See It: A Hashing Demo
+## Step by Step
 
-### Step 1: Create the project
+### Step 1: Create a new project named `Lesson17`
 
-```cmd
-cd C:\CSharpCourse
-dotnet new console -n Lesson17
-cd Lesson17
-code .
-```
+1. Open **Visual Studio**. (If it is already open, close it first and open it again.)
+2. Click **Create a new project**.
+3. Click **Console App** (the one with **C#**, not ".NET Framework"), then click **Next**.
+4. In **Project name**, type `Lesson17`. Check that **Location** says `C:\CSharpCourse`. Click **Next**.
+5. Click **Create**.
 
-(No package needed! Hashing tools are built into .NET.)
+> No package is needed this time. The hashing tools are already part of C#.
 
-### Step 2: Write the code
+### Step 2: Put in the code
 
-Replace everything in `Program.cs` with:
+1. Clear the editor (**Ctrl + A**, **Delete**).
+2. Put in the code below.
+
+## The Code
 
 ```csharp
 // Lesson 17: What is hashing? (A learning demo)
@@ -165,11 +155,11 @@ void ShowHash(string text)
 
 ### Step 3: Run it
 
-```cmd
-dotnet run
-```
+Press **Ctrl + F5**.
 
-✅ **You should see:**
+## The Output
+
+✅ **You will see:**
 
 ```text
 ===== PART 1: HASHING =====
@@ -202,28 +192,28 @@ Same password, but different hashes! A hacker can no longer crack everyone at on
 ```
 
 > [!NOTE]
-> Parts 1 and 2 will look **exactly** the same on your computer, because the same text always gives the same hash, on every computer in the world. The salts and hashes in Part 3 will be **different** every time you run it, because the salt is random. That is the whole point!
+> Parts 1 and 2 look **exactly** the same on your computer, because the same text gives the same hash on every computer in the world. The salts and hashes in Part 3 are **different** every time you run it, because a salt is random. That is the whole point!
 
 ---
 
-## 🔎 What Did We Just See?
+## What the Output Means
 
-### Part 1: The properties, proven
+### Part 1: The four features, proven
 
-- `"hello"` twice → the **same** hash (same input, same output).
-- `"hello"` vs `"Hello"` vs `"hello!"` → **completely different** hashes, even though only one character changed.
-- A long sentence → still **64 characters**. Fixed length.
+- `"hello"` two times → the **same** hash.
+- `"hello"`, `"Hello"`, and `"hello!"` → **completely different** hashes, even though only one character changed.
+- A long sentence → still **64 characters**.
 
 ### Part 2: Why a plain hash is NOT enough 😟
 
-The hacker **cannot reverse** the hash. But they do not need to! They have lists of **millions of common passwords**. They simply hash each guess and compare. Our tiny list found `"sunshine"` in 5 tries.
+The hacker **cannot reverse** the hash. But they do not need to! They have lists of **millions of common passwords**. They hash each guess and compare. Our tiny list found `"sunshine"` in 5 tries.
 
-Worse:
+It gets worse:
 
-- One strong gaming graphics card can calculate **billions** of SHA-256 hashes **per second**. Guessing millions of passwords takes **less than a second**.
-- If 100 users chose `"sunshine"`, they all have the **same hash**. One guess cracks **all 100 accounts** at once.
+- One strong gaming graphics card can compute **billions** of these hashes **per second**. Trying millions of passwords takes **less than a second**.
+- If 100 users chose `"sunshine"`, they all have the **same hash**. One guess opens **all 100 accounts**.
 
-### Part 3: Salt to the rescue (partly)
+### Part 3: Salt helps
 
 A **salt** is a **random value**, different for **every user**, that is added to the password **before** hashing:
 
@@ -231,30 +221,30 @@ A **salt** is a **random value**, different for **every user**, that is added to
 hash( salt + password )
 ```
 
-- Two users with the same password now get **different** hashes, because their salts are different.
+- Two users with the same password now get **different** hashes.
 - The hacker can no longer crack everyone at once. They must attack **each user separately**.
-- The salt is **not secret**. It is saved right next to the hash in the database, because we need it again at login.
+- The salt is **not a secret**. It is saved right next to the hash, because it is needed again at login.
 
 Like salt in cooking: a little extra ingredient that changes the whole taste.
 
 ### The last problem: speed
 
-Salt makes the hacker attack users one by one. But SHA-256 is still **too fast**: billions of guesses per second, per user, is still a lot of guesses.
+Salt forces the hacker to attack users one by one. But this kind of hash (called **SHA-256**) is still **too fast**.
 
-The solution is a hash that is **slow on purpose**. Instead of hashing **once**, we hash **600,000 times** in a row. Here are rough numbers for a hacker with one strong graphics card:
+The fix is a hash that is **slow on purpose**. Instead of hashing **once**, we hash **600,000 times** in a row. Here are rough numbers for a hacker with one strong graphics card:
 
 | | Your user logging in | Hacker: guesses per second | Hacker: 1 billion guesses |
 |---|---|---|---|
 | Plain SHA-256 | Instant | About 20,000,000,000 | **Less than 1 second** |
-| Slow hash (600,000 rounds) | About a quarter of a second (users don't notice) | About 15,000 | **Almost a full day, for just ONE user** |
+| Slow hash (600,000 rounds) | About a quarter of a second | About 15,000 | **Almost a full day, for just ONE user** |
 
-For a database with 10,000 users, the slow hash turns **about 8 minutes** of guessing into **about 20 years**. A tiny delay for real users becomes an **enormous** delay for hackers. 🐢
+For a database with 10,000 users, the slow hash turns **about 8 minutes** of guessing into **about 20 years**. A tiny wait for real users becomes a **huge** wait for hackers. 🐢
 
-There are special **password hashing** methods made exactly for this: **PBKDF2**, **bcrypt**, and **Argon2**. They use **salt + slowness** together. .NET has **PBKDF2** built in, and you will use it in the next lesson.
+There are special **password hashing** methods made for exactly this: **PBKDF2**, **bcrypt**, and **Argon2**. They use **salt and slowness** together. C# has **PBKDF2** built in. You will use it in the next lesson.
 
 ---
 
-## 🔎 Line by Line: The `Sha256` Method
+## What the Code Means
 
 ```cs
 string Sha256(string text)
@@ -265,57 +255,69 @@ string Sha256(string text)
 }
 ```
 
-| Line | What it does |
-|---|---|
-| `Encoding.UTF8.GetBytes(text)` | Computers store everything as **bytes** (small numbers from 0 to 255). This turns the text into bytes |
-| `SHA256.HashData(textBytes)` | Runs the SHA-256 hash function. The result is 32 bytes |
-| `Convert.ToHexString(hashBytes)` | Turns the bytes into readable text using `0-9` and `A-F` (called **hexadecimal**). 32 bytes become 64 characters |
+Computers store everything as **bytes**: small numbers from 0 to 255.
+
+1. `Encoding.UTF8.GetBytes(text)` turns the text into bytes.
+2. `SHA256.HashData(textBytes)` runs the hash function. The result is 32 bytes.
+3. `Convert.ToHexString(hashBytes)` turns those bytes into text you can read, using `0-9` and `A-F`. 32 bytes become 64 characters.
 
 ```cs
 byte[] saltBytes = RandomNumberGenerator.GetBytes(16);
 ```
 
-Makes **16 random bytes** for the salt. `RandomNumberGenerator` is a **secure** random generator, made for security work. (Never use simple random numbers for security.)
+This makes **16 random bytes** for the salt. `RandomNumberGenerator` is a **secure** random maker, built for security work.
 
-These tools come from the two `using` lines at the top: `System.Security.Cryptography` (hashing and secure random numbers) and `System.Text` (`Encoding`).
+These tools come from the two `using` lines at the top of the file.
 
----
+### Hashing is not encryption
 
-## 🧠 Hashing Is Not Encryption
+People often mix these up.
 
-People often mix these up:
+- **Encryption** can be undone, with a secret key. It is for secret messages you need to read later.
+- **Hashing** can **never** be undone. It is for passwords.
 
-| | Encryption | Hashing |
-|---|---|---|
-| Can you get the original back? | **Yes**, with the secret key | **No**, never |
-| Used for | Secret messages, files you need to read later | **Passwords**, checking that files were not changed |
+Passwords should be **hashed**, never encrypted. If they were encrypted, anyone who stole the key could unlock **all** of them.
 
-Passwords should be **hashed**, never encrypted. If they were encrypted, anyone who steals the key could decrypt **all** of them.
+### The 5 rules of password safety
 
----
-
-## 🏆 The Rules of Password Safety
-
-1. **Never** save real passwords. Save a password **hash**.
-2. **Never** use plain SHA-256 (or MD5, or SHA-1) for passwords. They are too fast.
-3. **Always** use a **salt**: random and different for every user.
+1. **Never** save real passwords. Save a **hash**.
+2. **Never** use plain SHA-256 for passwords. It is too fast.
+3. **Always** use a **salt**: random, and different for every user.
 4. **Always** use a **slow** password hash: PBKDF2, bcrypt, or Argon2.
 5. **Never** invent your own security method. Use the well-tested tools that already exist.
 
 ---
 
-## 🏋️ Practice
+## If Something Goes Wrong
 
-**Exercise 1.** Add `ShowHash("sunshine");` to Part 1. Is its hash the same as the "Stolen hash" in Part 2? Why?
+**Error List: `CS0103  The name 'SHA256' does not exist in the current context`**
+The `using` lines are missing. The file must start with these two lines (after the comments):
+
+```cs
+using System.Security.Cryptography;
+using System.Text;
+```
+
+**My Part 3 looks different from the lesson.**
+That is correct! Salts are random, so Part 3 is different on every run.
+
+**My Part 1 or Part 2 looks different from the lesson.**
+Then there is a typing difference in a text. Even one different letter, space, or capital changes the whole hash. Compare your texts with the lesson's code.
+
+---
+
+## Exercise
+
+**Exercise 1.** In Part 1, add the line `ShowHash("sunshine");`. Run it. Is the hash the same as the "Stolen hash" in Part 2? Why?
 
 <details>
 <summary>Show answer</summary>
 
-Yes, it is exactly the same: `A941A4C4FD0C01CDDEF61B8BE963BF4C1E2B0811C037CE3F1835FDDF6EF6C223`. The same input always gives the same hash. That is exactly why a hacker's guess can be checked.
+Yes, it is exactly the same: `A941A4C4FD0C01CDDEF61B8BE963BF4C1E2B0811C037CE3F1835FDDF6EF6C223`. The same text always gives the same hash. That is exactly why a hacker's guess can be checked.
 
 </details>
 
-**Exercise 2.** Add `"sunshine123"` and `"letmein"` to the `commonPasswords` list, and change the stolen hash to `Sha256("letmein")`. Run it. Does the hacker find it?
+**Exercise 2.** Add `"sunshine123"` and `"letmein"` to the `commonPasswords` list. Change the stolen hash to `Sha256("letmein")`. Run it. Does the hacker find the password?
 
 <details>
 <summary>Show answer</summary>
@@ -325,31 +327,68 @@ string stolenHash = Sha256("letmein");
 string[] commonPasswords = { "123456", "password", "qwerty", "iloveyou", "sunshine", "admin123", "sunshine123", "letmein" };
 ```
 
-Yes. The loop tries every guess and finds `"letmein"` on the last try. Any password that appears on a common-password list is cracked almost instantly.
+Yes. The loop tries every guess and finds `"letmein"` on the last try. Any password that is on a common-password list is cracked almost instantly.
 
 </details>
 
-**Exercise 3.** In your own words, answer: **(a)** Why is it OK to save the salt in the database? **(b)** Why do we want password hashing to be slow?
+**Exercise 3.** Answer in your own words: **(a)** Why is it OK to save the salt in the database? **(b)** Why do we want password hashing to be slow?
 
 <details>
 <summary>Show answer</summary>
 
-**(a)** The salt does not need to be secret. Its job is to make every user's hash **different**, so a hacker cannot crack many users with one guess. We need the salt again at login to recompute the hash, so we must save it.
+**(a)** The salt does not need to be secret. Its job is to make every user's hash **different**, so one guess cannot open many accounts. The salt is needed again at login, so it must be saved.
 
-**(b)** A slow hash adds only a fraction of a second for a real user logging in once, but it makes a hacker's millions or billions of guesses take far too long to be worth it.
+**(b)** A slow hash adds only a fraction of a second for a real user who logs in once. But it makes a hacker's millions of guesses take far too long.
+
+</details>
+
+## ⭐ Bonus Challenge
+
+**Does salt alone stop a hacker?** Find out. A hacker has stolen one user's **salt** and **salted hash**. Add code to the program that guesses the password, using the same `commonPasswords` list.
+
+Add this just **above** the line `// ----- Methods -----`, then write the loop yourself:
+
+```cs
+// ----- Bonus: guessing a SALTED hash -----
+Console.WriteLine();
+Console.WriteLine("===== BONUS: GUESSING A SALTED HASH =====");
+
+string stolenSalt = "A1B2C3D4";
+string stolenSaltedHash = Sha256(stolenSalt + "iloveyou");
+```
+
+Hint: the hacker knows the salt, so they can add it in front of every guess.
+
+<details>
+<summary>Show answer</summary>
+
+```cs
+foreach (string guess in commonPasswords)
+{
+    if (Sha256(stolenSalt + guess) == stolenSaltedHash)
+    {
+        Console.WriteLine($"MATCH! The password is \"{guess}\".");
+        break;
+    }
+}
+```
+
+It shows `MATCH! The password is "iloveyou".`
+
+**The lesson:** salt alone does **not** stop a hacker from guessing one user's password. It only stops them from cracking **everyone at once**. That is why we also need the hash to be **slow**. Salt and slowness work as a team.
 
 </details>
 
 ---
 
-## 📌 Recap
+## Remember
 
-- **Never** save real passwords. Save a **hash** (a one-way fingerprint).
-- Hashes are **one-way**, give the **same output for the same input**, change **completely** with any tiny change, and have a **fixed length**.
-- Hackers crack plain hashes by **guessing** common passwords very fast.
-- **Salt** = a random value per user. Same password, different hashes. The salt is saved with the hash.
+- **Never** save real passwords. Save a **hash**: a one-way fingerprint.
+- Same text, same hash. A tiny change, a totally different hash. A hash cannot be reversed.
+- Hackers crack plain hashes by **guessing** common passwords, very fast.
+- **Salt** = a random value for each user. Same password, different hashes.
 - Password hashing must be **slow on purpose**: PBKDF2, bcrypt, or Argon2.
-- Hashing is **not** encryption. Hashes cannot be reversed.
+- Hashing is **not** encryption.
 
 ---
 

@@ -1,49 +1,53 @@
 # Lesson 06: Loops (Repeating Things)
 
-| | |
-|---|---|
-| **Part** | 1: Beginner |
-| **Time** | About 75 minutes |
-| **Before this** | [Lesson 05](05-decisions.md) |
+**Part 1: Beginner** · About 75 minutes
 
-## 🎯 Goal
+## What You Will Learn
 
-By the end of this lesson, you will:
+- How to repeat code a set number of times with `for`
+- How to repeat code **while** something is true with `while`
+- How to stop a loop early (`break`) or skip one round (`continue`)
+- How to build a **menu that keeps coming back** until the user chooses Exit
 
-- Repeat code a set number of times with a `for` loop
-- Repeat code **while** something is true with a `while` loop
-- Stop a loop early with `break`, and skip ahead with `continue`
-- Build a **menu that keeps coming back** until the user chooses Exit
+## The Idea
 
----
-
-## 🧠 The Big Idea
-
-Imagine your teacher asks you to write "I will practice coding" 100 times. You could write the same line 100 times... or you could say:
+Imagine your teacher tells you to write "I will practice coding" 100 times. You could write the line 100 times. Or you could say:
 
 > **Repeat 100 times:** write "I will practice coding".
 
-That is a **loop**. A loop repeats a block of code without you having to copy and paste it.
+That is a **loop**. A loop repeats lines of code, so you do not have to copy them.
 
 C# has two main loops:
 
-| Loop | Use it when... | Real-life example |
-|---|---|---|
-| `for` | You know **how many times** to repeat | "Do 10 push-ups" |
-| `while` | You repeat **until something changes** | "Keep stirring **while** the sauce is not thick yet" |
+- **`for`**: use it when you know **how many times**. ("Do 10 push-ups.")
+- **`while`**: use it when you repeat **until something changes**. ("Keep stirring **while** the sauce is still thin.")
 
 ---
 
-## 🧠 The `for` Loop: Counting
+## Step by Step
 
-```cs
+### Step 1: Create a new project named `Lesson06`
+
+1. Open **Visual Studio**. (If it is already open, close it first and open it again.)
+2. Click **Create a new project**.
+3. Click **Console App** (the one with **C#**, not ".NET Framework"), then click **Next**.
+4. In **Project name**, type `Lesson06`. Check that **Location** says `C:\CSharpCourse`. Click **Next**.
+5. Click **Create**.
+
+### Step 2: Try a `for` loop
+
+**1.** Clear the editor (**Ctrl + A**, **Delete**) and type this:
+
+```csharp
 for (int i = 1; i <= 5; i++)
 {
     Console.WriteLine($"Push-up number {i}");
 }
 ```
 
-✅ Shows:
+**2.** Press **Ctrl + F5**.
+
+✅ **You will see:**
 
 ```text
 Push-up number 1
@@ -53,53 +57,21 @@ Push-up number 4
 Push-up number 5
 ```
 
-The first line has **three parts**, separated by `;`:
+One `WriteLine`, but five lines on the screen! The first line of the loop has **three parts**, with `;` between them:
 
-| Part | Meaning |
-|---|---|
-| `int i = 1` | **Start:** make a counter box `i` and set it to 1 |
-| `i <= 5` | **Keep going while** this is true |
-| `i++` | **After each round:** add 1 to `i` |
+- `int i = 1` → **Start:** make a counter box named `i`, and put 1 in it.
+- `i <= 5` → **Keep going while** this is true.
+- `i++` → **After each round**, add 1 to `i`.
 
-So the loop runs with `i = 1`, then `2`, `3`, `4`, `5`. When `i` becomes `6`, the condition `i <= 5` is `false`, and the loop stops.
+So the loop runs with `i` as 1, then 2, 3, 4, and 5. When `i` becomes 6, `i <= 5` is false, and the loop stops.
 
-> [!NOTE]
-> `i` is short for "index". Programmers often use `i` for loop counters. You can use any name.
+> Programmers often name the counter `i`. You can use any name.
 
-You can also count **down** by starting high and using `i--`:
+### Step 3: Try a `while` loop
 
-```cs
-for (int count = 5; count >= 1; count--)
-{
-    Console.WriteLine(count);
-}
-```
+This program gives the user 3 tries to type the correct PIN.
 
----
-
-## 🧠 The `while` Loop: Repeat Until Something Changes
-
-```cs
-while (condition)
-{
-    // repeat this
-}
-```
-
-Before each round, C# checks the condition. If it is `true`, it runs the block again. If it is `false`, it stops.
-
-### Example: 3 tries to enter the correct PIN
-
-Create a new project and try it:
-
-```cmd
-cd C:\CSharpCourse
-dotnet new console -n Lesson06
-cd Lesson06
-code .
-```
-
-Replace `Program.cs` with:
+**1.** Clear the editor and type this:
 
 ```csharp
 string correctPin = "1234";
@@ -132,7 +104,9 @@ else
 }
 ```
 
-✅ **You should see** (if you type a wrong PIN twice, then the correct one):
+**2.** Press **Ctrl + F5**. Type a wrong PIN twice, then type `1234`.
+
+✅ **You will see:**
 
 ```text
 Enter your PIN: 1111
@@ -143,46 +117,17 @@ Enter your PIN: 1234
 Access granted!
 ```
 
-The loop keeps going **while** the user still has tries left **and** has not unlocked yet. Remember this idea. You will use it again in the final project's login screen!
+Before each round, C# checks the condition in `while ( ... )`. Here it says: *"keep going while the user has used fewer than 3 tries **and** has not unlocked yet."*
 
----
+Remember this program. You will use the same idea for the login screen of your final project!
 
-## 🧠 `break` and `continue`
+### Step 4: Build a menu that repeats
 
-| Keyword | What it does |
-|---|---|
-| `break;` | **Leave the loop right now.** Jump to the code after the loop |
-| `continue;` | **Skip the rest of this round** and go to the next round |
+Almost every program has a **menu** that comes back after each action. You will use this pattern in every big project in this course.
 
-```csharp
-for (int i = 1; i <= 10; i++)
-{
-    if (i == 3)
-    {
-        continue;   // skip 3
-    }
+**1.** Clear the editor and type the code below.
 
-    if (i == 6)
-    {
-        break;      // stop completely at 6
-    }
-
-    Console.WriteLine(i);
-}
-```
-
-✅ Shows `1`, `2`, `4`, `5` (one per line). Number 3 was skipped, and the loop stopped at 6.
-
-> [!WARNING]
-> **Infinite loops.** If a loop's condition never becomes `false`, the loop runs **forever**, and your program will not stop. If this happens, press **Ctrl + C** in the Command Prompt to stop it.
-
----
-
-## 🛠️ Let's Build It: A Menu That Repeats
-
-Almost every program you use has a **menu** that comes back after each action. Here is the pattern. You will use it in **every** big project in this course.
-
-Replace everything in `Program.cs` with:
+## The Code
 
 ```csharp
 // Lesson 6: A menu that repeats until the user chooses Exit
@@ -230,9 +175,11 @@ while (running)
 }
 ```
 
-Run it with `dotnet run`.
+**2.** Press **Ctrl + F5**. Type `1`, then `7`, then `3`.
 
-✅ **You should see** (typing `1`, then `7`, then `3`):
+## The Output
+
+✅ **You will see:**
 
 ```text
 
@@ -261,11 +208,11 @@ Choose an option: 3
 Goodbye!
 ```
 
-Try option `2` and an invalid option like `9`, too.
+Run it again and try option `2`, and a wrong option like `9`.
 
 ---
 
-## 🔎 Line by Line
+## What the Code Means
 
 ```cs
 bool running = true;
@@ -285,7 +232,7 @@ case "3":
     break;
 ```
 
-When the user picks `3`, we set `running` to `false`. The `break;` here only leaves the **`switch`**. Then the `while` loop checks `running`, sees `false`, and stops.
+When the user picks `3`, `running` becomes `false`. The loop checks it, sees `false`, and stops.
 
 ```cs
 for (int i = 1; i <= 10; i++)
@@ -294,16 +241,44 @@ for (int i = 1; i <= 10; i++)
 }
 ```
 
-A `for` loop **inside** a `while` loop. You can put loops inside loops, and `if`s inside loops. That is how real programs are built.
+This is a `for` loop **inside** a `while` loop. You can put loops inside loops, and `if`s inside loops. That is how real programs are built.
 
-> [!NOTE]
-> Option 1 uses `int.Parse`, so typing letters for "Which number?" still crashes. You will learn to fix that cleanly in Lesson 08.
+```cs
+for (int count = 5; count >= 1; count--)
+```
+
+A loop can also count **down**: start at 5, keep going while `count >= 1`, and subtract 1 each round (`count--`).
+
+### `break` and `continue`
+
+- `break;` → **leave the loop now.**
+- `continue;` → **skip the rest of this round**, and start the next round.
+
+```csharp
+for (int i = 1; i <= 10; i++)
+{
+    if (i == 3)
+    {
+        continue;   // skip 3
+    }
+
+    if (i == 6)
+    {
+        break;      // stop completely at 6
+    }
+
+    Console.WriteLine(i);
+}
+```
+
+This shows `1`, `2`, `4`, `5`. The 3 was skipped, and the loop stopped at 6.
 
 ---
 
-## ⚠️ Common Mistakes
+## If Something Goes Wrong
 
-### Mistake 1: A loop that never ends
+**The black window keeps printing the same thing forever.**
+This is called an **infinite loop**. The loop's condition never becomes false. For example:
 
 ```cs
 int i = 1;
@@ -314,43 +289,22 @@ while (i <= 5)
 }
 ```
 
-`i` stays `1` forever, so `i <= 5` is always `true`. **Fix:** Make sure something inside the loop changes the condition. Press **Ctrl + C** to stop a stuck program.
+**To stop it:** click the **X** at the top-right corner of the black window. Then fix your code so that something inside the loop changes the condition.
 
-### Mistake 2: Off by one
+**My loop runs 9 times, not 10.**
+You wrote `i < 10`. That stops **before** 10. Use `i <= 10` to include 10.
 
-```cs
-for (int i = 1; i < 10; i++)   // runs 9 times, not 10!
-```
+**The lines inside my loop run only once.**
+You may have a `;` right after the loop line: `for (int i = 1; i <= 5; i++);`. Remove that last `;`.
 
-`i < 10` stops **before** 10. **Fix:** Use `i <= 10` to include 10.
-
-### Mistake 3: Semicolon after the loop line
-
-```cs
-for (int i = 1; i <= 5; i++);
-```
-
-The `;` ends the loop immediately, so the block below runs only once. **Fix:** Never put `;` right after `for (...)` or `while (...)`.
+**The program crashed when I typed letters for "Which number?"**
+Option 1 uses `int.Parse`, which crashes on letters. You will learn a clean fix for this in Lesson 08.
 
 ---
 
-## 🏋️ Practice
+## Exercise
 
-**Exercise 1.** Print the numbers from 1 to 100.
-
-<details>
-<summary>Show answer</summary>
-
-```csharp
-for (int i = 1; i <= 100; i++)
-{
-    Console.WriteLine(i);
-}
-```
-
-</details>
-
-**Exercise 2.** Add up all the numbers from 1 to 100 and print the total. (The answer is `5050`.)
+**Exercise 1.** Add up all the numbers from 1 to 100 and show the total. (The answer is `5050`.)
 
 <details>
 <summary>Show answer</summary>
@@ -370,7 +324,7 @@ The box `total` starts at 0. Each round adds the next number to it.
 
 </details>
 
-**Exercise 3.** Keep asking for the secret word until the user types `letmein`. Then print `Welcome!`.
+**Exercise 2.** Keep asking for the secret word until the user types `letmein`. Then show `Welcome!`.
 
 <details>
 <summary>Show answer</summary>
@@ -392,16 +346,16 @@ while (true)
 Console.WriteLine("Welcome!");
 ```
 
-`while (true)` repeats forever. The **only** way out is the `break;`, which happens when the word is correct.
+`while (true)` repeats forever. The only way out is `break;`, which happens when the word is correct.
 
 </details>
 
-**Exercise 4.** In the menu program, add a new option **3 - Even numbers from 1 to 20**, and move **Exit** to option **4**.
+**Exercise 3.** In the menu program, add a new option **3 - Even numbers from 1 to 20**, and move **Exit** to option **4**.
 
 <details>
 <summary>Show answer</summary>
 
-Change the menu text:
+Change the menu lines:
 
 ```cs
 Console.WriteLine("1 - Multiplication table");
@@ -410,7 +364,7 @@ Console.WriteLine("3 - Even numbers from 1 to 20");
 Console.WriteLine("4 - Exit");
 ```
 
-Add a new `case`, and change the Exit case to `"4"`:
+Add a new `case "3":`, and change the Exit case to `"4"`:
 
 ```cs
 case "3":
@@ -429,19 +383,85 @@ case "4":
     break;
 ```
 
-Also update the `default` message to say `Please type 1, 2, 3, or 4.`
+Also change the `default` message to `Please type 1, 2, 3, or 4.`
+
+</details>
+
+## ⭐ Bonus Challenge
+
+**The guessing game.** The computer "thinks" of the number 7. The user keeps guessing. After each guess, the program says `Too low!` or `Too high!`. When the user gets it right, show how many tries it took.
+
+```text
+I am thinking of a number from 1 to 10.
+Your guess: 3
+Too low!
+Your guess: 9
+Too high!
+Your guess: 7
+Correct! You got it in 3 tries.
+```
+
+Make it safe: if the user types letters, say `Please type a whole number.` and do not count it as a try.
+
+<details>
+<summary>Show answer</summary>
+
+```csharp
+int secretNumber = 7;
+int tries = 0;
+bool guessed = false;
+
+Console.WriteLine("I am thinking of a number from 1 to 10.");
+
+while (!guessed)
+{
+    Console.Write("Your guess: ");
+    bool isNumber = int.TryParse(Console.ReadLine() ?? "", out int guess);
+
+    if (!isNumber)
+    {
+        Console.WriteLine("Please type a whole number.");
+        continue;
+    }
+
+    tries++;
+
+    if (guess < secretNumber)
+    {
+        Console.WriteLine("Too low!");
+    }
+    else if (guess > secretNumber)
+    {
+        Console.WriteLine("Too high!");
+    }
+    else
+    {
+        guessed = true;
+    }
+}
+
+Console.WriteLine($"Correct! You got it in {tries} tries.");
+```
+
+**Want a real game?** Change the first line to this, and the number will be different every time:
+
+```cs
+int secretNumber = Random.Shared.Next(1, 11);
+```
+
+`Random.Shared.Next(1, 11)` gives a random whole number from 1 to 10. (The second number, 11, is not included.)
 
 </details>
 
 ---
 
-## 📌 Recap
+## Remember
 
 - `for (int i = 1; i <= 10; i++) { ... }` repeats a set number of times.
-- `while (condition) { ... }` repeats as long as the condition is `true`.
+- `while (condition) { ... }` repeats as long as the condition is true.
 - `break;` leaves a loop. `continue;` skips to the next round.
-- The **menu loop** pattern: `bool running = true; while (running) { show menu; switch (choice) { ... } }`
-- Press **Ctrl + C** to stop a program stuck in an infinite loop.
+- The **menu loop**: `bool running = true; while (running) { show the menu; switch (choice) { ... } }`
+- Stuck in an infinite loop? Close the black window with the **X**.
 
 ---
 

@@ -1,38 +1,30 @@
 # Lesson 14: Saving User Input to the Database (Safely!)
 
-| | |
-|---|---|
-| **Part** | 3: Databases |
-| **Time** | About 90 minutes |
-| **Before this** | [Lesson 13](13-connecting-to-a-database.md) |
+**Part 3: Databases** · About 90 minutes
 
-## 🎯 Goal
+## What You Will Learn
 
-By the end of this lesson, you will:
+- How to save what the user types into the database
+- What a **SQL injection** attack is, and how **parameters** stop it
+- How to check for duplicates **before** saving
+- How to get the new row's `Id` back from the database
 
-- Save what the user types into the database with `INSERT`
-- Use **parameters** to keep your database safe from **SQL injection** attacks
-- Check for duplicates **before** saving
-- Get the new row's `Id` back from the database
+## The Idea: Never Glue User Input Into SQL
 
----
-
-## 🧠 The Big Idea: Never Glue User Input Into SQL
-
-You might think you can build SQL by joining text together, like this:
+You might think you can build SQL by joining pieces of text, like this:
 
 ```cs
 // ❌ DANGEROUS! NEVER DO THIS!
 command.CommandText = "INSERT INTO Students (FullName) VALUES ('" + fullName + "');";
 ```
 
-This looks fine when the user types `Juan Dela Cruz`. The SQL becomes:
+When the user types `Juan Dela Cruz`, the SQL becomes:
 
 ```sql
 INSERT INTO Students (FullName) VALUES ('Juan Dela Cruz');
 ```
 
-But what if a hacker types this as their "name"?
+That looks fine. But what if a hacker types this as their "name"?
 
 ```text
 x'); DROP TABLE Students;--
@@ -44,9 +36,9 @@ Now the SQL becomes:
 INSERT INTO Students (FullName) VALUES ('x'); DROP TABLE Students;--');
 ```
 
-The database sees **two** commands: insert `x`, then **delete the entire Students table**! 😱
+The database sees **two** commands: add `x`, and then **delete the whole Students table**! 😱
 
-This attack is called **SQL injection**. The hacker **injected** their own SQL into yours. It is one of the most common ways real websites get hacked.
+This attack is called **SQL injection**. The hacker *injects* their own SQL into yours. It is one of the most common ways that real websites get hacked.
 
 ### The fix: parameters
 
@@ -58,39 +50,48 @@ command.CommandText = "INSERT INTO Students (FullName) VALUES ($fullName);";
 command.Parameters.AddWithValue("$fullName", fullName);
 ```
 
-| Piece | Meaning |
-|---|---|
-| `$fullName` (inside the SQL) | A **placeholder**: *"a value goes here"* |
-| `command.Parameters.AddWithValue("$fullName", fullName)` | *"Fill the `$fullName` placeholder with the value in the C# variable `fullName`."* |
+- `$fullName` inside the SQL is a placeholder. It means *"a value goes here."*
+- `command.Parameters.AddWithValue("$fullName", fullName)` means *"fill the placeholder `$fullName` with what is in the C# variable `fullName`."*
 
-With parameters, the database treats the user's input as **plain data, never as SQL commands**. Even if a hacker types `x'); DROP TABLE Students;--`, it is saved as a weird-looking name, and nothing bad happens.
+With parameters, the database treats what the user typed as **plain data, never as commands**. If a hacker types `x'); DROP TABLE Students;--`, it is simply saved as a strange-looking name. Nothing bad happens.
+
+Think of a bank deposit slip. You write the amount **in the box** for the amount. Even if you wrote instructions for the teller in that box, the teller would just read it as a (strange) amount.
 
 > [!CAUTION]
-> **The #1 database rule of this course:**
-> Whenever a value comes from the user (or from a file, or from anywhere outside your code), put it in the SQL **as a parameter**. Never join it into the SQL text with `+` or `$"..."`.
-
-Think of it like a bank deposit slip. You write the amount **in the box** for the amount. You do not write new instructions for the bank teller in that box. Even if you did, the teller would just read it as a (strange) amount.
+> **The number 1 database rule of this course:**
+> When a value comes from the user, put it in the SQL **as a parameter**. Never join it into the SQL text with `+` or `$"..."`.
 
 ---
 
-## 🛠️ Let's Build It: Add a Student
+## Step by Step
 
-### Step 1: Create the project and add SQLite
+### Step 1: Create a new project named `Lesson14`
 
-```cmd
-cd C:\CSharpCourse
-dotnet new console -n Lesson14
-cd Lesson14
-dotnet add package Microsoft.Data.Sqlite
-code .
-```
+1. Open **Visual Studio**. (If it is already open, close it first and open it again.)
+2. Click **Create a new project**.
+3. Click **Console App** (the one with **C#**, not ".NET Framework"), then click **Next**.
+4. In **Project name**, type `Lesson14`. Check that **Location** says `C:\CSharpCourse`. Click **Next**.
+5. Click **Create**.
 
-### Step 2: Write the code
+### Step 2: Add the SQLite package
 
-This program is longer, so it is organized into **methods** (Lesson 08). Read the **main program** first. It reads like a story. Then read each method.
+1. In the **Solution Explorer**, right-click the project line **Lesson14**.
+2. Click **Manage NuGet Packages...**
+3. Click **Browse**. In the search box, type `Microsoft.Data.Sqlite`.
+4. Click the result named exactly **Microsoft.Data.Sqlite**. Then click **Install**.
+5. If **Preview Changes** appears, click **Apply**. If **License Acceptance** appears, click **I Accept**.
+6. Close the NuGet tab (click the **X** on the tab **NuGet: Lesson14**).
 
-> [!NOTE]
-> From this lesson on, you may copy and paste the code. **Read every line** and make sure you understand it using the explanations below.
+### Step 3: Put in the code
+
+This program is longer. From this lesson on, **you may copy and paste** the code. But **read every line**, and use the explanations below to understand it.
+
+1. Clear the editor (**Ctrl + A**, **Delete**).
+2. Copy the code below and paste it (**Ctrl + V**).
+
+The code has three parts: the **main program** at the top, then the **database methods**, then the **input methods**. Read the main program first. It reads like a story.
+
+## The Code
 
 ```csharp
 // Lesson 14: Saving (inserting) a student into the database
@@ -221,11 +222,13 @@ int ReadYearLevel()
 }
 ```
 
-### Step 3: Run it three times
+### Step 4: Run it three times
 
-**Run 1: Add a student.** Try leaving the course empty and typing a wrong year level, to see the checks work.
+**Run 1: add a student.** Press **Ctrl + F5**. On purpose, leave the course empty once, and type a wrong year level, to see the checks work.
 
-✅ **You should see:**
+## The Output
+
+✅ **You will see:**
 
 ```text
 === ADD A NEW STUDENT ===
@@ -243,7 +246,7 @@ Saved! Juan Dela Cruz was given database ID 1.
 Total students in the database: 1
 ```
 
-**Run 2: Try the same student number again.**
+**Run 2: try the same student number again.**
 
 ```text
 === ADD A NEW STUDENT ===
@@ -252,7 +255,7 @@ Student number 2026-0001 is already saved. Nothing was added.
 Total students in the database: 1
 ```
 
-**Run 3: Try the hacker's trick.** For the full name, type `x'); DROP TABLE Students;--`
+**Run 3: try the hacker's trick.** For the full name, type: `x'); DROP TABLE Students;--`
 
 ```text
 === ADD A NEW STUDENT ===
@@ -264,11 +267,11 @@ Saved! x'); DROP TABLE Students;-- was given database ID 2.
 Total students in the database: 2
 ```
 
-The table was **not** deleted. The total is 2. The "attack" was saved as a plain (silly) name. **Parameters protected your database.** 🛡️
+The table was **not** deleted. The total is 2. The "attack" was saved as a plain, silly name. **Parameters protected your database.** 🛡️
 
 ---
 
-## 🔎 Line by Line
+## What the Code Means
 
 ### The main program
 
@@ -276,22 +279,22 @@ The table was **not** deleted. The total is 2. The "attack" was saved as a plain
 const string ConnectionString = "Data Source=school.db";
 ```
 
-`const` means **constant**: a value that **never changes**. Every method uses this same connection string, so we write it once, at the top.
+`const` means **constant**: a value that **never changes**. Every method uses the same connection string, so it is written once, at the top.
 
 ```cs
 if (StudentNumberExists(studentNumber))
 {
-    Console.WriteLine(...already saved...);
+    ...already saved...
 }
 else
 {
-    ...ask for the rest and save...
+    ...ask for the rest, and save...
 }
 ```
 
-We check for a duplicate **right after** the student number is typed, so the user does not waste time typing everything else.
+The program checks for a duplicate **right after** the student number is typed. That way, the user does not waste time typing everything else.
 
-### `StudentNumberExists`: checking before saving
+### `StudentNumberExists`: check before saving
 
 ```cs
 command.CommandText = "SELECT COUNT(*) FROM Students WHERE StudentNumber = $studentNumber;";
@@ -301,12 +304,11 @@ int count = Convert.ToInt32(command.ExecuteScalar());
 return count > 0;
 ```
 
-Count how many students already have this number. If more than 0, it exists. Notice the **parameter**, even here, because `studentNumber` came from the user.
+Count how many students already have this number. If the count is more than 0, the number exists. Notice the **parameter**, even here, because `studentNumber` came from the user.
 
-> [!NOTE]
-> The table also has the `UNIQUE` rule, so the database itself would refuse a duplicate. But a friendly message is much better than a crash. **Check first**, and let `UNIQUE` be your safety net.
+> The table also has the `UNIQUE` rule, so the database would refuse a duplicate anyway. But a friendly message is much better than a crash. **Check first**, and let `UNIQUE` be your safety net.
 
-### `InsertStudent`: saving and getting the new Id
+### `InsertStudent`: save, and get the new Id
 
 ```cs
 command.CommandText = @"
@@ -334,11 +336,9 @@ Fill in all four placeholders. The names must match **exactly**, including the `
 long newId = Convert.ToInt64(command.ExecuteScalar());
 ```
 
-`ExecuteScalar` gives back the one value from the `SELECT`: the new `Id`. SQLite Ids can be very large numbers, so we use **`long`**, which is like `int` but for bigger whole numbers.
+`ExecuteScalar` gives back the one value from the `SELECT`: the new `Id`. An `Id` can become a very big number, so we use **`long`**. A `long` is like an `int`, but for bigger whole numbers.
 
-### Each method opens its own connection
-
-Every database method follows the same 4-step pattern from Lesson 13:
+### Every database method has the same shape
 
 ```cs
 using var connection = new SqliteConnection(ConnectionString);
@@ -347,7 +347,7 @@ using var command = connection.CreateCommand();
 command.CommandText = "...";
 ```
 
-Open the connection, do one job, and let `using` close it. This is simple and safe.
+Open a connection, do one job, and let `using` close it. Simple and safe.
 
 ### `ReadRequired` and `ReadYearLevel`
 
@@ -357,64 +357,66 @@ These are the **crash-proof input** methods from Lessons 08 and 10. `ReadRequire
 if (int.TryParse(input, out int yearLevel) && yearLevel >= 1 && yearLevel <= 5)
 ```
 
-*"If the input is a whole number **and** it is at least 1 **and** at most 5..."*
+*"If the input is a whole number, **and** it is at least 1, **and** it is at most 5..."*
 
 ---
 
-## ⚠️ Common Mistakes
+## If Something Goes Wrong
 
-### Mistake 1: A parameter name that does not match
+**The black window shows: `Must add values for the following parameters: $fullName`**
+A placeholder was not filled in. The name in the SQL and the name in `AddWithValue` must be **exactly** the same. `$fullName` and `$fullname` are different!
 
-```cs
-command.CommandText = "... VALUES ($fullName);";
-command.Parameters.AddWithValue("$fullname", fullName);   // small n!
-```
+**The database saved the text `$fullName` instead of the real name.**
+You put quotes around the placeholder: `VALUES ('$fullName')`. Remove the quotes: `VALUES ($fullName)`. Placeholders never need quotes.
 
-```text
-Unhandled exception. System.InvalidOperationException: Must add values for the following parameters: $fullName
-```
+**The black window shows: `SQLite Error 19: 'UNIQUE constraint failed: Students.StudentNumber'.`**
+The program tried to save a student number that is already saved. Check first, with a method like `StudentNumberExists`.
 
-**Fix:** The name in the SQL and the name in `AddWithValue` must be **exactly the same**.
+**I changed the `CREATE TABLE` in my code, but the table did not change.**
+`CREATE TABLE IF NOT EXISTS` does **nothing** when the table already exists. While you are practicing, you can delete the old database file. The program will make a fresh one:
 
-### Mistake 2: Putting quotes around a parameter
+1. Right-click the project → **Open Folder in File Explorer**.
+2. Open **bin** → **Debug** → **net10.0**.
+3. Right-click `school.db` and click **Delete**.
 
-```cs
-VALUES ('$fullName')   // ❌ wrong
-VALUES ($fullName)     // ✅ right
-```
-
-With quotes, SQLite saves the literal text `$fullName` instead of the value. Parameters **never** need quotes.
-
-### Mistake 3: `UNIQUE constraint failed`
-
-```text
-Unhandled exception. Microsoft.Data.Sqlite.SqliteException (0x80004005): SQLite Error 19: 'UNIQUE constraint failed: Students.StudentNumber'.
-```
-
-You tried to save a duplicate student number without checking first. **Fix:** Check with a method like `StudentNumberExists` before inserting.
-
-### Mistake 4: You changed the `CREATE TABLE`, but nothing changed
-
-`CREATE TABLE IF NOT EXISTS` does **nothing** if the table already exists, even if you changed the columns in your code.
-
-**Fix (while learning):** Delete the old database file, and the program will create a fresh one with your new columns:
-
-```cmd
-del school.db
-```
-
-⚠️ This deletes **all** the data in that database. Only do this while practicing.
+⚠️ This deletes **all** the data in that database. Only do it with practice data.
 
 ---
 
-## 🏋️ Practice
+## Exercise
 
-**Exercise 1.** Make the program ask `Add another student? (Y/N)` at the end, and repeat if the user types `Y`.
+**Exercise 1.** Change every course to capital letters before saving, so `bsit`, `Bsit`, and `BSIT` are all saved as `BSIT`. (Hint: `.ToUpper()`)
 
 <details>
 <summary>Show answer</summary>
 
-Wrap the main program (from `Console.WriteLine("=== ADD A NEW STUDENT ===");` to the total line) in a loop:
+Change the course line in the main program:
+
+```cs
+string course = ReadRequired("Course (example: BSIT): ").ToUpper();
+```
+
+</details>
+
+**Exercise 2.** Explain to a classmate, in your own words: why do we use `$fullName` and `AddWithValue`, instead of joining the name into the SQL with `+`?
+
+<details>
+<summary>Show answer</summary>
+
+If we join what the user typed into the SQL with `+`, a user can type SQL code as their "answer", and the database will **run** it. That attack is called SQL injection. With parameters, the database always treats the answer as **data only**, never as commands. So the attack cannot work.
+
+</details>
+
+## ⭐ Bonus Challenge
+
+Right now, the program adds one student and stops. Make it ask `Add another student? (Y/N):` at the end. If the user types `Y`, it asks for another student. If not, it shows the total and ends.
+
+Hint: put the main program inside a `while` loop, with a `bool addMore = true;` before it.
+
+<details>
+<summary>Show answer</summary>
+
+Replace the main program (everything from `CreateStudentsTable();` down to the "Total students" line) with this:
 
 ```cs
 CreateStudentsTable();
@@ -448,40 +450,20 @@ while (addMore)
 Console.WriteLine($"Total students in the database: {CountStudents()}");
 ```
 
-</details>
-
-**Exercise 2.** Turn every course into capital letters before saving, so `bsit`, `Bsit`, and `BSIT` are all saved as `BSIT`.
-
-<details>
-<summary>Show answer</summary>
-
-Change the course line in the main program:
-
-```cs
-string course = ReadRequired("Course (example: BSIT): ").ToUpper();
-```
-
-</details>
-
-**Exercise 3.** In your own words, explain to a classmate why we use `$fullName` and `AddWithValue` instead of joining the name into the SQL with `+`.
-
-<details>
-<summary>Show answer</summary>
-
-If we join user input into SQL with `+`, a user can type SQL code as their "input", and the database will **run** it. That attack is called SQL injection. With parameters, the database always treats the input as **data only**, never as commands, so the attack cannot work.
+`addMore = answer == "Y";` puts `true` in the box if the answer is `Y`, and `false` if it is anything else.
 
 </details>
 
 ---
 
-## 📌 Recap
+## Remember
 
-- **SQL injection**: a hacker types SQL into an input box to attack your database.
+- **SQL injection**: a hacker types SQL into an input box to attack the database.
 - **Parameters** stop it: write `$name` in the SQL, then `command.Parameters.AddWithValue("$name", value);`
-- **Always** use parameters for values that come from outside your code.
+- **Always** use parameters for values that come from the user.
 - Check for duplicates with `SELECT COUNT(*) ... WHERE ...` **before** inserting.
 - `SELECT last_insert_rowid();` gives back the `Id` of the row you just added.
-- `const` creates a value that never changes. `long` is a bigger `int`.
+- `const` is a value that never changes. `long` is a bigger `int`.
 
 ---
 

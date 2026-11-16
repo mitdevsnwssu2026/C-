@@ -1,96 +1,57 @@
 # Lesson 03: User Input (Talking With the User)
 
-| | |
-|---|---|
-| **Part** | 1: Beginner |
-| **Time** | About 60 minutes |
-| **Before this** | [Lesson 02](02-variables.md) |
+**Part 1: Beginner** · About 60 minutes
 
-## 🎯 Goal
+## What You Will Learn
 
-By the end of this lesson, you will:
+- How to ask the user a question and read the answer
+- Why everything the user types is **text**
+- How to turn text into a number
 
-- Ask the user a question and read their answer with `Console.ReadLine()`
-- Understand that everything the user types is **text**
-- Turn text into a number with `int.Parse` and `double.Parse`
+## The Idea
 
----
+So far, your programs always show the same thing. Real programs **listen**.
 
-## 🧠 The Big Idea
-
-So far, your programs always show the same thing. Real programs **listen** to the user.
-
-`Console.ReadLine()` makes the program **stop and wait** until the user types something and presses **Enter**. Then it gives back what they typed.
+`Console.ReadLine()` makes the program **stop and wait**. The user types an answer in the black window and presses **Enter**. Then the program continues, and it knows what the user typed.
 
 ```text
-Program: "What is your name?"
-User types: Juan  (and presses Enter)
-Program: "Hello, Juan!"
+Program asks:   What is your name?
+User types:     Juan   (then presses Enter)
+Program says:   Hello, Juan!
 ```
 
-### The pattern you will use every time
+You will always use these two lines together:
 
 ```cs
 Console.Write("What is your name? ");
 string name = Console.ReadLine() ?? "";
 ```
 
-| Piece | Meaning |
-|---|---|
-| `Console.Write("What is your name? ");` | Shows the question. We use `Write` (not `WriteLine`) so the user types on the **same line** as the question |
-| `string name =` | Make a text box called `name`... |
-| `Console.ReadLine()` | ...wait for the user to type something and press Enter... |
-| `?? ""` | ...and if nothing comes back at all, use empty text `""` instead |
+- The first line shows the question. It uses `Write` (not `WriteLine`), so the user types the answer on the **same line** as the question.
+- The second line waits for the answer and keeps it in the box `name`.
 
 > [!IMPORTANT]
-> **Always write `?? ""` after `Console.ReadLine()`** in this course.
-> In rare cases, `ReadLine()` gives back **nothing at all** (C# calls this `null`). The `?? ""` part means *"if it is nothing, use empty text instead."* Without it, VS Code shows a yellow **warning**. With it, your code is safe and clean.
+> **Always type `?? ""` after `Console.ReadLine()`.**
+> It means: *"If nothing comes back at all, use empty text instead."* Without it, Visual Studio shows a warning (a green wavy line). Just make it a habit: `Console.ReadLine() ?? ""`
 
 ---
 
-## 🧠 Everything the User Types Is Text
+## Step by Step
 
-When the user types `18`, your program receives the **text** `"18"`, not the number `18`.
+### Step 1: Create a new project named `Lesson03`
 
-Why does this matter? Look at the difference:
+1. Open **Visual Studio**. (If it is already open, close it first and open it again.)
+2. Click **Create a new project**.
+3. Click **Console App** (the one with **C#**, not ".NET Framework"), then click **Next**.
+4. In **Project name**, type `Lesson03`. Check that **Location** says `C:\CSharpCourse`. Click **Next**.
+5. Click **Create**.
 
-```csharp
-string a = "5";
-string b = "5";
-Console.WriteLine(a + b);   // Shows: 55   (text is joined together)
+### Step 2: Type the code
 
-int x = 5;
-int y = 5;
-Console.WriteLine(x + y);   // Shows: 10   (numbers are added)
-```
+1. Click inside the editor. Press **Ctrl + A**, then **Delete**, to clear it.
+2. Type the code below.
 
-With text, `+` **joins** the two pieces. With numbers, `+` **adds** them.
-
-### Turning text into a number
-
-| To get a... | Use | Example |
-|---|---|---|
-| whole number (`int`) | `int.Parse(text)` | `int age = int.Parse("18");` |
-| decimal number (`double`) | `double.Parse(text)` | `double grade = double.Parse("89.5");` |
-
-"Parse" means **"read this text and turn it into a number."**
-
----
-
-## 🛠️ Let's Build It
-
-### Step 1: Create the project
-
-```cmd
-cd C:\CSharpCourse
-dotnet new console -n Lesson03
-cd Lesson03
-code .
-```
-
-### Step 2: Write the code
-
-Replace everything in `Program.cs` with:
+## The Code
 
 ```csharp
 // Lesson 3: Talking with the user
@@ -108,15 +69,15 @@ Console.WriteLine($"Hello, {name}!");
 Console.WriteLine($"In 5 years, you will be {ageInFiveYears} years old.");
 ```
 
-### Step 3: Run it
+### Step 3: Run it and answer the questions
 
-```cmd
-dotnet run
-```
+1. Press **Ctrl + F5**.
+2. The black window shows `What is your name?` and **waits**. Click on the black window, type your name, and press **Enter**.
+3. It asks for your age. Type a number and press **Enter**.
 
-The program asks a question and **waits**. Type your answer and press **Enter**.
+## The Output
 
-✅ **You should see** (the words after each `?` are what **you** type):
+✅ **You will see** (here the user typed `Juan` and `18`):
 
 ```text
 What is your name? Juan
@@ -125,80 +86,78 @@ Hello, Juan!
 In 5 years, you will be 23 years old.
 ```
 
+Press any key to close the black window.
+
+> [!WARNING]
+> **Always close the black window before you run the program again.** If an old black window is still waiting for an answer, Visual Studio cannot start the new one and shows an error that says a file "is being used by another process". If that happens, close all the black windows and run again.
+
 ---
 
-## 🔎 Line by Line
+## What the Code Means
 
-```cs
-Console.Write("What is your name? ");
-string name = Console.ReadLine() ?? "";
+**Everything the user types is text.** When the user types `18`, the program gets the **text** `"18"`, not the number `18`. That matters, because text and numbers behave differently:
+
+```csharp
+string a = "5";
+string b = "5";
+Console.WriteLine(a + b);   // shows 55  (text is joined together)
+
+int x = 5;
+int y = 5;
+Console.WriteLine(x + y);   // shows 10  (numbers are added)
 ```
 
-Show the question, then wait for the answer and keep it in the box `name`.
+So before doing math, you must **turn the text into a number**:
 
 ```cs
-Console.Write("How old are you? ");
 string ageText = Console.ReadLine() ?? "";
 int age = int.Parse(ageText);
 ```
 
-The answer comes in as text (`"18"`), so we keep it in a `string` box called `ageText`. Then `int.Parse` turns it into a real number and we keep that in the `int` box `age`.
+- `int.Parse(text)` turns text into a **whole number**.
+- `double.Parse(text)` turns text into a **decimal number**.
+
+"Parse" simply means *"read this text and turn it into a number."*
+
+Now `age` is a real number, so the math works:
 
 ```cs
 int ageInFiveYears = age + 5;
 ```
 
-Now that `age` is a number, we can do math with it.
-
 ---
 
-## ⚠️ Common Mistakes
+## If Something Goes Wrong
 
-### Mistake 1: The program "freezes"
+**Nothing happens after I run the program.**
+The program is not stuck. It is **waiting for you**. Click the black window, type an answer, and press **Enter**.
 
-You run the program and nothing seems to happen. **It is not frozen.** It is waiting for you to type something and press **Enter**.
-
-### Mistake 2: Typing letters when a number is expected
-
-If you type `eighteen` for your age, the program **crashes**:
+**I typed letters for my age, and the black window shows a long message:**
 
 ```text
 Unhandled exception. System.FormatException: The input string 'eighteen' was not in a correct format.
 ```
 
-`int.Parse` can only read digits like `18`. For now, **type a valid number**.
+This is called a **crash**. `int.Parse` can only read digits like `18`. Close the black window, run again, and type a number.
 
-> [!NOTE]
-> Do not worry. In **Lesson 05** you will learn to check if the input is a number before using it, and in **Lesson 10** you will learn to stop crashes completely.
+> Do not worry. In Lesson 05 you will learn to check the input first, and in Lesson 10 you will learn to stop crashes completely.
 
-### Mistake 3: Using a text box in math
+**Error List: `CS0029  Cannot implicitly convert type 'string' to 'int'`**
+You tried to do math with text, like `int result = ageText + 5;`. Turn the text into a number first: `int.Parse(ageText)`.
 
-```cs
-string ageText = Console.ReadLine() ?? "";
-int ageInFiveYears = ageText + 5;
-```
+**A green wavy line under `Console.ReadLine()`**
+You forgot `?? ""`. Write `Console.ReadLine() ?? ""`.
 
-```text
-error CS0029: Cannot implicitly convert type 'string' to 'int'
-```
-
-**Fix:** Turn the text into a number first with `int.Parse(ageText)`.
-
-### Mistake 4: Forgetting `?? ""`
-
-```cs
-string name = Console.ReadLine();
-```
-
-This shows a yellow warning: `warning CS8600: Converting null literal or possible null value to non-nullable type.` The program still runs, but **fix it** by adding `?? ""`.
+**An error says a file "is being used by another process".**
+An old black window is still open. Close every black window, then run again.
 
 ---
 
-## 🏋️ Practice
+## Exercise
 
-Use your `Lesson03` project. Replace the code for each exercise.
+Do these in your `Lesson03` project. Clear the editor each time.
 
-**Exercise 1.** Ask the user for their favorite color and their favorite food. Then print: `You like red and pancit!` (using their answers).
+**Exercise 1.** Ask the user for their favorite color and favorite food. Then show: `You like red and pancit!` (using their answers).
 
 <details>
 <summary>Show answer</summary>
@@ -215,7 +174,7 @@ Console.WriteLine($"You like {color} and {food}!");
 
 </details>
 
-**Exercise 2.** Ask for two whole numbers and print their sum.
+**Exercise 2.** Ask for two whole numbers and show their sum, like this:
 
 ```text
 First number: 12
@@ -237,11 +196,18 @@ int sum = first + second;
 Console.WriteLine($"{first} + {second} = {sum}");
 ```
 
-Notice that `int.Parse(Console.ReadLine() ?? "")` reads **and** converts in one line. Both ways are correct.
+Here, `int.Parse(Console.ReadLine() ?? "")` reads the answer **and** turns it into a number in one line. Both ways are correct.
 
 </details>
 
-**Exercise 3.** Ask for the year the user was born, then show how old they will be in the year **2030**.
+## ⭐ Bonus Challenge
+
+Ask the user what **year** they were born. Then show how old they will be in the year **2030**.
+
+```text
+What year were you born? 2008
+In 2030, you will be 22 years old.
+```
 
 <details>
 <summary>Show answer</summary>
@@ -258,13 +224,13 @@ Console.WriteLine($"In 2030, you will be {ageIn2030} years old.");
 
 ---
 
-## 📌 Recap
+## Remember
 
-- `Console.ReadLine() ?? ""` waits for the user to type and press Enter, then gives back the text.
-- Use `Console.Write` for the question so the answer appears on the same line.
-- Everything the user types is **text** (`string`).
+- `Console.ReadLine() ?? ""` waits for the user to type and press **Enter**.
+- Use `Console.Write` for the question, so the answer is typed on the same line.
+- Everything the user types is **text**.
 - `int.Parse(text)` and `double.Parse(text)` turn text into numbers.
-- If the user types something that is not a number, `Parse` crashes. You will fix this in Lessons 05 and 10.
+- Close the black window before you run the program again.
 
 ---
 

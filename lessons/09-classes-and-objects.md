@@ -1,86 +1,99 @@
 # Lesson 09: Classes and Objects (Making Your Own Types)
 
-| | |
-|---|---|
-| **Part** | 2: Intermediate |
-| **Time** | About 90 minutes |
-| **Before this** | [Lesson 08](08-methods.md) |
+**Part 2: Intermediate** · About 90 minutes
 
-## 🎯 Goal
+## What You Will Learn
 
-By the end of this lesson, you will:
+- The difference between a **class** and an **object**
+- How to make a `Student` class
+- How to add a **second file** to your project
+- How to keep many students in a list
 
-- Understand the difference between a **class** and an **object**
-- Create a `Student` class with **properties**
-- Put the class in its **own file**
-- Keep many students in a `List<Student>`
+## The Idea
 
----
-
-## 🧠 The Big Idea
-
-So far, each variable holds one simple value: a name, an age, a grade. But a **student** has many pieces of information that belong together:
+So far, each variable holds one simple value: a name, an age, a grade. But a **student** has several pieces of information that belong together:
 
 - Student number
 - Full name
 - Course
 - Year level
 
-Instead of four separate variables for every student, you can create your own **type** called `Student` that holds all four together.
-
-### Class vs. Object
+You can make your **own type**, called `Student`, that holds all four together.
 
 Think of a **blank enrollment form**:
 
 ```text
-CLASS (the blank form)              OBJECTS (filled-in forms)
-┌──────────────────────┐            ┌──────────────────────────┐
-│ Student Number: ____ │            │ Student Number: 2026-0001│
-│ Full Name:      ____ │   ───►     │ Full Name: Juan Dela Cruz│
-│ Course:         ____ │            │ Course: BSIT             │
-│ Year Level:     ____ │            │ Year Level: 1            │
-└──────────────────────┘            └──────────────────────────┘
-                                    ┌──────────────────────────┐
-                                    │ Student Number: 2026-0002│
-                                    │ Full Name: Maria Santos  │
-                                    │ Course: BSCS             │
-                                    │ Year Level: 2            │
-                                    └──────────────────────────┘
+ CLASS (the blank form)             OBJECTS (filled-in forms)
+┌──────────────────────┐           ┌───────────────────────────┐
+│ Student Number: ____ │           │ Student Number: 2026-0001 │
+│ Full Name:      ____ │   ───►    │ Full Name: Juan Dela Cruz │
+│ Course:         ____ │           │ Course: BSIT              │
+│ Year Level:     ____ │           │ Year Level: 1             │
+└──────────────────────┘           └───────────────────────────┘
+                                   ┌───────────────────────────┐
+                                   │ Student Number: 2026-0002 │
+                                   │ Full Name: Maria Santos   │
+                                   │ Course: BSCS              │
+                                   │ Year Level: 2             │
+                                   └───────────────────────────┘
 ```
 
-| Word | Meaning | Example |
-|---|---|---|
-| **Class** | The **blueprint** or blank form. It describes what information every student has | `Student` |
-| **Object** | One **real thing** made from the class. A filled-in form | Juan's record, Maria's record |
-| **Property** | One piece of information in the class. A blank on the form | `FullName`, `Course` |
+- A **class** is the **blank form**. It says what information every student has.
+- An **object** is one **filled-in form**: Juan's record, Maria's record.
+- A **property** is one blank on the form: `FullName`, `Course`.
 
-You write the class **once**. Then you can create as many objects from it as you need.
+You write the class **once**. Then you can make as many objects from it as you need.
 
 ---
 
-## 🛠️ Let's Build It
+## Step by Step
 
-### Step 1: Create the project
+### Step 1: Create a new project named `Lesson09`
 
-```cmd
-cd C:\CSharpCourse
-dotnet new console -n Lesson09
-cd Lesson09
-code .
+1. Open **Visual Studio**. (If it is already open, close it first and open it again.)
+2. Click **Create a new project**.
+3. Click **Console App** (the one with **C#**, not ".NET Framework"), then click **Next**.
+4. In **Project name**, type `Lesson09`. Check that **Location** says `C:\CSharpCourse`. Click **Next**.
+5. Click **Create**.
+
+### Step 2: Add a new file named `Student.cs`
+
+Each class gets its own file. This is new, so go slowly.
+
+**1.** Look at the **Solution Explorer** on the right side. You will see:
+
+```text
+Solution 'Lesson09' (1 of 1 project)
+   Lesson09                ← this line is your PROJECT
+      Dependencies
+      Program.cs
 ```
 
-### Step 2: Create a new file called `Student.cs`
+**2.** **Right-click** the project line **Lesson09** (the second line, not the first line that starts with "Solution").
 
-Each class goes in its own file, named after the class.
+**3.** In the menu that appears, move your mouse to **Add**.
 
-1. In VS Code, look at the **Explorer** panel on the left (it lists your files).
-2. Move your mouse over the panel. Click the **New File** icon (a page with a `+`) that appears next to the folder name `LESSON09`.
-3. Type the name **`Student.cs`** and press **Enter**.
+**4.** In the next menu, click **Class...**
 
-> [!IMPORTANT]
-> The name must be exactly `Student.cs`, with a capital **S** and ending in **`.cs`**. Make sure it is in the same folder as `Program.cs`, not inside `obj`.
+✅ **You will see:** a small window with a **Name** box.
 
-### Step 3: Write the class in `Student.cs`
+**5.** In the **Name** box, delete what is there and type: `Student.cs`
+
+**6.** Click **Add**.
+
+✅ **You will see:** a new tab named **Student.cs** opens in the editor. Visual Studio has put some starter code in it. `Student.cs` also appears in the Solution Explorer.
+
+> Can't see the Solution Explorer? Click **View** on the menu bar, then **Solution Explorer**.
+
+### Step 3: Type the class
+
+1. Click inside the editor of the **Student.cs** tab.
+2. Press **Ctrl + A**, then **Delete**, to remove the starter code.
+3. Type this code:
+
+## The Code
+
+**File: `Student.cs`**
 
 ```csharp
 // Student.cs - the blueprint for a student
@@ -99,9 +112,13 @@ public class Student
 }
 ```
 
-### Step 4: Write the main program in `Program.cs`
+### Step 4: Type the main program
 
-Replace everything in `Program.cs` with:
+1. In the **Solution Explorer**, double-click **Program.cs**. Its tab opens in the editor.
+2. Press **Ctrl + A**, then **Delete**.
+3. Type this code:
+
+**File: `Program.cs`**
 
 ```csharp
 // Lesson 9: Keeping a list of Student objects
@@ -178,13 +195,16 @@ while (running)
 }
 ```
 
+> [!TIP]
+> You now have **two tabs** at the top of the editor: **Student.cs** and **Program.cs**. Click a tab to switch between the files. Always check which tab you are typing in!
+
 ### Step 5: Run it
 
-```cmd
-dotnet run
-```
+Press **Ctrl + F5**. Type `2`, then `1` (and add a student), then `2` again, then `3`.
 
-✅ **You should see** (choosing `2`, then `1` to add Ana Reyes, then `2` again, then `3`):
+## The Output
+
+✅ **You will see:**
 
 ```text
 
@@ -228,7 +248,7 @@ Goodbye!
 
 ---
 
-## 🔎 Line by Line
+## What the Code Means
 
 ### The class (`Student.cs`)
 
@@ -239,27 +259,25 @@ public class Student
 }
 ```
 
-`public class Student` creates a new type named `Student`. `public` means *"other files (like Program.cs) are allowed to use it."* Class names use **PascalCase**.
+This makes a new type named `Student`. The word `public` means *"other files, like Program.cs, are allowed to use it."*
 
 ```cs
 public string FullName { get; set; } = "";
 ```
 
-This is a **property**: one piece of information that every `Student` object has.
+This is a **property**: one blank on the form. Read it piece by piece:
 
-| Piece | Meaning |
-|---|---|
-| `public` | Other files can read and change it |
-| `string` | Its type |
-| `FullName` | Its name (PascalCase for properties) |
-| `{ get; set; }` | It can be **read** (get) and **changed** (set) |
-| `= "";` | Its starting value is empty text. This prevents C# warnings about "null" text |
+- `public` → other files can use it.
+- `string` → it holds text.
+- `FullName` → its name. Property names start with a capital letter.
+- `{ get; set; }` → its value can be **read** (get) and **changed** (set).
+- `= "";` → it starts as empty text. (This keeps Visual Studio from showing a warning.)
 
 ```cs
 public int YearLevel { get; set; }
 ```
 
-Number properties start at `0` automatically, so they do not need `= ...` at the end.
+Number properties start at `0` by themselves, so they do not need `= ...` at the end.
 
 ```cs
 public void Display()
@@ -268,13 +286,13 @@ public void Display()
 }
 ```
 
-A class can also have **methods**. `Display` shows this student's information. Inside the class, you can use the properties directly by name.
+A class can have **methods** too. `Display` shows this student's information.
 
-### Creating objects (`Program.cs`)
+### Making objects (`Program.cs`)
 
-There are two ways to create an object and fill in its properties.
+There are two ways to make an object and fill it in.
 
-**Way 1: create it first, then set each property** (used in option 1):
+**Way 1: make it, then fill in each property.**
 
 ```cs
 Student newStudent = new Student();
@@ -282,7 +300,10 @@ newStudent.FullName = "Ana Reyes";
 newStudent.Course = "BSIT";
 ```
 
-**Way 2: create it and fill it in one step** (used for the sample students):
+- `new Student()` means *"make a new blank Student form."*
+- `newStudent.FullName` means *"the FullName of this student."* The dot means "belongs to".
+
+**Way 2: make it and fill it in, all at once.**
 
 ```cs
 new Student
@@ -294,10 +315,7 @@ new Student
 }
 ```
 
-Both ways give you the same result. Way 2 is shorter when you already know all the values.
-
-- `new Student()` means *"make a new blank Student form."*
-- `newStudent.FullName` means *"the FullName of this student."* The dot `.` means "belongs to", just like `Console.WriteLine`.
+Both ways give the same result. Way 2 is shorter when you already know all the values.
 
 ### A list of objects
 
@@ -305,7 +323,7 @@ Both ways give you the same result. Way 2 is shorter when you already know all t
 List<Student> students = new List<Student>();
 ```
 
-Just like `List<string>` holds text, `List<Student>` holds `Student` objects.
+`List<string>` holds text. In the same way, `List<Student>` holds `Student` objects.
 
 ```cs
 foreach (Student student in students)
@@ -318,46 +336,27 @@ For each student in the list, call **that student's** `Display` method.
 
 ---
 
-## ⚠️ Common Mistakes
+## If Something Goes Wrong
 
-### Mistake 1: The class file name or class name does not match
+**Error List: `CS0246  The type or namespace name 'Student' could not be found`**
+Visual Studio cannot find your class. Check three things:
 
-If `Program.cs` says `new Student()` but your class is named `student` (small s), you get:
+1. In the Solution Explorer, is there a file named `Student.cs`?
+2. In that file, does the first line of code say `public class Student` (capital **S**)?
+3. Did you delete **all** of the starter code before typing? Nothing should be above `// Student.cs` or `public class Student`.
 
-```text
-error CS0246: The type or namespace name 'Student' could not be found (are you missing a using directive or an assembly reference?)
-```
+**Error List: `CS1061  'Student' does not contain a definition for 'Name'`**
+You used a property that is not in the class. Use the exact name: `FullName`, not `Name`.
 
-**Fix:** Check that the class is `public class Student` with a capital **S**, and the file `Student.cs` is in the **same folder** as `Program.cs`.
+**Error List: `CS0165  Use of unassigned local variable`**
+You forgot `new`. Write `Student s = new Student();`
 
-### Mistake 2: Forgetting `new`
-
-```cs
-Student s;
-s.FullName = "Ana";
-```
-
-```text
-error CS0165: Use of unassigned local variable 's'
-```
-
-**Fix:** Create the object first: `Student s = new Student();`
-
-### Mistake 3: Using a property that does not exist
-
-```cs
-newStudent.Name = "Ana";
-```
-
-```text
-error CS1061: 'Student' does not contain a definition for 'Name' ...
-```
-
-**Fix:** Use the exact property name from the class: `FullName`.
+**I typed the class into Program.cs by mistake.**
+Look at the tabs at the top of the editor. Click the right tab, and move the code to the correct file.
 
 ---
 
-## 🏋️ Practice
+## Exercise
 
 **Exercise 1.** Add an `Email` property to the `Student` class. Ask for it in option 1, and show it in `Display()`.
 
@@ -370,13 +369,13 @@ In `Student.cs`, add this property:
 public string Email { get; set; } = "";
 ```
 
-And change `Display()`:
+And change the line inside `Display()`:
 
 ```cs
 Console.WriteLine($"[{StudentNumber}] {FullName} - {Course} {YearLevel} - {Email}");
 ```
 
-In `Program.cs`, inside `case "1":`, before `students.Add(newStudent);`, add:
+In `Program.cs`, inside `case "1":`, just before `students.Add(newStudent);`, add:
 
 ```cs
 Console.Write("Email: ");
@@ -385,7 +384,7 @@ newStudent.Email = Console.ReadLine() ?? "";
 
 </details>
 
-**Exercise 2.** Add a method `bool IsGraduating()` to the `Student` class. It returns `true` if `YearLevel` is `4`. In option 2, show `(graduating)` next to graduating students.
+**Exercise 2.** Add a method `bool IsGraduating()` to the `Student` class. It gives back `true` when `YearLevel` is `4`. In option 2, show `(graduating)` under each graduating student.
 
 <details>
 <summary>Show answer</summary>
@@ -415,12 +414,20 @@ foreach (Student student in students)
 
 </details>
 
-**Exercise 3.** In a new project (`Lesson09Practice`), create a `Book` class with `Title`, `Author`, and `Year`. Create three books in a `List<Book>` and print them all.
+## ⭐ Bonus Challenge
+
+Start a **new project** named `Lesson09Bonus`. Make a `Book` class (in its own file, `Book.cs`) with three properties: `Title`, `Author`, and `Year`. In `Program.cs`, make a list of three books and show them all.
+
+```text
+Noli Me Tangere by Jose Rizal (1887)
+El Filibusterismo by Jose Rizal (1891)
+Banaag at Sikat by Lope K. Santos (1906)
+```
 
 <details>
 <summary>Show answer</summary>
 
-`Book.cs`:
+**File: `Book.cs`**
 
 ```csharp
 public class Book
@@ -431,7 +438,7 @@ public class Book
 }
 ```
 
-`Program.cs`:
+**File: `Program.cs`**
 
 ```cs
 List<Book> books = new List<Book>();
@@ -450,14 +457,14 @@ foreach (Book book in books)
 
 ---
 
-## 📌 Recap
+## Remember
 
-- A **class** is a blueprint (`Student`). An **object** is one real thing made from it (Juan's record).
-- **Properties** hold the information: `public string FullName { get; set; } = "";`
-- Create objects with `new Student()` or `new Student { FullName = "...", ... }`.
-- Use the dot to reach a property or method: `student.FullName`, `student.Display()`.
-- Put each class in its own file, named after the class (`Student.cs`).
-- `List<Student>` keeps many objects together.
+- A **class** is a blank form (`Student`). An **object** is one filled-in form (Juan's record).
+- A **property** holds one piece of information: `public string FullName { get; set; } = "";`
+- Make objects with `new Student()` or `new Student { FullName = "...", ... }`
+- Use the dot to reach inside an object: `student.FullName`, `student.Display()`
+- To add a file: right-click the project → **Add** → **Class...** → type the name → **Add**.
+- Each class goes in its own file, named after the class.
 
 ---
 

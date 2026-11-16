@@ -9,16 +9,17 @@ This guide is for teachers using **C# From Zero: Hello World to Secure Accounts*
 | | |
 |---|---|
 | **Audience** | Learners with **zero** programming or technical experience |
-| **Platform** | Windows, Command Prompt, VS Code, .NET 10 (LTS) |
-| **Database** | SQLite through `Microsoft.Data.Sqlite` (nothing to install on the computers except .NET) |
-| **Total time** | About 27 hours of guided work, plus practice |
+| **Tools** | Windows 10 or 11, **Visual Studio Community** (the free edition) with the **.NET desktop development** workload |
+| **Language** | C# on .NET 10 (LTS) |
+| **Database** | SQLite, through the `Microsoft.Data.Sqlite` NuGet package (no database server to install) |
+| **Total time** | About 28 hours of guided work, plus practice |
 | **Final outcome** | A console account system with registration, login, and password change, storing PBKDF2-hashed passwords in a database |
 
 ### Learning outcomes
 
 By the end of the course, students can:
 
-1. Create, build, and run C# console programs from the Command Prompt.
+1. Create, run, and fix C# console programs in Visual Studio.
 2. Use variables, input, operators, decisions, loops, lists, methods, and classes.
 3. Handle bad input and runtime errors without crashing.
 4. Design a database table, and write `CREATE`, `INSERT`, `SELECT`, `UPDATE`, and `DELETE` statements.
@@ -29,29 +30,49 @@ By the end of the course, students can:
 
 ---
 
-## Design Decisions (and Why)
+## How the Lessons Are Built
 
-These choices were made to keep students from getting stuck or second-guessing.
+Every lesson has the same parts, in the same order:
 
-| Decision | Reason |
+**What You Will Learn → The Idea → Step by Step → The Code → The Output → What the Code Means → If Something Goes Wrong → Exercise → ⭐ Bonus Challenge → Remember**
+
+Design choices that keep beginners from getting lost:
+
+| Choice | Reason |
 |---|---|
-| **One consistent workflow** (`dotnet new` → `cd` → `code .` → `dotnet run`) in every lesson | Students never wonder "how do I start this time?" |
-| **Top-level statements** (no `class Program` / `static void Main`) | It is the default .NET template. Students write real code from line 1, with no unexplained boilerplate |
-| **`Console.ReadLine() ?? ""`** everywhere | Keeps the build free of nullable warnings, which confuse beginners. It is taught as a fixed rule in Lesson 03 |
-| Properties written as `= "";` | Same reason: no `CS8618` warnings |
-| **Only four basic types** (`string`, `int`, `double`, `bool`), plus `long` when needed | Fewer concepts. `decimal`, `var`, `char` details, etc. are left for later study |
-| **SQLite** instead of MySQL or SQL Server | No server to install, configure, or start. The database is a single file next to the program. The C# pattern (connection → command → parameters → execute) is the same for every database |
-| **Plain ADO.NET** (`Microsoft.Data.Sqlite`), not Entity Framework | Students see and understand the real SQL. EF Core is suggested as a next step |
-| **Parameters from the very first `INSERT`** (Lesson 14) | SQL injection is taught before students can form a bad habit |
-| **PBKDF2** (built into .NET), not a NuGet hashing package | No extra dependency, and students see the salt and iteration count explicitly. 600,000 iterations follows the OWASP recommendation for PBKDF2-HMAC-SHA256 |
-| Every expected output is **shown exactly** | Students can check their own work immediately |
-| Every `Common Mistakes` error message was **captured from the real compiler** | Students recognize the exact text they see on screen |
+| **Setup is Lesson 00**, with every installer click written out | Students with no technical background can install the tools alone |
+| **One click or one action per numbered step**, with the exact button name in bold | No guessing about what to press next |
+| A **"✅ You will see"** check after each important step | Students can confirm they are on track before moving on |
+| **Do first, explain after.** The steps come before the explanation of the code | Students get a working result quickly, then learn why it works |
+| The same **5-click "create a project" block** at the start of every lesson | The routine becomes automatic through repetition |
+| Run with **Ctrl + F5** (Start Without Debugging) | The console window stays open, and crashes are shown as plain text instead of pausing in the debugger |
+| **Top-level statements** (no `class Program` / `static void Main`) | It is the default template. Students write real code from line 1 |
+| **`Console.ReadLine() ?? ""`** everywhere, and properties written as `= "";` | No nullable warnings to confuse beginners. Taught as a fixed habit in Lesson 03 |
+| **Only four basic types** (`string`, `int`, `double`, `bool`), plus `long` when needed | Fewer concepts at the start |
+| **SQLite** instead of MySQL or SQL Server | Nothing extra to install or start. The C# pattern (connection → command → parameters → execute) is the same for every database |
+| **Plain SQL** through `Microsoft.Data.Sqlite`, not Entity Framework | Students see and understand the real SQL |
+| **Parameters from the very first `INSERT`** (Lesson 14) | SQL injection is taught before a bad habit can form |
+| **PBKDF2** (built into .NET), 600,000 iterations | No extra dependency. Follows the OWASP recommendation for PBKDF2-HMAC-SHA256 |
+| **Exercises plus one Bonus Challenge** in every lesson, with hidden answers | Students practice, then stretch. Fast students always have something to do |
 
-### Code conventions in the lessons
+### About the code
 
-- Blocks marked ` ```csharp ` are **complete, compilable files**. They were all compiled automatically against .NET 10.
-- Blocks marked ` ```cs ` are **fragments** (a few lines to add or change inside a bigger file).
-- The [`code/`](code/) folder holds the **finished program for every lesson**. Each was built with zero warnings and run with sample input.
+- The [`code/`](code/) folder holds the **finished program for every lesson**. Each one was built with zero warnings and run with sample input.
+- In the lesson files, blocks marked ` ```csharp ` are **complete programs**. They were all compiled automatically. Blocks marked ` ```cs ` are **fragments** (a few lines to add or change).
+- Error messages quoted in the lessons were captured from the real C# compiler and runtime.
+
+> [!IMPORTANT]
+> **Please do one walk-through before your first class.** The C# code was tested by building and running it. The Visual Studio click paths (installer, menus, dialogs) were written from Microsoft's documented steps for Visual Studio 2026, but they were **not** tested on a Windows computer. Follow Lesson 00, Lesson 01, Lesson 12 (NuGet), and Lesson 16 (files) once on a lab PC, and adjust any button name that differs in your version of Visual Studio. Adding your own **screenshots** to Lessons 00 and 01 will help beginners a lot.
+
+---
+
+## Before the First Class
+
+- [ ] Install **Visual Studio Community** with the **.NET desktop development** workload on every lab computer, or ask students to do [Lesson 00](lessons/00-before-you-start.md) at home. The download is several gigabytes, so do not leave this for the first class meeting.
+- [ ] On each computer, open Visual Studio once and get past the sign-in and theme screens.
+- [ ] Check that students can create projects in `C:\CSharpCourse`. If lab computers do not allow that, choose another folder (for example `D:\CSharpCourse`) and tell students to use it as the **Location** in every lesson.
+- [ ] Check that the computers can reach **nuget.org**. Lessons 12 to 20 install the `Microsoft.Data.Sqlite` package from there.
+- [ ] Open [`code/Lesson20`](code/Lesson20/) yourself (**Open a project or solution** → `Lesson20.csproj`) and run it, so you know what the final project looks like.
 
 ---
 
@@ -68,7 +89,7 @@ These choices were made to keep students from getting stuck or second-guessing.
 | 5 | Lesson 08: Methods | Lesson 09: Classes |
 | 6 | Lesson 10: Errors | Lesson 11: Files · **Quiz 2** (Lessons 08–11) |
 | 7 | Lesson 12: Databases and SQL | Lesson 13: Connecting |
-| 8 | Lesson 14: Inserting safely | Lesson 15: CRUD app |
+| 8 | Lesson 14: Inserting safely | Lesson 15: Records manager |
 | 9 | Lesson 16: CSV upload · **Quiz 3** (Lessons 12–16) | Lessons 17–18: Hashing |
 | 10 | Lesson 19: Register | Lesson 20: Log in · **Final project check** |
 
@@ -84,39 +105,32 @@ These choices were made to keep students from getting stuck or second-guessing.
 
 ---
 
-## Before the First Class
-
-- [ ] Install the **.NET 10 SDK** and **VS Code** (with the **C#** extension) on all lab computers, or ask students to complete [Lesson 00](lessons/00-before-you-start.md) at home.
-- [ ] Check that `dotnet --version` works in a **new** Command Prompt window on each computer.
-- [ ] Check that the lab computers can reach **nuget.org** (needed for `dotnet add package` in Lessons 12–20). If the network blocks it, prepare the packages in advance.
-- [ ] Check that students can create folders in `C:\`. If not, use a folder they can write to (for example `D:\CSharpCourse`), and tell students to replace `C:\CSharpCourse` with it in every lesson.
-- [ ] Run [`code/Lesson20`](code/Lesson20/) once yourself, so you know what the final project looks like.
-
----
-
 ## Teaching Tips
 
-1. **Live-code the "Let's Build It" section.** Type slowly, and run the program often. Make a mistake on purpose, and read the error message out loud.
-2. **Read errors together.** Teach students to find the **line number** in the message (`Program.cs(7,35)`). This one skill saves more class time than anything else.
-3. **Use "predict, then run".** Before running a program, ask: *"What do you think it will show?"*
-4. **Pair programming** works well from Lesson 08: one student types, the other reads the lesson and checks. Swap every 15 minutes.
-5. **Lessons 01–11: no copy and paste.** Typing builds familiarity with syntax. From Lesson 12, copying is allowed, but ask students to explain lines back to you.
-6. **Lesson 14 (SQL injection) and Lesson 17 (hash cracking) are memorable.** Let students run the attack demos themselves. Seeing the "hacker's name" saved harmlessly, or `sunshine` cracked in 5 tries, makes the lesson stick.
-7. **Watch for the "two windows" confusion.** Some students type C# into the Command Prompt or commands into VS Code. The table in Lesson 00 ("VS Code = notebook, Command Prompt = play button") helps.
+1. **Project your screen and do the "Step by Step" part live.** Go slowly. Say the name of every button before you click it.
+2. **Make a mistake on purpose**, and read the Error List out loud. Teach students to double-click the row to jump to the mistake. This one skill saves more class time than anything else.
+3. **Use "guess, then run".** Before running a program, ask: *"What do you think it will show?"*
+4. **Lessons 01–11: no copy and paste.** Typing builds familiarity. From Lesson 12, copying is allowed, but ask students to explain lines back to you.
+5. **Pair work** is effective from Lesson 08: one student types, the other reads the lesson and checks. Swap every 15 minutes.
+6. **Lesson 14 (SQL injection) and Lesson 17 (password guessing) are memorable.** Let students run the attack demos themselves.
+7. **Use the Bonus Challenge for fast finishers**, so that the rest of the class can finish the exercises without pressure.
 
 ### The most common student problems
 
-| Problem | Where it usually appears | Quick fix |
+| Problem | Where it appears | Quick fix |
 |---|---|---|
-| Running `dotnet run` in the wrong folder | Every lesson | Check the prompt. `cd C:\CSharpCourse\LessonXX` |
-| Forgetting to save | Lessons 01–05 | Turn on **File → Auto Save** in Lesson 01 |
-| Lowercase `console`, or missing `;` | Lessons 01–04 | Read the error, find the line |
-| `int / int` losing decimals | Lesson 04 | Use `double` |
-| `=` vs `==` | Lesson 05 | Read `==` as "is equal to" |
-| Class file in the wrong folder (inside `obj`) | Lesson 09 | Move it next to `Program.cs` |
-| Forgetting `dotnet add package` | Lessons 12–20 | The `CS0234` error means the package is missing |
-| Changed `CREATE TABLE` but the old table remains | Lessons 14–20 | `del school.db` (practice data only) |
-| DB Browser keeps the database locked | Lessons 13–20 | Click **Close Database** before running the program |
+| Picked **Console App (.NET Framework)** | Lesson 01 onward | Recreate the project with the right template |
+| Clicked **Yes** on the "build errors" message | Lesson 01 onward | Teach: always click **No**, then read the Error List |
+| An old console window is still running, so the build fails ("being used by another process") | Lesson 03 onward | Close all black windows, then run again |
+| Used the solid green ▶ button, and the program "pauses" on a crash | Any lesson | Stop (red square), then use **Ctrl + F5** |
+| Lowercase `console`, or a missing `;` | Lessons 01–04 | Read the Error List, double-click the row |
+| `int / int` loses the decimals | Lesson 04 | Use `double` |
+| `=` instead of `==` | Lesson 05 | Read `==` as "is equal to" |
+| Did not delete the starter code in a new class file | Lessons 09, 15, 18, 19 | **Ctrl + A**, **Delete**, paste again |
+| Typed code into the wrong tab | Lesson 09 onward | Check the tab name before typing |
+| Forgot the NuGet package | Lessons 12–20 | `CS0234` means the package is missing |
+| Forgot **Copy to Output Directory** | Lesson 16 | `File not found` → set it to **Copy if newer** |
+| Changed `CREATE TABLE`, but the old table remains | Lessons 14–20 | Delete the `.db` file in `bin\Debug\net10.0` |
 
 ---
 
@@ -124,43 +138,30 @@ These choices were made to keep students from getting stuck or second-guessing.
 
 ### Quizzes
 
-Each lesson's **Practice** section can be used directly as graded exercises. The answers are in the lessons (hidden under "Show answer"), so for graded work, change the numbers or the scenario. For example, use a library (`Book`) or a store (`Product`) instead of `Student`.
+Each lesson's **Exercise** and **Bonus Challenge** can be used as graded work. The answers are in the lessons, so for graded work, change the numbers or the scenario. For example, use a library (`Book`) or a store (`Product`) instead of `Student`.
 
 ### Mid-course project (after Lesson 11)
 
-**"Personal Expense Tracker"**: a menu program that adds expenses (description, amount), lists them, shows the total, and saves them to a CSV file so they are still there after a restart.
+**"Personal Expense Tracker"**: a menu program that adds expenses (description and amount), lists them, shows the total, and saves them to a CSV file so that they are still there after a restart.
 
 ### Database project (after Lesson 16)
 
-**"Library Book Records"**: full CRUD for books (ISBN unique, title, author, year, copies), plus a CSV upload of new books that reports bad rows.
+**"Library Book Records"**: full CRUD for books (unique ISBN, title, author, year, copies), plus a CSV upload of new books that reports bad rows.
 
 ### Final project rubric (Lessons 19–20)
 
 | Criteria | Points |
 |---|---|
-| **Registration** with username rules and duplicate check | 15 |
-| **Password rules**, confirmation, hidden typing (`*`) | 10 |
-| **Only PBKDF2 hashes stored** (verify in the database) | 20 |
+| **Registration** with username rules and a duplicate check | 15 |
+| **Password rules**, typed twice, hidden typing (`*`) | 10 |
+| **Only PBKDF2 hashes are stored** (check the database) | 20 |
 | **Login** with `Verify`, the same message for a wrong username or password, 3 tries | 15 |
-| **Change password** that requires the current password | 10 |
-| **All SQL uses parameters** (no string concatenation with user input) | 15 |
-| **Code organization** (one job per file), readable names, no crashes on bad input | 10 |
+| **Change password** requires the current password | 10 |
+| **All SQL uses parameters** (no joining user input into SQL text) | 15 |
+| **Code organization** (one job per file), clear names, no crashes on bad input | 10 |
 | **Explanation**: the student explains hashing, salt, and SQL injection in their own words | 5 |
 | **Total** | **100** |
 
-Bonus points: any of the **Optional Challenges** in Lesson 20 (last login, delete account, admin, lockout).
-
----
-
-## Running the Finished Programs
-
-Every lesson's finished program is in `code/LessonXX`. To run one:
-
-```cmd
-cd code\Lesson20
-dotnet run
-```
-
-Lessons 12–16 and 19–20 download the SQLite package automatically the first time they run (this needs internet). Database files (`*.db`) are created next to the program on the first run, and are not stored in this repository.
+The test checklist in Lesson 20 ("Exercise: Test Your Final Project") can be used directly as your checking sheet. Bonus points: any of the **Bonus Challenges** in Lesson 20.
 
 [🏠 Course Home](README.md)

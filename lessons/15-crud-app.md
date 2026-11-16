@@ -1,14 +1,10 @@
 # Lesson 15: Student Records Manager (Create, Read, Update, Delete)
 
-| | |
-|---|---|
-| **Part** | 3: Databases |
-| **Time** | About 2 hours (you can split it into two sessions) |
-| **Before this** | [Lesson 14](14-inserting-data.md) |
+**Part 3: Databases** · About 2 hours (you can split it into two sittings)
 
-## 🎯 Goal
+## What You Will Learn
 
-By the end of this lesson, you will build a complete **Student Records Manager** that can:
+You will build a complete **Student Records Manager**. It can:
 
 - **Add** students
 - **Show** all students in a neat table
@@ -16,82 +12,65 @@ By the end of this lesson, you will build a complete **Student Records Manager**
 - **Update** a student's information
 - **Delete** a student
 
-You will also learn to **read many rows** with `ExecuteReader`, and to organize a program into **several files**.
+You will also learn to **read many rows** from a database, and to split a program into **several files**.
 
----
+## The Idea: CRUD
 
-## 🧠 The Big Idea: CRUD
-
-Almost every business system in the world does four basic things with data. Programmers call them **CRUD**:
+Almost every business system in the world does four things with data. Programmers call them **CRUD**:
 
 | Letter | Action | SQL | Example |
 |---|---|---|---|
-| **C** | **Create** | `INSERT` | Enroll a new student |
-| **R** | **Read** | `SELECT` | Show the class list |
-| **U** | **Update** | `UPDATE` | Fix a misspelled name |
-| **D** | **Delete** | `DELETE` | Remove a student who withdrew |
+| **C** | **C**reate | `INSERT` | Enroll a new student |
+| **R** | **R**ead | `SELECT` | Show the class list |
+| **U** | **U**pdate | `UPDATE` | Fix a misspelled name |
+| **D** | **D**elete | `DELETE` | Remove a student who left |
 
-An enrollment system, a library system, an inventory system, a payroll system: they are all CRUD at their core. **After this lesson, you can build the core of any of them.**
+An enrollment system, a library system, an inventory system, a payroll system: at the center, they are all CRUD. **After this lesson, you can build the center of any of them.**
 
-### Organizing the program: one job per file
+### One job per file
 
-This program is bigger, so we split it into **three files**. Each file has **one job**:
+This program is bigger, so it is split into **three files**. Each file has **one job**:
 
 | File | Its job | Like a... |
 |---|---|---|
-| `Student.cs` | Describes what a student **is** | The blank form |
-| `StudentDatabase.cs` | **All** the SQL. Talks to the database | The records office |
-| `Program.cs` | The menu and screens. Talks to the **user** | The front desk |
+| `Student.cs` | Says what a student **is** | Blank form |
+| `StudentDatabase.cs` | **All** the SQL. It talks to the database | Records office |
+| `Program.cs` | The menu and the screens. It talks to the **user** | Front desk |
 
-The front desk (`Program.cs`) never writes SQL. It just asks the records office (`StudentDatabase`) for what it needs: *"Please add this student,"* or *"Please give me all students."*
-
----
-
-## 🧠 New Idea: Reading Many Rows with `ExecuteReader`
-
-`ExecuteScalar` gives back **one** value. To read **many rows**, use `ExecuteReader`. It gives you a **reader** that moves through the results **one row at a time**, like reading a list with your finger:
-
-```cs
-using var reader = command.ExecuteReader();
-
-while (reader.Read())
-{
-    int id = reader.GetInt32(0);
-    string fullName = reader.GetString(2);
-}
-```
-
-| Code | Meaning |
-|---|---|
-| `reader.Read()` | Move your finger to the **next row**. Gives back `true` if there is a row, or `false` when there are no more rows |
-| `while (reader.Read())` | Repeat for **every** row |
-| `reader.GetInt32(0)` | Get the value in **column 0** of this row as an `int` |
-| `reader.GetString(2)` | Get the value in **column 2** of this row as a `string` |
-
-The column numbers follow the order in your `SELECT`, **starting from 0**:
-
-```sql
-SELECT Id, StudentNumber, FullName, Course, YearLevel FROM Students
---     0   1              2         3       4
-```
+The front desk (`Program.cs`) never writes SQL. It just asks the records office (`StudentDatabase`): *"Please add this student,"* or *"Please give me all the students."*
 
 ---
 
-## 🛠️ Let's Build It
+## Step by Step
 
-### Step 1: Create the project and add SQLite
+### Step 1: Create a new project named `Lesson15`
 
-```cmd
-cd C:\CSharpCourse
-dotnet new console -n Lesson15
-cd Lesson15
-dotnet add package Microsoft.Data.Sqlite
-code .
-```
+1. Open **Visual Studio**. (If it is already open, close it first and open it again.)
+2. Click **Create a new project**.
+3. Click **Console App** (the one with **C#**, not ".NET Framework"), then click **Next**.
+4. In **Project name**, type `Lesson15`. Check that **Location** says `C:\CSharpCourse`. Click **Next**.
+5. Click **Create**.
 
-### Step 2: Create `Student.cs`
+### Step 2: Add the SQLite package
 
-In VS Code, create a new file named **`Student.cs`** (Explorer panel → **New File** icon → type the name → Enter), and write:
+1. In the **Solution Explorer**, right-click the project line **Lesson15**.
+2. Click **Manage NuGet Packages...**
+3. Click **Browse**. In the search box, type `Microsoft.Data.Sqlite`.
+4. Click the result named exactly **Microsoft.Data.Sqlite**. Then click **Install**.
+5. If **Preview Changes** appears, click **Apply**. If **License Acceptance** appears, click **I Accept**.
+6. Close the NuGet tab (click the **X** on the tab **NuGet: Lesson15**).
+
+### Step 3: Add the file `Student.cs`
+
+1. In the **Solution Explorer**, right-click the project line **Lesson15**.
+2. Move to **Add**, then click **Class...**
+3. In the **Name** box, type `Student.cs`. Click **Add**.
+4. In the new **Student.cs** tab, press **Ctrl + A**, then **Delete**.
+5. Put in this code:
+
+## The Code
+
+**File: `Student.cs`**
 
 ```csharp
 // Student.cs - the blueprint for one student record
@@ -106,11 +85,17 @@ public class Student
 }
 ```
 
-This is like the `Student` class from Lesson 09, with a new `Id` property for the database's primary key.
+This is the `Student` class from Lesson 09, with one new property: `Id`, for the database's primary key.
 
-### Step 3: Create `StudentDatabase.cs`
+### Step 4: Add the file `StudentDatabase.cs`
 
-Create another new file named **`StudentDatabase.cs`** and write:
+1. In the **Solution Explorer**, right-click the project line **Lesson15**.
+2. Move to **Add**, then click **Class...**
+3. In the **Name** box, type `StudentDatabase.cs`. Click **Add**.
+4. In the new **StudentDatabase.cs** tab, press **Ctrl + A**, then **Delete**.
+5. Put in this code:
+
+**File: `StudentDatabase.cs`**
 
 ```csharp
 // StudentDatabase.cs - every database command for students lives here
@@ -277,9 +262,13 @@ public static class StudentDatabase
 }
 ```
 
-### Step 4: Write `Program.cs`
+### Step 5: Put the main program in `Program.cs`
 
-Replace everything in `Program.cs` with:
+1. In the **Solution Explorer**, double-click **Program.cs**.
+2. Press **Ctrl + A**, then **Delete**.
+3. Put in this code:
+
+**File: `Program.cs`**
 
 ```csharp
 // Lesson 15: Student Records Manager (Create, Read, Update, Delete)
@@ -461,25 +450,25 @@ int ReadYearLevel()
 }
 ```
 
-### Step 5: Check your files
+### Step 6: Check your files
 
-Your Explorer panel in VS Code should show these files (plus the `bin` and `obj` folders):
+Look at the **Solution Explorer**. You should see these three files under **Lesson15**:
 
 ```text
-LESSON15
-├── Lesson15.csproj
-├── Program.cs
-├── Student.cs
-└── StudentDatabase.cs
+Lesson15
+   Dependencies
+   Program.cs
+   Student.cs
+   StudentDatabase.cs
 ```
 
-### Step 6: Run it
+### Step 7: Run it
 
-```cmd
-dotnet run
-```
+Press **Ctrl + F5**. Try every option!
 
-Try every option! Here is an example session (some menus are shortened with `...`):
+## The Output
+
+✅ Here is an example. (`...` means the menu is shown again.)
 
 ```text
 ========= STUDENT RECORDS =========
@@ -538,11 +527,45 @@ Delete Ana Reyes? Type YES to confirm: YES
 Student deleted.
 ```
 
-**Exit the program and run it again.** Choose option 2. All your changes are still there, because they were saved in `school.db`.
+**Exit the program and run it again.** Choose option 2. Everything you did is still there, because it was saved in the database.
 
 ---
 
-## 🔎 Line by Line: `StudentDatabase.cs`
+## What the Code Means: `StudentDatabase.cs`
+
+### Reading many rows with `ExecuteReader`
+
+`ExecuteScalar` gives back **one** value. To read **many rows**, use `ExecuteReader`. It gives you a **reader** that moves through the rows **one at a time**, like moving your finger down a list:
+
+```cs
+using var reader = command.ExecuteReader();
+while (reader.Read())
+{
+    Student student = new Student
+    {
+        Id = reader.GetInt32(0),
+        StudentNumber = reader.GetString(1),
+        FullName = reader.GetString(2),
+        Course = reader.GetString(3),
+        YearLevel = reader.GetInt32(4)
+    };
+    students.Add(student);
+}
+```
+
+- `reader.Read()` moves to the **next row**. It gives `true` if there is a row, and `false` when there are no more.
+- `while (reader.Read())` repeats for **every** row.
+- `reader.GetInt32(0)` gets the value in **column 0** of this row, as an `int`.
+- `reader.GetString(2)` gets the value in **column 2**, as a `string`.
+
+The column numbers follow the order in your `SELECT`, **starting from 0**:
+
+```text
+SELECT Id, StudentNumber, FullName, Course, YearLevel FROM Students
+       0   1              2         3       4
+```
+
+So for **each row**, the code makes one `Student` object, fills it in, and adds it to a list.
 
 ### `static`: no object needed
 
@@ -550,25 +573,22 @@ Student deleted.
 public static class StudentDatabase
 ```
 
-In Lesson 09, you had to create an object (`new Student()`) before using it. A **`static`** class is different: you use it **directly by its name**, without `new`. That makes sense here, because there is only **one** records office.
+In Lesson 09, you had to make an object (`new Student()`) before using it. A **`static`** class is different: you use it **directly by its name**, with no `new`.
 
 ```cs
-StudentDatabase.CreateTable();                         // ✅ use it directly
-List<Student> all = StudentDatabase.GetAllStudents();  // ✅
+StudentDatabase.CreateTable();
 ```
 
-Every method inside a `static` class must also be `static`.
+That makes sense here. There is only **one** records office. Every method inside a `static` class must be `static` too.
 
 ### `public` and `private`
 
-| Word | Who can use it |
-|---|---|
-| `public` | **Any** file. `Program.cs` can call it |
-| `private` | **Only this class**. It is a helper for the class's own use |
+- `public` → **any** file can use it. `Program.cs` can call it.
+- `private` → **only this class** can use it. It is a helper for the class itself.
 
-`OpenConnection` and `ReadStudents` are `private`, because `Program.cs` never needs to call them directly. The front desk does not need to know how the records office opens its filing cabinet.
+`OpenConnection` and `ReadStudents` are `private`. The front desk does not need to know how the records office opens its filing cabinet.
 
-### `OpenConnection`: no more repeating
+### `OpenConnection`: write it once
 
 ```cs
 private static SqliteConnection OpenConnection()
@@ -579,35 +599,21 @@ private static SqliteConnection OpenConnection()
 }
 ```
 
-In Lesson 14, every method repeated the same two lines to open a connection. Now we write them **once**, and every method just calls `using var connection = OpenConnection();`.
-
-### `ReadStudents`: turning rows into objects
-
-```cs
-while (reader.Read())
-{
-    Student student = new Student
-    {
-        Id = reader.GetInt32(0),
-        StudentNumber = reader.GetString(1),
-        ...
-    };
-    students.Add(student);
-}
-```
-
-For **each row**, create a `Student` object, fill it with the values from the columns, and add it to a list. Three methods (`GetAllStudents`, `SearchByName`, `FindByStudentNumber`) need to do this, so it is written **once** here.
+In Lesson 14, every method repeated the same two lines to open a connection. Now they are written **once**. Every method just says `using var connection = OpenConnection();`
 
 ### `SearchByName`: finding part of a name with `LIKE`
 
 ```cs
-command.CommandText = @"... WHERE FullName LIKE $pattern ...";
+WHERE FullName LIKE $pattern
+```
+
+```cs
 command.Parameters.AddWithValue("$pattern", "%" + keyword + "%");
 ```
 
-`LIKE` searches for a **pattern**. `%` means *"any text (or nothing) here"*. So `%santos%` matches any name that **contains** "santos" anywhere: `Maria Santos`, `Santos Reyes`, and so on. In SQLite, `LIKE` also ignores capital letters.
+`LIKE` searches for a **pattern**. `%` means *"any text here (or nothing)"*. So `%santos%` matches every name that **contains** "santos". In SQLite, `LIKE` ignores capital letters.
 
-Notice that the `%` signs are added to the **value**, and the value is still passed as a **parameter**. Always!
+Notice: the `%` signs are added to the **value**, and the value still goes in as a **parameter**. Always!
 
 ### `FindByStudentNumber`: `Student?` and `null`
 
@@ -615,7 +621,7 @@ Notice that the `%` signs are added to the **value**, and the value is still pas
 public static Student? FindByStudentNumber(string studentNumber)
 ```
 
-The `?` after `Student` means *"this method gives back a Student, **or nothing**."* In C#, "nothing" is called **`null`**.
+The `?` after `Student` means: *"this method gives back a Student, **or nothing**."* In C#, "nothing" is called **`null`**.
 
 ```cs
 if (results.Count == 0)
@@ -623,7 +629,7 @@ if (results.Count == 0)
     return null;     // not found
 }
 
-return results[0];   // found: give back the first (and only) result
+return results[0];   // found
 ```
 
 ### `UpdateStudent` and `DeleteStudent`: did it work?
@@ -633,13 +639,13 @@ int rowsChanged = command.ExecuteNonQuery();
 return rowsChanged > 0;
 ```
 
-`ExecuteNonQuery` gives back **how many rows were changed**. If it is more than 0, the update or delete worked, so we return `true`.
+`ExecuteNonQuery` gives back **how many rows were changed**. More than 0 means it worked.
 
-Both use `WHERE Id = $id`. The `Id` is the **primary key**, so it is the safest way to make sure we change **exactly one** row.
+Both use `WHERE Id = $id`. The `Id` is the primary key, so it is the safest way to change **exactly one** row.
 
 ---
 
-## 🔎 Line by Line: `Program.cs`
+## What the Code Means: `Program.cs`
 
 ### Screens
 
@@ -655,7 +661,7 @@ if (StudentDatabase.StudentNumberExists(studentNumber))
 }
 ```
 
-In a `void` method, `return;` means *"stop this method now and go back."* The rest of the screen is skipped, and the menu appears again.
+In a `void` method, `return;` means *"stop this method now."* The rest of the screen is skipped, and the menu comes back.
 
 ### Checking for `null`
 
@@ -669,15 +675,15 @@ if (student == null)
 }
 ```
 
-**Always** check for `null` before using the result. After this check, C# knows `student` is a real object.
+**Always** check for `null` before you use the result.
 
-### Neat columns: `{value,-12}`
+### Neat columns
 
 ```cs
 Console.WriteLine($"{s.StudentNumber,-12}{s.FullName,-25}{s.Course,-8}{s.YearLevel}");
 ```
 
-`,-12` after a value means *"use 12 spaces for this value, and put the text on the **left**."* Extra space is filled with blanks. This makes the columns line up like a table.
+`,-12` after a value means: *"give this value 12 spaces, and put the text on the left."* That makes the columns line up like a table.
 
 ### A safe delete
 
@@ -688,48 +694,50 @@ string answer = Console.ReadLine() ?? "";
 if (answer == "YES" && StudentDatabase.DeleteStudent(student.Id))
 ```
 
-Deleting cannot be undone, so we ask the user to **confirm** first. The student is deleted only if they type exactly `YES`.
+A delete cannot be undone. So the program asks the user to **confirm** first, and deletes only if they type exactly `YES`.
 
 > [!TIP]
-> Now go back to the **SQL Playground** code in [Lesson 12](12-what-is-a-database.md). You will recognize `using var`, `CreateCommand`, `ExecuteReader`, `reader.Read()`, and `try` / `catch (SqliteException ex)`. You can now understand the whole thing!
+> Now look again at the **SQL Playground** code in [Lesson 12](12-what-is-a-database.md). You will recognize `using var`, `CreateCommand`, `ExecuteReader`, `reader.Read()`, and `try` / `catch`. You can understand all of it now!
 
 ---
 
-## ⚠️ Common Mistakes
+## If Something Goes Wrong
 
-### Mistake 1: The wrong column number in the reader
+**Names and student numbers are mixed up on the screen.**
+A column number is wrong, like `FullName = reader.GetString(1)`. Count the columns in your `SELECT`, starting from **0**.
 
-```cs
-FullName = reader.GetString(1),   // column 1 is StudentNumber!
-```
+**Error List: `CS0029  Cannot implicitly convert type 'string' to 'int'`**
+You used the wrong `Get` for a column, like `YearLevel = reader.GetString(4)`. Use `GetInt32` for `INTEGER` columns, and `GetString` for `TEXT` columns.
 
-The program runs, but names and numbers are mixed up. **Fix:** Count the columns in your `SELECT`, starting from **0**.
+**Error List: `CS0103  The name 'StudentDatabase' does not exist in the current context`**
+Check that the file `StudentDatabase.cs` is in the Solution Explorer, and that its code starts with `public static class StudentDatabase`. Check that you deleted **all** the starter code before pasting.
 
-### Mistake 2: The wrong `Get` method for a column's type
+**Error List: `CS0234 ... 'Data' does not exist in the namespace 'Microsoft'`**
+The SQLite package is missing. Do Step 2 again.
 
-```cs
-YearLevel = reader.GetString(4),
-```
-
-```text
-error CS0029: Cannot implicitly convert type 'string' to 'int'
-```
-
-**Fix:** Use `GetInt32` for `INTEGER` columns and `GetString` for `TEXT` columns.
-
-### Mistake 3: Using an object without checking for `null`
-
-If you skip the `if (student == null)` check, VS Code shows a warning, and the program can crash with `NullReferenceException` when the student is not found. **Fix:** Always check for `null` first.
-
-### Mistake 4: `The name 'StudentDatabase' does not exist`
-
-**Fix:** Make sure the file is named `StudentDatabase.cs`, is in the **same folder** as `Program.cs`, and the class inside is `public static class StudentDatabase`.
+**A green wavy line, and a warning about a "possibly null reference".**
+You used a `Student?` without checking for `null` first. Add the `if (student == null)` check.
 
 ---
 
-## 🏋️ Practice
+## Exercise
 
-**Exercise 1.** In `ShowStudents`, also show the **total number of BSIT students** at the bottom. (Hint: loop through the list and count where `s.Course == "BSIT"`.)
+**Exercise 1.** Let the user type `yes` in any way (`yes`, `Yes`, `YES`) to confirm a delete.
+
+<details>
+<summary>Show answer</summary>
+
+In `DeleteStudentScreen`, change one line:
+
+```cs
+string answer = (Console.ReadLine() ?? "").Trim().ToUpper();
+```
+
+Now `yes` becomes `YES` before it is compared.
+
+</details>
+
+**Exercise 2.** At the bottom of the student table, also show **how many BSIT students** are in the list. (Hint: loop through the list, and count the ones where `s.Course == "BSIT"`.)
 
 <details>
 <summary>Show answer</summary>
@@ -752,27 +760,19 @@ Console.WriteLine($"BSIT students in this list: {bsitCount}");
 
 </details>
 
-**Exercise 2.** Let the user type `yes` in any capitalization (`yes`, `Yes`, `YES`) to confirm a delete.
+## ⭐ Bonus Challenge
+
+Add a new menu option: **Search by course**. This needs changes in **two** files:
+
+1. A new method `SearchByCourse(string course)` in `StudentDatabase.cs`
+2. A new menu line and a new `case` in `Program.cs` (move **Exit** to option 7)
+
+Hint: `SearchByCourse` looks almost like `SearchByName`, but it uses `WHERE Course = $course`.
 
 <details>
 <summary>Show answer</summary>
 
-In `DeleteStudentScreen`, change one line:
-
-```cs
-string answer = (Console.ReadLine() ?? "").Trim().ToUpper();
-```
-
-Now `yes` becomes `YES` before the comparison.
-
-</details>
-
-**Exercise 3.** Add menu option **"Search by course"**. Add a new method `SearchByCourse(string course)` to `StudentDatabase.cs`, and a new `case` in `Program.cs`. Move **Exit** to option 7.
-
-<details>
-<summary>Show answer</summary>
-
-In `StudentDatabase.cs` (inside the class, next to `SearchByName`):
+In `StudentDatabase.cs`, inside the class, next to `SearchByName`:
 
 ```cs
 public static List<Student> SearchByCourse(string course)
@@ -803,19 +803,19 @@ case "7":
     break;
 ```
 
-Also update the `default` message to say `1 to 7`.
+Also change the `default` message to say `1 to 7`.
 
 </details>
 
 ---
 
-## 📌 Recap
+## Remember
 
 - **CRUD** = Create (`INSERT`), Read (`SELECT`), Update (`UPDATE`), Delete (`DELETE`).
 - `ExecuteReader()` + `while (reader.Read())` + `reader.GetInt32(0)` / `reader.GetString(1)` reads many rows.
-- Split big programs into files with **one job each**: the model (`Student`), the database code (`StudentDatabase`), and the screens (`Program`).
-- A `static` class is used directly by its name. `private` members are for the class's own use only.
-- `Student?` means "a Student or `null`". Always check for `null` before using the result.
+- Split a big program into files with **one job each**.
+- A `static` class is used directly by its name. `private` things are only for the class itself.
+- `Student?` means "a Student, or `null`". Always check for `null`.
 - `LIKE '%text%'` finds rows that **contain** the text.
 - Always **confirm** before deleting.
 

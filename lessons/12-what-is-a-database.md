@@ -1,31 +1,21 @@
 # Lesson 12: What Is a Database? (and Your First SQL)
 
-| | |
-|---|---|
-| **Part** | 3: Databases |
-| **Time** | About 90 minutes |
-| **Before this** | [Lesson 11](11-saving-to-files.md) |
+**Part 3: Databases** · About 90 minutes
 
-## 🎯 Goal
+## What You Will Learn
 
-By the end of this lesson, you will:
+- What **databases**, **tables**, **rows**, and **columns** are
+- The **SQL** commands to create, add, read, change, and delete data
+- How to add a **package** (an extra toolbox) to your project
+- How to practice SQL in a **SQL Playground** program
 
-- Understand **databases**, **tables**, **rows**, and **columns**
-- Know the **SQL** commands to create, add, read, change, and delete data
-- Add a **package** (an extra toolbox) to a project
-- Practice SQL using a **SQL Playground** program
+## The Idea
 
----
-
-## 🧠 The Big Idea
-
-A **database** is a program that stores information in a **very organized** way and lets you find it **very fast**. Think of it as a super-smart digital filing cabinet.
+A **database** is a program that stores information in a **very organized** way, and finds it **very fast**. Think of a super-smart digital filing cabinet.
 
 Your school's enrollment system, GCash, Facebook, and online shops all use databases.
 
-### Tables, rows, and columns
-
-A database keeps data in **tables**. A table looks like an Excel sheet:
+A database keeps its data in **tables**. A table looks like an Excel sheet:
 
 **Table: `Students`**
 
@@ -35,158 +25,137 @@ A database keeps data in **tables**. A table looks like an Excel sheet:
 | 2 | Maria Santos | BSCS | 2 |
 | 3 | Ana Reyes | BSIT | 3 |
 
-| Word | Meaning | In the example |
-|---|---|---|
-| **Table** | A collection of one kind of thing | `Students` |
-| **Column** | One kind of information. Every row has it | `FullName`, `Course` |
-| **Row** (or **record**) | One item in the table | Maria Santos's information |
-| **Primary key** | A column whose value is **different for every row**. It identifies the row | `Id` |
+- A **table** holds one kind of thing. (`Students`)
+- A **column** is one kind of information. (`FullName`, `Course`)
+- A **row** is one item in the table. (Maria's information)
+- The **primary key** is a column that is **different for every row**. It identifies the row. (`Id`)
 
-> [!TIP]
-> This should feel familiar! A **table** is like a **class** (`Student`), its **columns** are like **properties**, and each **row** is like an **object**.
+> This should feel familiar. A **table** is like a **class**. Its **columns** are like **properties**. Each **row** is like an **object**.
 
-### Column types
+**SQL** (say "S-Q-L") is the **language for talking to a database**. It reads almost like English.
 
-Each column holds one type of value, just like C# variables:
-
-| Database type | Holds | Like C#'s... |
-|---|---|---|
-| `INTEGER` | Whole numbers | `int` |
-| `REAL` | Decimal numbers | `double` |
-| `TEXT` | Text | `string` |
-
-### What is SQL?
-
-**SQL** (say "S-Q-L" or "sequel") stands for **Structured Query Language**. It is the language you use to **talk to a database**. SQL reads almost like English.
-
-### What is SQLite?
-
-Many databases (like MySQL or SQL Server) need a separate **server** program installed and running. **SQLite** is different: the **whole database is one file** on your computer, like `school.db`. Nothing extra to install, and nothing to start.
-
-SQLite is used inside every Android phone, iPhone, and web browser. It is the perfect database for learning.
+**SQLite** is the database we will use. Many databases need a big, separate program to be installed. SQLite does not: the **whole database is one file** on your computer. It is used inside every Android phone and iPhone, and it is perfect for learning.
 
 ---
 
-## 🧠 The SQL Commands You Need
+## The 6 SQL Commands
 
-Here are the six SQL commands you will use in this course. You do not need to memorize them now. You will practice each one below.
+You do not need to memorize these now. You will practice each one in a few minutes.
 
-### 1. `CREATE TABLE`: make a new table
+**1. `CREATE TABLE`** makes a new table.
 
 ```sql
 CREATE TABLE Students (Id INTEGER PRIMARY KEY AUTOINCREMENT, FullName TEXT NOT NULL, Course TEXT NOT NULL, YearLevel INTEGER NOT NULL);
 ```
 
-| Part | Meaning |
-|---|---|
-| `Students` | The table's name |
-| `Id INTEGER PRIMARY KEY AUTOINCREMENT` | A column `Id` that holds whole numbers. It is the **primary key**, and the database **numbers it automatically** (1, 2, 3...) |
-| `FullName TEXT NOT NULL` | A text column. `NOT NULL` means it is **required** (it cannot be empty) |
+- `INTEGER` means whole numbers. `TEXT` means text.
+- `PRIMARY KEY AUTOINCREMENT` means: this is the primary key, and the database **numbers it by itself** (1, 2, 3...).
+- `NOT NULL` means: this column is **required**. It cannot be left empty.
 
-### 2. `INSERT INTO`: add a row
+**2. `INSERT INTO`** adds a row.
 
 ```sql
 INSERT INTO Students (FullName, Course, YearLevel) VALUES ('Juan Dela Cruz', 'BSIT', 1);
 ```
 
-*"Insert into Students, in these columns, these values."* We do not give an `Id`. The database adds it for us.
+> In SQL, text uses **single quotes**: `'Juan Dela Cruz'`. (In C#, text uses double quotes.)
 
-> [!IMPORTANT]
-> In SQL, text values use **single quotes**: `'Juan Dela Cruz'`. (In C#, text uses double quotes.)
-
-### 3. `SELECT`: read rows
+**3. `SELECT`** reads rows.
 
 ```sql
 SELECT * FROM Students;
 ```
 
-*"Select everything (`*` means all columns) from Students."*
+The `*` means "all columns". You can also choose columns, choose rows with `WHERE`, and sort with `ORDER BY`:
 
 ```sql
 SELECT FullName, Course FROM Students WHERE Course = 'BSIT';
 ```
 
-*"Select only the FullName and Course columns, but only the rows **where** the course is BSIT."*
-
 ```sql
 SELECT * FROM Students ORDER BY FullName;
 ```
 
-*"...sorted by FullName, from A to Z."*
-
-### 4. `UPDATE`: change rows
+**4. `UPDATE`** changes rows.
 
 ```sql
 UPDATE Students SET YearLevel = 2 WHERE Id = 1;
 ```
 
-*"In Students, set YearLevel to 2, but only where Id is 1."*
-
-### 5. `DELETE`: remove rows
+**5. `DELETE`** removes rows.
 
 ```sql
 DELETE FROM Students WHERE Id = 3;
 ```
 
-*"Delete from Students the row where Id is 3."*
-
-> [!CAUTION]
-> **Always use `WHERE` with `UPDATE` and `DELETE`!**
-> `DELETE FROM Students;` without `WHERE` deletes **every** student. `UPDATE Students SET YearLevel = 2;` without `WHERE` changes **every** student. There is no "undo" button.
-
-### 6. `COUNT(*)`: count rows
+**6. `COUNT(*)`** counts rows.
 
 ```sql
 SELECT COUNT(*) FROM Students;
 ```
 
-*"How many rows are in Students?"*
+> [!CAUTION]
+> **Always use `WHERE` with `UPDATE` and `DELETE`.**
+> `DELETE FROM Students;` without `WHERE` deletes **every** student. There is no undo button.
 
 ---
 
-## 🛠️ Let's Build It: The SQL Playground
+## Step by Step
 
-You will build a small program where you can **type SQL commands and see the results immediately**.
+You will build a small program where you can **type SQL commands and see the results right away**.
 
-### Step 1: Create the project
+### Step 1: Create a new project named `Lesson12`
 
-```cmd
-cd C:\CSharpCourse
-dotnet new console -n Lesson12
-cd Lesson12
-```
+1. Open **Visual Studio**. (If it is already open, close it first and open it again.)
+2. Click **Create a new project**.
+3. Click **Console App** (the one with **C#**, not ".NET Framework"), then click **Next**.
+4. In **Project name**, type `Lesson12`. Check that **Location** says `C:\CSharpCourse`. Click **Next**.
+5. Click **Create**.
 
 ### Step 2: Add the SQLite package
 
-C# does not know how to talk to SQLite by itself. You need to add a **package**: an extra toolbox made by someone else (in this case, by Microsoft). Packages are downloaded from **NuGet** (say "new get"), which works like an app store for code.
+C# cannot talk to SQLite by itself. You need to add a **package**: an extra toolbox made by someone else (here, by Microsoft). Packages come from a place called **NuGet** (say "new get"). It is like an app store for code.
 
-Type this command. **You need an internet connection.**
+**You need an internet connection for this step.**
 
-```cmd
-dotnet add package Microsoft.Data.Sqlite
-```
+**1.** In the **Solution Explorer**, **right-click** the project line **Lesson12**.
 
-✅ **At the end, you should see a line like this:**
+**2.** Click **Manage NuGet Packages...**
 
-```text
-info : PackageReference for package 'Microsoft.Data.Sqlite' version '11.0.0' added to file 'C:\CSharpCourse\Lesson12\Lesson12.csproj'.
-```
+✅ **You will see:** a new tab opens, named **NuGet: Lesson12**.
 
-Your version number may be different. That is fine. The important part is **"added to file"**.
+**3.** Near the top-left of that tab, click the word **Browse**.
+
+**4.** Click the search box and type: `Microsoft.Data.Sqlite`
+
+**5.** In the results, click the one named exactly **Microsoft.Data.Sqlite**.
+
+> Several results have longer names, like `Microsoft.Data.Sqlite.Core`. Pick the one with **nothing after** `Sqlite`.
+
+**6.** On the right side, click the **Install** button.
+
+**7.** Small windows may appear:
+
+- If a window named **Preview Changes** appears, click **Apply**.
+- If a window named **License Acceptance** appears, click **I Accept**.
+
+✅ **You will see:** after a few seconds, the **Install** button changes to **Uninstall**. That means the package is installed.
+
+**8.** Close the NuGet tab: click the small **X** on the tab named **NuGet: Lesson12**. You are back at `Program.cs`.
 
 > [!NOTE]
-> You only add a package **once per project**. Every new project that uses a database (Lessons 13, 14, 15, 16, 19, 20) needs this same command.
+> You add the package **once per project**. Every project that uses a database (Lessons 12 to 16, 19, and 20) needs these same steps.
 
-### Step 3: Open VS Code and write the code
+### Step 3: Paste the code
 
-```cmd
-code .
-```
+This program is a **tool** for practicing SQL. You do **not** need to understand its code yet. By the end of Lesson 15, you will understand every line.
 
-Replace everything in `Program.cs` with the code below.
+**This time, you may copy and paste.**
 
-> [!NOTE]
-> **You may copy and paste this one.** You do **not** need to understand this code yet. Just use it as a tool to practice SQL. By the end of Lesson 15, you will understand every line, so come back and read it then!
+1. Clear the editor (**Ctrl + A**, **Delete**).
+2. Copy the code below, and paste it into the editor (**Ctrl + V**).
+
+## The Code
 
 ```csharp
 // Lesson 12: SQL PLAYGROUND
@@ -269,11 +238,9 @@ Console.WriteLine("Goodbye!");
 
 ### Step 4: Run it
 
-```cmd
-dotnet run
-```
+Press **Ctrl + F5**.
 
-✅ **You should see:**
+✅ **You will see:**
 
 ```text
 ========== SQL PLAYGROUND ==========
@@ -283,15 +250,16 @@ Type EXIT to quit.
 SQL>
 ```
 
-The program is waiting for a SQL command. A new file called `playground.db` was just created in your project folder. **That file is your database.**
+The program is waiting for a SQL command.
 
----
+### Step 5: Type these SQL commands
 
-## 🏋️ Guided Practice: Type These Commands
+Type each command **on one line**, exactly as shown, and press **Enter**. Check that you see the same result.
 
-Type each command below **exactly**, on **one line**, then press **Enter**. Check that you see the same result.
+> [!TIP]
+> To save typing, you can copy a command from this page and paste it into the black window: click the black window, then **right-click** (or press **Ctrl + V**).
 
-### 1. Create the table
+**1. Create the table.**
 
 ```sql
 CREATE TABLE Students (Id INTEGER PRIMARY KEY AUTOINCREMENT, FullName TEXT NOT NULL, Course TEXT NOT NULL, YearLevel INTEGER NOT NULL);
@@ -301,7 +269,7 @@ CREATE TABLE Students (Id INTEGER PRIMARY KEY AUTOINCREMENT, FullName TEXT NOT N
 OK. Command finished.
 ```
 
-### 2. Add three students (one command at a time)
+**2. Add three students** (one command at a time).
 
 ```sql
 INSERT INTO Students (FullName, Course, YearLevel) VALUES ('Juan Dela Cruz', 'BSIT', 1);
@@ -315,18 +283,20 @@ INSERT INTO Students (FullName, Course, YearLevel) VALUES ('Maria Santos', 'BSCS
 INSERT INTO Students (FullName, Course, YearLevel) VALUES ('Ana Reyes', 'BSIT', 3);
 ```
 
-After each one, you should see:
+After each one:
 
 ```text
 OK. Command finished.
 Rows changed: 1
 ```
 
-### 3. See everyone
+**3. See everyone.**
 
 ```sql
 SELECT * FROM Students;
 ```
+
+## The Output
 
 ```text
 Id                FullName          Course            YearLevel
@@ -337,9 +307,9 @@ Id                FullName          Course            YearLevel
 (3 row(s) found)
 ```
 
-Notice the `Id` column: you never typed `1`, `2`, `3`. The database numbered them automatically.
+Look at the `Id` column. You never typed `1`, `2`, `3`. The database numbered them by itself.
 
-### 4. Only BSIT students, only two columns
+**4. Show only the BSIT students, and only two columns.**
 
 ```sql
 SELECT FullName, Course FROM Students WHERE Course = 'BSIT';
@@ -353,7 +323,7 @@ Ana Reyes         BSIT
 (2 row(s) found)
 ```
 
-### 5. Move Juan to 2nd year
+**5. Move Juan to 2nd year.**
 
 ```sql
 UPDATE Students SET YearLevel = 2 WHERE Id = 1;
@@ -364,7 +334,7 @@ OK. Command finished.
 Rows changed: 1
 ```
 
-### 6. Delete Ana
+**6. Delete Ana.**
 
 ```sql
 DELETE FROM Students WHERE Id = 3;
@@ -375,7 +345,7 @@ OK. Command finished.
 Rows changed: 1
 ```
 
-### 7. Check the result
+**7. Check the result.**
 
 ```sql
 SELECT * FROM Students;
@@ -391,7 +361,7 @@ Id                FullName          Course            YearLevel
 
 Juan is now in year 2, and Ana is gone.
 
-### 8. Make a mistake on purpose
+**8. Make a mistake on purpose.**
 
 ```sql
 SELECT * FROM Student;
@@ -401,26 +371,39 @@ SELECT * FROM Student;
 SQL error: SQLite Error 1: 'no such table: Student'.
 ```
 
-The table is called `Students` (with an **s**). Database errors tell you what went wrong, just like C# errors.
+The table is named `Students`, with an **s**. A database tells you what is wrong, just like Visual Studio does.
 
-### 9. Exit, then come back
+**9. Quit, and come back.**
 
-Type `EXIT` to quit. Then run `dotnet run` again and type:
+Type `EXIT`. Close the black window. Then press **Ctrl + F5** again and type:
 
 ```sql
 SELECT * FROM Students;
 ```
 
-**Juan and Maria are still there!** The database saved them in `playground.db`. 🎉
-
-> [!NOTE]
-> If you type the `CREATE TABLE` command again, you will see `SQL error: SQLite Error 1: 'table Students already exists'.` That is **good news**. It means the table from last time was saved. Just continue with the next command.
+**Juan and Maria are still there!** The database saved them in a file named `playground.db`. 🎉
 
 ---
 
-## 🏋️ Practice
+## If Something Goes Wrong
 
-Use the SQL Playground for these. Write your own SQL commands.
+**Error List: `CS0234  The type or namespace name 'Data' does not exist in the namespace 'Microsoft'`**
+The SQLite package is not installed in this project. Do Step 2 again.
+
+**`SQL error: SQLite Error 1: 'table Students already exists'.`**
+This is good news! It means the table from last time was saved. Skip the `CREATE TABLE` command and continue with the next one.
+
+**`SQL error: ... syntax error`**
+There is a typing mistake in your SQL. Check the spelling, the commas, and the single quotes `' '`. Then type the command again.
+
+**`SQL error: ... 'no such table: ...'`**
+The table name is spelled wrong, or you have not created the table yet.
+
+---
+
+## Exercise
+
+Use the SQL Playground. Write the SQL commands yourself.
 
 **Exercise 1.** Add two more students of your choice.
 
@@ -437,7 +420,7 @@ INSERT INTO Students (FullName, Course, YearLevel) VALUES ('Liza Bautista', 'BSI
 
 </details>
 
-**Exercise 2.** Show all students sorted by name from A to Z.
+**Exercise 2.** Show all students, sorted by name from A to Z.
 
 <details>
 <summary>Show answer</summary>
@@ -475,21 +458,53 @@ UPDATE Students SET Course = 'BSIT' WHERE Id = 2;
 <details>
 <summary>Show answer</summary>
 
-It deletes **every** row in the `Students` table, because there is no `WHERE`. Always double-check `UPDATE` and `DELETE` commands before pressing Enter.
+It deletes **every** row in the `Students` table, because there is no `WHERE`. Always check your `UPDATE` and `DELETE` commands twice before pressing Enter.
+
+</details>
+
+## ⭐ Bonus Challenge
+
+Make a **second table** by yourself. Create a table named `Subjects` with three columns:
+
+- `Code` → text, and it is the primary key
+- `Title` → text, required
+- `Units` → whole number, required
+
+Then add two subjects, and show only the subjects with **3 or more** units.
+
+<details>
+<summary>Show answer</summary>
+
+```sql
+CREATE TABLE Subjects (Code TEXT PRIMARY KEY, Title TEXT NOT NULL, Units INTEGER NOT NULL);
+```
+
+```sql
+INSERT INTO Subjects (Code, Title, Units) VALUES ('IT101', 'Computing Basics', 3);
+```
+
+```sql
+INSERT INTO Subjects (Code, Title, Units) VALUES ('PE1', 'Fitness', 2);
+```
+
+```sql
+SELECT * FROM Subjects WHERE Units >= 3;
+```
+
+Only `IT101` is shown. Here the primary key is the `Code`, which you type yourself, so there is no `AUTOINCREMENT`.
 
 </details>
 
 ---
 
-## 📌 Recap
+## Remember
 
-- A **database** stores data in **tables** made of **columns** (kinds of information) and **rows** (records).
-- The **primary key** (`Id`) identifies each row. `AUTOINCREMENT` numbers it for you.
-- **SQL** commands: `CREATE TABLE`, `INSERT INTO`, `SELECT`, `UPDATE`, `DELETE`, `COUNT(*)`.
+- A **database** keeps data in **tables**, made of **columns** and **rows**.
+- The **primary key** (`Id`) identifies each row.
+- **SQL**: `CREATE TABLE`, `INSERT INTO`, `SELECT`, `UPDATE`, `DELETE`, `COUNT(*)`
 - `WHERE` chooses **which** rows. Always use it with `UPDATE` and `DELETE`.
-- In SQL, text goes in **single quotes**: `'BSIT'`.
-- **SQLite** keeps the whole database in **one file**.
-- `dotnet add package Microsoft.Data.Sqlite` adds SQLite support to a project.
+- In SQL, text goes in **single quotes**: `'BSIT'`
+- To add SQLite: right-click the project → **Manage NuGet Packages...** → **Browse** → `Microsoft.Data.Sqlite` → **Install**.
 
 ---
 

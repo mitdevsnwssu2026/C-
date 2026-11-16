@@ -1,28 +1,22 @@
-# Lesson 00: Before You Start (Setting Up Your Computer)
+# Lesson 00: Setup (Install Visual Studio)
 
-| | |
-|---|---|
-| **Part** | Getting Started |
-| **Time** | About 45 minutes |
-| **You need** | A Windows computer with an internet connection |
+**Getting Started** · About 1 hour (most of it is waiting for the download)
 
-## 🎯 Goal
+## What You Will Do
 
-By the end of this lesson, your computer will be ready to write and run C# programs.
+In this lesson you will **not** write any code yet. You will:
 
-You will **not** write any code yet. You will install two free tools and learn how to use the Command Prompt.
+- Learn 4 simple words: *program*, *C#*, *Visual Studio*, *console*
+- Download and install **Visual Studio Community** (it is free)
+- Open Visual Studio for the first time
+
+When you finish this lesson, your computer is ready for the whole course.
 
 ---
 
-## 🧠 The Big Idea
+## 4 Words to Know First
 
-Read this part slowly. These words will appear in every lesson.
-
-### What is a program?
-
-A **program** is a list of instructions that a computer follows, one step at a time, from top to bottom.
-
-It is like a recipe:
+**Program.** A program is a list of instructions for a computer. The computer follows the instructions one by one, from top to bottom, exactly as written. It is like a recipe:
 
 ```text
 1. Boil water.
@@ -31,178 +25,169 @@ It is like a recipe:
 4. Serve.
 ```
 
-The computer is a very fast cook, but it is also very **literal**. It does exactly what you write: nothing more, nothing less. If you misspell an instruction, it will not guess what you meant. It will stop and tell you there is a mistake.
+**C#** (say "C sharp"). C# is a **language** for writing those instructions. Microsoft made it. People use it to build school systems, payroll systems, websites, and games.
 
-### What is C#?
+**Visual Studio.** Visual Studio is the **program you will use to write C#**. Think of it as Microsoft Word, but for code. It gives you a place to type, a button to run your program, and it points out your mistakes.
 
-**C#** (pronounced "C sharp") is a **programming language**. It is a language for writing instructions that a computer can understand. Microsoft created it. People use C# to build:
-
-- Business systems (enrollment, payroll, inventory)
-- Websites and web apps
-- Windows desktop apps
-- Games (the Unity game engine uses C#)
-
-### What is .NET?
-
-**.NET** (pronounced "dot net") is a free set of tools that turns your C# instructions into a program the computer can run.
-
-You will install the **.NET SDK**. SDK means **Software Development Kit**: the complete toolbox for building programs.
-
-### What is the Command Prompt?
-
-The **Command Prompt** is a window where you **type commands** instead of clicking buttons. It looks old-fashioned, but programmers use it every day. In this course, you will use it to **create** and **run** your programs.
-
-### What is Visual Studio Code?
-
-**Visual Studio Code** (or **VS Code**) is a free program for writing code. It is like Microsoft Word, but made for code. It colors your code so it is easier to read, and it underlines mistakes in red.
-
-### Your setup: two windows
-
-In every lesson, you will use two windows side by side:
-
-| Window | What it is for | Think of it as... |
-|---|---|---|
-| **VS Code** | Writing your code | Your notebook |
-| **Command Prompt** | Running your code | Your "play" button |
+**Console.** The console is a **black window that shows text**. It looks like the Windows Command Prompt. All the programs in this course show their results in that black window.
 
 ---
 
-## 🛠️ Step 1: Install the .NET SDK
+## What You Need
 
-1. Open your web browser and go to: **https://dotnet.microsoft.com/download**
-2. Find the version marked **LTS** (Long Term Support). When this course was written, that was **.NET 10**.
-3. Click the download button for the **SDK** for **Windows x64**.
-   > If you are not sure what "x64" means, choose x64. It is correct for almost all Windows computers.
-4. When the download finishes, open the file. Its name starts with `dotnet-sdk-` and ends with `-win-x64.exe`.
-5. Click **Install**.
-6. If Windows asks *"Do you want to allow this app to make changes to your device?"*, click **Yes**.
-7. Wait until you see **"Installation was successful"**, then click **Close**.
-
-## 🛠️ Step 2: Install Visual Studio Code
-
-1. Go to: **https://code.visualstudio.com**
-2. Click **Download for Windows**.
-3. Open the downloaded file.
-4. Select **"I accept the agreement"**, then click **Next** on each page.
-5. On the page called **"Select Additional Tasks"**, make sure **"Add to PATH"** has a check mark. (It is checked already. Just leave it.)
-6. Click **Install**, then **Finish**. VS Code will open.
-
-## 🛠️ Step 3: Add C# support to VS Code
-
-1. In VS Code, look at the bar on the far left. Click the **Extensions** icon (it looks like four small squares). You can also press **Ctrl + Shift + X**.
-2. In the search box, type: `C#`
-3. Find the one named exactly **C#**, made by **Microsoft**. Click **Install**.
-
-> [!NOTE]
-> You may also see an extension called **C# Dev Kit**. You do **not** need it for this course. If VS Code suggests it later, you can close that message.
-
-Now close VS Code. You will open it again in Lesson 01.
-
-## 🛠️ Step 4: Open the Command Prompt
-
-1. Press the **Windows key** on your keyboard.
-2. Type: `cmd`
-3. Press **Enter**.
-
-A black window opens. It looks like this:
-
-```text
-Microsoft Windows [Version 10.0.22631.4460]
-(c) Microsoft Corporation. All rights reserved.
-
-C:\Users\Juan>
-```
-
-The last line, `C:\Users\Juan>`, is called the **prompt**. It shows **which folder you are in right now**. (Yours will show your own Windows user name instead of `Juan`.) You type your commands after the `>` sign.
-
-## 🛠️ Step 5: Check that .NET is installed
-
-In the Command Prompt, type this command and press **Enter**:
-
-```cmd
-dotnet --version
-```
-
-✅ **You should see a version number**, like this:
-
-```text
-10.0.100
-```
-
-Your number may be a little different. **Any number that starts with 10 or higher is correct.**
+- A computer with **Windows 10** or **Windows 11**
+- An **internet connection**
+- About **10 GB of free space** on your computer
 
 > [!WARNING]
-> **Do you see `'dotnet' is not recognized as an internal or external command`?**
-> Close the Command Prompt and open a new one (Step 4). A Command Prompt that was already open before the installation does not know about .NET yet. If you still see the error, go to the [Troubleshooting guide](../appendix/troubleshooting.md).
+> There are two different programs with similar names. You need **Visual Studio** (purple icon). Do **not** install **Visual Studio Code** (blue icon). It is a different program, and the steps in this course will not match it.
 
-> [!NOTE]
-> The very first time you use `dotnet`, you may see a long **"Welcome to .NET!"** message. That is normal. It only appears once.
+---
 
-## 🛠️ Step 6: Create your course folder
+## Part A: Download Visual Studio
 
-You will keep all your lessons in one folder: `C:\CSharpCourse`.
+**1.** Open your web browser (Chrome or Edge).
 
-Type these two commands. Press **Enter** after each one.
-
-```cmd
-mkdir C:\CSharpCourse
-```
-
-```cmd
-cd C:\CSharpCourse
-```
-
-✅ **Your prompt should now show:**
+**2.** Click the address bar at the top, type this address, and press **Enter**:
 
 ```text
-C:\CSharpCourse>
+https://visualstudio.microsoft.com/downloads/
 ```
 
-This means you are now "standing inside" the `C:\CSharpCourse` folder. Every lesson in this course starts from here.
+**3.** Find the box named **Community**. This is the free version.
+
+**4.** In the **Community** box, click the **Free download** button.
+
+✅ **You will see:** a small file starts downloading. Its name is `VisualStudioSetup.exe` (or a similar name that starts with `VisualStudio`). This takes only a few seconds, because this small file is just the *installer*.
 
 ---
 
-## 📋 Command Prompt Cheat Sheet
+## Part B: Install Visual Studio
 
-You only need these commands for the whole course.
+**1.** Open the file you just downloaded.
 
-| Command | What it does | Example |
-|---|---|---|
-| `cd FolderName` | Go **into** a folder | `cd Lesson01` |
-| `cd C:\CSharpCourse` | Go **straight to** the course folder from anywhere | |
-| `cd ..` | Go **back up** one folder | |
-| `dir` | **List** the files in the folder you are in | |
-| `mkdir FolderName` | **Make** a new folder | `mkdir Practice` |
-| `cls` | **Clear** the screen | |
+- In your browser, the download appears at the **top-right corner**. Click the file name.
+- If you cannot find it there, open your **Downloads** folder and double-click the file.
 
-Helpful keys:
+**2.** Windows asks: *"Do you want to allow this app to make changes to your device?"* Click **Yes**.
 
-| Key | What it does |
-|---|---|
-| **↑** (up arrow) | Brings back the command you typed before, so you do not need to type it again |
-| **Tab** | Finishes a file or folder name for you. Type `cd Less` then press Tab |
-| **Ctrl + C** | Stops a program that is running |
+**3.** A small window named **Visual Studio Installer** appears. Click **Continue**.
 
----
+Wait about a minute while it gets ready.
 
-## 🌟 Rules for Success in This Course
+**4.** A big window appears with many boxes. These boxes are called **workloads**. Each one adds a set of tools.
 
-1. **Type the code yourself in Lessons 01–11.** Do not copy and paste. Typing helps your brain and fingers learn. From Lesson 12 the programs get longer, so you may copy and paste, but **read every line**.
-2. **Run your program often.** After every small change, run it and check that it works.
-3. **Errors are normal.** Every programmer sees errors every day. An error message is not a failure. It is the computer telling you **where** to look.
-4. **Capital letters matter.** To C#, `Console` and `console` are two different words.
-5. **When you are stuck,** check the **Common Mistakes** section of the lesson, then the [Troubleshooting guide](../appendix/troubleshooting.md).
+Find the box named **.NET desktop development** and **click it**.
+
+✅ **You will see:** a check mark appears in the corner of that box.
+
+> [!IMPORTANT]
+> Click **only** this one box: **.NET desktop development**. You do not need any of the others for this course. More boxes means a much bigger and slower download.
+
+**5.** Click the **Install** button at the **bottom-right corner** of the window.
+
+**6.** Wait. The download is big, so this takes from **30 minutes to more than 1 hour**, depending on your internet speed. You can leave the computer and come back.
+
+✅ **You will see:** progress bars moving. When they finish, Visual Studio opens by itself. (If it does not open by itself, click the **Launch** button.)
 
 ---
 
-## ✅ Checklist
+## Part C: Open Visual Studio for the First Time
 
-Before you go to Lesson 01, make sure that:
+The first time it opens, Visual Studio asks two quick questions.
 
-- [ ] `dotnet --version` shows a number that starts with **10** or higher
-- [ ] VS Code is installed, and the **C#** extension is installed
-- [ ] The folder `C:\CSharpCourse` exists
-- [ ] You know how to open the Command Prompt and use `cd` and `dir`
+**1. It asks you to sign in.** You do **not** need an account for this course. Click the link that lets you **skip** signing in. (Look for the word **Skip** near the bottom of the window.)
+
+**2. It asks you to choose a color theme.** Pick the one you like. **Dark** is easy on the eyes. **Light** looks like paper. You can change it later. Then click **Start Visual Studio**.
+
+✅ **You will see:** the **start window**. It has a list called **Open recent** on the left (empty for now), and four big buttons under **Get started** on the right. The last button says **Create a new project**.
+
+**That's it. Visual Studio is installed!** 🎉
+
+You can close Visual Studio now: click the **X** at the top-right corner of the window.
+
+---
+
+## Part D: Make Visual Studio Easy to Find
+
+You will open Visual Studio at the start of every lesson. Let's put it on your taskbar (the bar at the bottom of your screen).
+
+**1.** Click the **Start** button (the Windows logo at the bottom of your screen).
+
+**2.** Type: `Visual Studio`
+
+**3.** In the results, find **Visual Studio** with the **purple** icon. **Right-click** it.
+
+> Make sure it is **not** "Visual Studio Installer" and **not** "Visual Studio Code".
+
+**4.** Click **Pin to taskbar**.
+
+✅ **You will see:** the purple Visual Studio icon on your taskbar. From now on, one click on that icon opens Visual Studio.
+
+---
+
+## If Something Goes Wrong
+
+**"I can't find the Community box on the download page."**
+Scroll down a little. The page shows three versions side by side: **Community**, **Professional**, and **Enterprise**. Choose **Community**. The other two cost money.
+
+**"The download stopped" or "the installation failed."**
+Check your internet connection, then open the downloaded file again (Part B, Step 1). The installer continues where it stopped.
+
+**"I forgot to click .NET desktop development."**
+No problem. Click **Start**, type `Visual Studio Installer`, and open it. Click **Modify**, click the **.NET desktop development** box, then click **Modify** at the bottom-right.
+
+**"It says I don't have enough disk space."**
+Free up some space (empty the Recycle Bin, delete large files you do not need), then try again. You need about 10 GB.
+
+**"I installed Visual Studio Code by mistake."**
+That is OK. You can leave it. Just go back to Part A and install **Visual Studio Community** too.
+
+---
+
+## Exercise
+
+**Exercise 1.** Close Visual Studio. Now open it again **by yourself**, using the taskbar icon or the Start button. Find the **Create a new project** button with your eyes (do not click it yet).
+
+**Exercise 2.** Answer these questions out loud or on paper. Then check your answers.
+
+1. What is a program?
+2. What is C#?
+3. What is Visual Studio for?
+4. What is the console?
+
+<details>
+<summary>Show answers</summary>
+
+1. A list of instructions that a computer follows, one by one.
+2. A language for writing instructions for a computer.
+3. It is the program where you write C# code, run it, and see your mistakes.
+4. The black window that shows the text from your program.
+
+</details>
+
+## ⭐ Bonus Challenge
+
+Look at the **start window** of Visual Studio. There are four buttons under **Get started**. One of them is **Create a new project**. What are the names of the other three? (You will not use them in this course, but it is good to know your tools.)
+
+<details>
+<summary>Show answer</summary>
+
+- **Clone a repository**
+- **Open a project or solution**
+- **Open a local folder**
+- **Create a new project** ← the one you will use in every lesson
+
+</details>
+
+---
+
+## Remember
+
+- A **program** is a list of instructions. **C#** is the language. **Visual Studio** is where you write it. The **console** is the black window that shows the result.
+- You installed **Visual Studio Community** with the **.NET desktop development** workload.
+- You do not need to sign in.
+- Every lesson starts by opening Visual Studio and clicking **Create a new project**.
 
 ---
 

@@ -1,82 +1,69 @@
 # Lesson 02: Variables (Storing Information)
 
-| | |
-|---|---|
-| **Part** | 1: Beginner |
-| **Time** | About 60 minutes |
-| **Before this** | [Lesson 01](01-hello-world.md) |
+**Part 1: Beginner** · About 60 minutes
 
-## 🎯 Goal
+## What You Will Learn
 
-By the end of this lesson, you will:
+- How to store information in **variables**
+- The four basic kinds of information: text, whole numbers, decimal numbers, and true/false
+- How to put a variable inside a sentence
+- How to change what a variable holds
 
-- Store information in **variables**
-- Know the four basic **data types**: `string`, `int`, `double`, `bool`
-- Put variables inside text using `$"..."`
-- Change the value of a variable
+## The Idea
 
----
-
-## 🧠 The Big Idea
-
-A **variable** is a **labeled box** that holds one piece of information.
+A **variable** is a **box with a label** on it. The box holds one piece of information.
 
 ```text
-   fullName              age             isEnrolled
-┌──────────────────┐   ┌──────┐   ┌──────┐
-│ "Juan Dela Cruz" │   │  18  │   │ true │
-└──────────────────┘   └──────┘   └──────┘
+    fullName               age          isEnrolled
+┌──────────────────┐    ┌──────┐       ┌──────┐
+│ "Juan Dela Cruz" │    │  18  │       │ true │
+└──────────────────┘    └──────┘       └──────┘
 ```
 
-- The **label** on the box is the variable's **name** (`age`).
-- The thing **inside** the box is its **value** (`18`).
-- Each box only holds one **type** of thing. A box for numbers cannot hold text.
+- The **label** is the variable's **name** (like `age`).
+- The thing inside is its **value** (like `18`).
+- Each box holds only one **kind** of thing. A box for numbers cannot hold text.
 
-### How to create a variable
+You make a variable like this:
 
 ```cs
 int age = 18;
 ```
 
-| Piece | Meaning |
-|---|---|
-| `int` | The **type**: what kind of value the box holds (`int` = whole number) |
-| `age` | The **name** of the box |
-| `=` | "Put this value into the box" |
-| `18` | The **value** |
-| `;` | End of the instruction |
+Read it as: *"Make a box for whole numbers. Name it `age`. Put `18` inside."*
+
+There are four kinds of boxes you need to know. The kind is called the **type**.
+
+| Type | What it holds | Examples |
+|---|---|---|
+| `string` | Text. Always inside `" "` | `"Juan"`, `"BSIT"` |
+| `int` | Whole numbers | `18`, `0`, `2026` |
+| `double` | Numbers with a decimal point | `1.65`, `89.5` |
+| `bool` | Only `true` or `false` | `true`, `false` |
 
 > [!IMPORTANT]
-> In programming, `=` does **not** mean "is equal to". It means **"put the value on the right into the box on the left."**
-
-### The four basic types
-
-| Type | What it holds | Examples | Notes |
-|---|---|---|---|
-| `string` | Text | `"Juan"`, `"BSIT"`, `"09171234567"` | Always inside double quotes `" "` |
-| `int` | Whole numbers | `18`, `0`, `-5`, `2026` | No decimal point |
-| `double` | Numbers with a decimal point | `1.65`, `89.5`, `3.0` | Use for grades, height, weight, money |
-| `bool` | Only `true` or `false` | `true`, `false` | Short for "Boolean". For yes/no facts |
-
-> [!TIP]
-> A phone number like `09171234567` should be a `string`, not an `int`. You never do math with phone numbers, and an `int` would remove the `0` at the start.
+> In C#, the `=` sign does **not** mean "is equal to". It means **"put the value on the right into the box on the left."**
 
 ---
 
-## 🛠️ Let's Build It: A Student Profile Card
+## Step by Step
 
-### Step 1: Create the project
+### Step 1: Create a new project named `Lesson02`
 
-```cmd
-cd C:\CSharpCourse
-dotnet new console -n Lesson02
-cd Lesson02
-code .
-```
+1. Open **Visual Studio**. (If it is already open, close it first and open it again.)
+2. Click **Create a new project**.
+3. Click **Console App** (the one with **C#**, not ".NET Framework"), then click **Next**.
+4. In **Project name**, type `Lesson02`. Check that **Location** says `C:\CSharpCourse`. Click **Next**.
+5. Click **Create**.
 
-### Step 2: Write the code
+> Need more help with these clicks? Look at [Lesson 01](01-hello-world.md), Steps 1 to 5.
 
-In VS Code, open `Program.cs`, delete everything, and type:
+### Step 2: Type the code
+
+1. Click inside the editor. Press **Ctrl + A**, then **Delete**, to clear it.
+2. Type the code below.
+
+## The Code
 
 ```csharp
 // Lesson 2: A student profile card using variables
@@ -100,11 +87,11 @@ Console.WriteLine($"Next year, {fullName} will be {age} years old.");
 
 ### Step 3: Run it
 
-```cmd
-dotnet run
-```
+Press **Ctrl + F5** (or click **Debug** → **Start Without Debugging**).
 
-✅ **You should see:**
+## The Output
+
+✅ **You will see:**
 
 ```text
 ===== STUDENT PROFILE =====
@@ -116,11 +103,13 @@ Enrolled: True
 Next year, Juan Dela Cruz will be 19 years old.
 ```
 
+Press any key to close the black window.
+
 ---
 
-## 🔎 Line by Line
+## What the Code Means
 
-### Creating the variables
+**Making four boxes:**
 
 ```cs
 string fullName = "Juan Dela Cruz";
@@ -129,111 +118,71 @@ double height = 1.65;
 bool isEnrolled = true;
 ```
 
-Four boxes are created, each with a type, a name, and a value.
+Each line makes one box: the type first, then the name, then `=`, then the value, then `;`.
 
-### Putting variables inside text: `$"..."`
+**Putting a variable inside a sentence:**
 
 ```cs
 Console.WriteLine($"Name:     {fullName}");
 ```
 
-This is called **string interpolation**. That is a big name for a simple idea:
+This has two special parts:
 
-1. Put a **`$`** right before the opening quote.
-2. Inside the text, write a variable name inside **curly braces `{ }`**.
-3. C# replaces `{fullName}` with the value in the box: `Juan Dela Cruz`.
+1. A **`$`** right before the opening quote.
+2. The variable's name inside **curly braces** `{ }`.
 
-You can put as many `{ }` as you want in one line:
+C# replaces `{fullName}` with what is in the box. So the screen shows `Name:     Juan Dela Cruz`.
+
+You can use many `{ }` in one line:
 
 ```cs
 Console.WriteLine($"{fullName} is {age} years old.");
-// Shows: Juan Dela Cruz is 18 years old.
 ```
 
-### Changing a variable
+This shows: `Juan Dela Cruz is 18 years old.`
+
+**Changing what is in a box:**
 
 ```cs
 age = 19;
 ```
 
-The box `age` already exists, so you do **not** write `int` again. You just put a new value in. The old value (`18`) is replaced.
+The box `age` already exists, so you do **not** write `int` again. The old value (`18`) is thrown away, and `19` goes in.
+
+### Rules for naming variables
+
+- Start with a letter. ✅ `name1` ❌ `1name`
+- No spaces. ✅ `fullName` ❌ `full name`
+- Start with a small letter. If the name has more words, start each **next** word with a capital letter: `yearLevel`, `isEnrolled`. This style is called **camelCase**.
+- Choose names that explain the value. ✅ `studentAge` ❌ `x`
+- Capital letters matter: `age` and `Age` are two different boxes.
 
 ---
 
-## 🔎 Naming Rules for Variables
+## If Something Goes Wrong
 
-| Rule | ✅ Good | ❌ Bad |
-|---|---|---|
-| Start with a letter | `name1` | `1name` |
-| No spaces | `fullName` | `full name` |
-| Use **camelCase**: the first word is lowercase, and each next word starts with a capital letter | `yearLevel`, `isEnrolled` | `yearlevel`, `YEARLEVEL` |
-| Use names that explain the value | `studentAge` | `x`, `a1` |
+**The screen shows `{fullName}` instead of the name.**
+You forgot the `$`. Write `$"Name: {fullName}"`, with the `$` right before the first quote.
 
-> [!NOTE]
-> Names are case-sensitive. `age` and `Age` would be two **different** boxes. Pick one way and use it every time.
+**Error List: `CS0029  Cannot implicitly convert type 'string' to 'int'`**
+You put text into a number box, like `int age = "eighteen";`. An `int` box only holds whole numbers: `int age = 18;`
 
----
+**Error List: `CS0128  A local variable or function named 'age' is already defined in this scope`**
+You made the same box twice (`int age = 18;` and later `int age = 19;`). The second time, leave out the type: `age = 19;`
 
-## ⚠️ Common Mistakes
+**Error List: `CS0103  The name 'fulName' does not exist in the current context`**
+A typing mistake in the variable's name. Spell it exactly the same way every time, with the same capital letters.
 
-### Mistake 1: Forgetting the `$`
-
-```cs
-Console.WriteLine("Name: {fullName}");
-```
-
-This shows `Name: {fullName}`, the curly braces and all. **Fix:** add `$` before the quote: `$"Name: {fullName}"`.
-
-### Mistake 2: Putting text into a number box
-
-```cs
-int age = "eighteen";
-```
-
-```text
-error CS0029: Cannot implicitly convert type 'string' to 'int'
-```
-
-**Fix:** An `int` box only holds whole numbers: `int age = 18;`
-
-### Mistake 3: Putting quotes around a number
-
-```cs
-string age = "18";
-```
-
-This works, but now `age` is **text**, not a number. You cannot do math with it. Use `int age = 18;` when you need a number.
-
-### Mistake 4: Creating the same variable twice
-
-```cs
-int age = 18;
-int age = 19;
-```
-
-```text
-error CS0128: A local variable or function named 'age' is already defined in this scope
-```
-
-**Fix:** The second time, leave out the type: `age = 19;`
-
-### Mistake 5: A typo in the variable name
-
-```cs
-Console.WriteLine(fulName);
-```
-
-```text
-error CS0103: The name 'fulName' does not exist in the current context
-```
-
-**Fix:** Spell the name **exactly** the same way every time, including capital letters.
+**My number has quotes around it: `string age = "18";`**
+This runs, but `age` is now **text**, not a number. You cannot do math with it. Use `int age = 18;` for numbers.
 
 ---
 
-## 🏋️ Practice
+## Exercise
 
-**Exercise 1.** Create variables for: your favorite food (`string`), how many siblings you have (`int`), your general average from last year (`double`), and whether you are a working student (`bool`). Print them all using `$"..."`.
+Do these in your `Lesson02` project. Clear the editor each time (**Ctrl + A**, **Delete**).
+
+**Exercise 1.** Make four variables: your favorite food (`string`), how many siblings you have (`int`), your general average last year (`double`), and whether you are a working student (`bool`). Show all four using `$"..."`.
 
 <details>
 <summary>Show answer</summary>
@@ -252,7 +201,7 @@ Console.WriteLine($"Working student: {isWorkingStudent}");
 
 </details>
 
-**Exercise 2.** Without running it, guess what this program shows. Then run it to check.
+**Exercise 2.** Do **not** run this yet. First, guess what it will show. Then type it, run it, and check.
 
 ```csharp
 string city = "Calbayog";
@@ -269,11 +218,11 @@ I live in Calbayog.
 Now I live in Catbalogan.
 ```
 
-The box `city` first holds `"Calbayog"`. Then the line `city = "Catbalogan";` replaces it.
+The box `city` first holds `"Calbayog"`. Then `city = "Catbalogan";` replaces it.
 
 </details>
 
-**Exercise 3.** This program has **three** mistakes. Find and fix them.
+**Exercise 3.** This code has **three** mistakes. Find them and fix them.
 
 ```cs
 string course = BSIT;
@@ -285,8 +234,8 @@ Console.WriteLine("Course: {course}, Year: {year}");
 <summary>Show answer</summary>
 
 1. `BSIT` is text, so it needs quotes: `"BSIT"`
-2. The second line is missing `;`
-3. The text is missing `$` before the quote
+2. The second line has no `;` at the end
+3. The text has no `$` before the quote
 
 ```csharp
 string course = "BSIT";
@@ -296,16 +245,54 @@ Console.WriteLine($"Course: {course}, Year: {year}");
 
 </details>
 
+## ⭐ Bonus Challenge
+
+**The cup swap.** The left cup has coffee, and the right cup has milk. Write code that **swaps** them, so the left cup has milk and the right cup has coffee. Start with this:
+
+```cs
+string leftCup = "coffee";
+string rightCup = "milk";
+```
+
+Rule: you may **not** just type `leftCup = "milk";`. Your code must still work if someone changes the drinks in the first two lines.
+
+Hint: how would you swap two real cups? You would need a **third, empty cup**.
+
+<details>
+<summary>Show answer</summary>
+
+```csharp
+string leftCup = "coffee";
+string rightCup = "milk";
+
+string spareCup = leftCup;   // 1. pour the coffee into the spare cup
+leftCup = rightCup;          // 2. pour the milk into the left cup
+rightCup = spareCup;         // 3. pour the coffee into the right cup
+
+Console.WriteLine($"Left cup: {leftCup}");
+Console.WriteLine($"Right cup: {rightCup}");
+```
+
+It shows:
+
+```text
+Left cup: milk
+Right cup: coffee
+```
+
+Without the spare cup, step 2 would throw away the coffee forever. Programmers use this "third box" trick all the time.
+
+</details>
+
 ---
 
-## 📌 Recap
+## Remember
 
-- A **variable** is a labeled box: `type name = value;`
-- `string` = text, `int` = whole number, `double` = decimal number, `bool` = true/false
+- A **variable** is a box with a label: `type name = value;`
+- `string` = text, `int` = whole number, `double` = decimal number, `bool` = true or false
 - `=` means "put this value into the box"
-- `$"Hello {name}"` puts a variable's value inside text
-- To change a variable, write `name = newValue;` (no type the second time)
-- Use clear **camelCase** names like `fullName` and `yearLevel`
+- `$"Hello {name}"` puts a variable inside a sentence
+- To change a variable: `name = newValue;` (no type the second time)
 
 ---
 

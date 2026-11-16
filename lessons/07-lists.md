@@ -1,98 +1,108 @@
 # Lesson 07: Arrays and Lists (Many Values in One Place)
 
-| | |
-|---|---|
-| **Part** | 1: Beginner |
-| **Time** | About 60 minutes |
-| **Before this** | [Lesson 06](06-loops.md) |
+**Part 1: Beginner** · About 60 minutes
 
-## 🎯 Goal
+## What You Will Learn
 
-By the end of this lesson, you will:
+- How to keep **many values** in one variable
+- How to get one value by its position number (its **index**)
+- How to go through every item with `foreach`
+- How to build a program that collects names until the user is done
 
-- Store many values in one variable using an **array** or a **List**
-- Get a value by its position (its **index**)
-- Go through every item with `foreach`
-- Build a program that collects names until the user is done
+## The Idea
 
----
+A variable holds **one** value. But what if you need to keep 40 student names? Making 40 variables would be terrible.
 
-## 🧠 The Big Idea
-
-A variable holds **one** value. But what if you need to keep 40 student names? Making 40 variables (`name1`, `name2`, ... `name40`) would be terrible.
-
-Instead, use **one** variable that holds a **list** of values, like a class attendance sheet:
+Instead, use **one** variable that holds a **list**, like a class attendance sheet:
 
 ```text
- index:    0        1        2
-        ┌───────┬───────┬─────────┐
-names:  │ "Ana" │ "Ben" │ "Carla" │
-        └───────┴───────┴─────────┘
+ position:   0        1        2
+          ┌───────┬───────┬─────────┐
+ names:   │ "Ana" │ "Ben" │ "Carla" │
+          └───────┴───────┴─────────┘
 ```
 
-Each item has a **position number** called an **index**.
+Each item has a position number, called its **index**.
 
 > [!IMPORTANT]
-> **Counting starts at 0, not 1.** The first item is at index `0`, the second at index `1`, and so on. This feels strange at first, but every programmer gets used to it.
+> **Counting starts at 0, not 1.** The first item is at index `0`. The second is at index `1`. This feels strange at first. Every programmer gets used to it.
 
-C# has two common ways to hold many values:
+C# has two ways to hold many values:
 
-| | Array | List |
-|---|---|---|
-| Size | **Fixed.** Decided when you create it | **Grows** when you add items |
-| Use when... | The items never change (days of the week) | You add or remove items (students who sign up) |
+- An **array** has a **fixed size**. Good for things that never change, like the days of the week.
+- A **List** can **grow**. Good for things you add to, like students who sign up.
 
 ---
 
-## 🧠 Arrays
+## Step by Step
 
-```cs
+### Step 1: Create a new project named `Lesson07`
+
+1. Open **Visual Studio**. (If it is already open, close it first and open it again.)
+2. Click **Create a new project**.
+3. Click **Console App** (the one with **C#**, not ".NET Framework"), then click **Next**.
+4. In **Project name**, type `Lesson07`. Check that **Location** says `C:\CSharpCourse`. Click **Next**.
+5. Click **Create**.
+
+### Step 2: Try an array and a List
+
+**1.** Clear the editor (**Ctrl + A**, **Delete**) and type this:
+
+```csharp
+// An array: fixed size
 string[] days = { "Mon", "Tue", "Wed", "Thu", "Fri" };
 
-Console.WriteLine(days[0]);           // Mon
-Console.WriteLine(days[4]);           // Fri
-Console.WriteLine(days.Length);       // 5  (how many items)
-```
+Console.WriteLine(days[0]);
+Console.WriteLine(days[4]);
+Console.WriteLine(days.Length);
 
-- `string[]` means "an array of strings". The `[]` means "many".
-- `days[0]` means "the item at index 0".
-- `.Length` tells you how many items are in the array.
+// A List: it can grow
+List<string> names = new List<string>();
 
----
-
-## 🧠 Lists
-
-```cs
-List<string> names = new List<string>();   // make an empty list
-
-names.Add("Ana");        // add to the end
+names.Add("Ana");
 names.Add("Ben");
 names.Add("Carla");
 
-Console.WriteLine(names[0]);      // Ana
-Console.WriteLine(names.Count);   // 3  (how many items)
+Console.WriteLine(names[0]);
+Console.WriteLine(names.Count);
+
+foreach (string name in names)
+{
+    Console.WriteLine($"Hello, {name}!");
+}
 ```
 
-| You want to... | Write |
-|---|---|
-| Make an empty list of text | `List<string> names = new List<string>();` |
-| Make an empty list of whole numbers | `List<int> scores = new List<int>();` |
-| Add an item to the end | `names.Add("Ana");` |
-| Get the item at an index | `names[0]` |
-| Count the items | `names.Count` |
-| Check if an item is in the list | `names.Contains("Ben")` (gives `true` or `false`) |
-| Remove an item | `names.Remove("Ben");` |
+**2.** Press **Ctrl + F5**.
 
-`List<string>` is read as "a List **of** strings". The type inside `< >` says what kind of items the list holds.
+✅ **You will see:**
 
-> [!NOTE]
-> Arrays use `.Length`. Lists use `.Count`. Both mean "how many items".
+```text
+Mon
+Fri
+5
+Ana
+3
+Hello, Ana!
+Hello, Ben!
+Hello, Carla!
+```
 
----
+Here is what each part did.
 
-## 🧠 Going Through Every Item: `foreach`
+**The array:**
 
-`foreach` runs a block of code **once for each item** in a list or array.
+- `string[] days = { ... };` makes an array of text. The `[]` means "many".
+- `days[0]` is the item at index 0: `Mon`. `days[4]` is the fifth item: `Fri`.
+- `days.Length` is how many items it has: `5`.
+
+**The List:**
+
+- `List<string> names = new List<string>();` makes an **empty** list of text. Read `List<string>` as "a list **of** strings".
+- `names.Add("Ana");` adds an item to the end.
+- `names[0]` is the first item.
+- `names.Count` is how many items it has.
+
+**The `foreach` loop:**
 
 ```cs
 foreach (string name in names)
@@ -101,35 +111,15 @@ foreach (string name in names)
 }
 ```
 
-Read it as: *"For each `name` in `names`, say hello."*
+Read it as: *"For each `name` in `names`, say hello."* The loop runs once for every item. Each round, `name` holds the next item.
 
-Each round, the box `name` holds the next item: first `"Ana"`, then `"Ben"`, then `"Carla"`.
+> Arrays use `.Length`. Lists use `.Count`. Both mean "how many items".
 
-**Need the position number too?** Use a `for` loop with an index instead:
+### Step 3: Build the name collector
 
-```cs
-for (int i = 0; i < names.Count; i++)
-{
-    Console.WriteLine($"{i + 1}. {names[i]}");
-}
-```
+**1.** Clear the editor and type the code below.
 
-We write `i + 1` because people count from 1, but the index starts from 0.
-
----
-
-## 🛠️ Let's Build It: Classmate Name Collector
-
-### Step 1: Create the project
-
-```cmd
-cd C:\CSharpCourse
-dotnet new console -n Lesson07
-cd Lesson07
-code .
-```
-
-### Step 2: Write the code
+## The Code
 
 ```csharp
 // Lesson 7: Collecting many names in a List
@@ -161,9 +151,11 @@ for (int i = 0; i < names.Count; i++)
 }
 ```
 
-### Step 3: Run it
+**2.** Press **Ctrl + F5**. Type three names, pressing **Enter** after each one. Then press **Enter** on an empty line to finish.
 
-✅ **You should see** (type three names, then press **Enter** on an empty line):
+## The Output
+
+✅ **You will see:**
 
 ```text
 Type the names of your classmates.
@@ -181,13 +173,13 @@ You entered 3 name(s):
 
 ---
 
-## 🔎 Line by Line
+## What the Code Means
 
 ```cs
 List<string> names = new List<string>();
 ```
 
-Create an empty list. Right now, `names.Count` is `0`.
+Make an empty list. Right now, `names.Count` is `0`.
 
 ```cs
 while (true)
@@ -202,7 +194,7 @@ while (true)
 }
 ```
 
-Keep asking forever. When the user presses Enter without typing anything, `name` is empty text `""`, so we `break` out of the loop. Otherwise, we add the name to the list.
+Keep asking forever. When the user presses **Enter** without typing anything, `name` is empty text (`""`), so `break` leaves the loop. Otherwise, the name is added to the list.
 
 ```cs
 for (int i = 0; i < names.Count; i++)
@@ -211,50 +203,41 @@ for (int i = 0; i < names.Count; i++)
 }
 ```
 
-Go through the list by index, from `0` up to (but not including) `names.Count`, and print each name with a number.
+Go through the list by index: 0, 1, 2... We show `i + 1` because people count from 1, but indexes start from 0.
+
+**`foreach` or `for`?** Use `foreach` when you only need each item. Use `for` when you also need the position number.
+
+### More things a List can do
+
+- `names.Contains("Ben")` → is `"Ben"` in the list? Gives `true` or `false`.
+- `names.Remove("Ben");` → removes `"Ben"` from the list.
+- `List<int> scores = new List<int>();` → a list of whole numbers.
 
 ---
 
-## ⚠️ Common Mistakes
+## If Something Goes Wrong
 
-### Mistake 1: Using an index that does not exist
-
-```cs
-List<string> names = new List<string>();
-names.Add("Ana");
-Console.WriteLine(names[1]);   // there is only index 0!
-```
+**The black window shows a crash:**
 
 ```text
 Unhandled exception. System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection. (Parameter 'index')
 ```
 
-For an array, the message is `Index was outside the bounds of the array.`
+You used an index that does not exist. A list with 3 items has indexes 0, 1, and 2 only. The last index is always `Count - 1`.
 
-**Fix:** The last index is always `Count - 1` (or `Length - 1`). A list with 1 item only has index `0`.
+(For an array, the message is `Index was outside the bounds of the array.`)
 
-### Mistake 2: Forgetting `new List<string>()`
+**Error List: `CS0165  Use of unassigned local variable 'names'`**
+You forgot to create the list. Write `List<string> names = new List<string>();`
 
-```cs
-List<string> names;
-names.Add("Ana");
-```
-
-```text
-error CS0165: Use of unassigned local variable 'names'
-```
-
-**Fix:** Create the list before using it: `List<string> names = new List<string>();`
-
-### Mistake 3: Mixing up `.Length` and `.Count`
-
-Arrays use `.Length`. Lists use `.Count`. If you mix them up, C# shows an error like `'List<string>' does not contain a definition for 'Length'`.
+**Error List: `CS1061  'List<string>' does not contain a definition for 'Length'`**
+Lists use `.Count`, not `.Length`.
 
 ---
 
-## 🏋️ Practice
+## Exercise
 
-**Exercise 1.** Ask the user for **5 grades** (use a `for` loop), store them in a `List<double>`, then use `foreach` to compute and show the average.
+**Exercise 1.** Ask the user for **5 grades** (use a `for` loop). Keep them in a `List<double>`. Then use `foreach` to compute the average, and show it.
 
 <details>
 <summary>Show answer</summary>
@@ -282,7 +265,7 @@ Console.WriteLine($"Average: {average:F2}");
 
 </details>
 
-**Exercise 2.** Make a list of 5 fruits. Ask the user to type a fruit. Show whether it is in the list using `.Contains`.
+**Exercise 2.** Make a list of 5 fruits. Ask the user to type a fruit. Say if it is in the list, using `.Contains`.
 
 <details>
 <summary>Show answer</summary>
@@ -308,11 +291,21 @@ else
 }
 ```
 
-We use `.ToLower()` so that `Mango` and `mango` both match.
+`.ToLower()` makes `Mango` and `mango` both match.
 
 </details>
 
-**Exercise 3.** Make a **shopping list** program with a menu: `1 - Add item`, `2 - Show items`, `3 - Exit`. (Hint: combine this lesson with the menu loop from Lesson 06.)
+## ⭐ Bonus Challenge
+
+Build a **shopping list** program with a menu:
+
+```text
+1 - Add item
+2 - Show items
+3 - Exit
+```
+
+Hint: combine the **List** from this lesson with the **menu loop** from Lesson 06.
 
 <details>
 <summary>Show answer</summary>
@@ -361,7 +354,7 @@ while (running)
 
 ---
 
-## 📌 Recap
+## Remember
 
 - An **array** has a fixed size: `string[] days = { "Mon", "Tue" };`
 - A **List** grows: `List<string> names = new List<string>();` then `names.Add("Ana");`

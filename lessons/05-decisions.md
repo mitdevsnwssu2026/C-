@@ -1,30 +1,22 @@
 # Lesson 05: Making Decisions (if, else, switch)
 
-| | |
-|---|---|
-| **Part** | 1: Beginner |
-| **Time** | About 75 minutes |
-| **Before this** | [Lesson 04](04-math-and-operators.md) |
+**Part 1: Beginner** · About 75 minutes
 
-## 🎯 Goal
+## What You Will Learn
 
-By the end of this lesson, you will:
+- How to make your program choose what to do, with `if` and `else`
+- How to compare values (`==`, `>`, `<`, and more)
+- How to combine conditions with **AND**, **OR**, and **NOT**
+- How to check that the user typed a real number, so the program does not crash
+- How to pick from a list of choices with `switch`
 
-- Make your program choose what to do with `if`, `else if`, and `else`
-- Compare values with `==`, `!=`, `>`, `<`, `>=`, `<=`
-- Combine conditions with `&&` (AND), `||` (OR), and `!` (NOT)
-- Check if the user typed a real number with `TryParse` (no more crashes!)
-- Pick from many choices with `switch`
+## The Idea
 
----
-
-## 🧠 The Big Idea
-
-Every day, you make decisions:
+You make decisions every day:
 
 > **If** it is raining, bring an umbrella. **Otherwise**, wear a cap.
 
-Programs make decisions the same way:
+A program decides the same way:
 
 ```cs
 if (isRaining)
@@ -37,115 +29,60 @@ else
 }
 ```
 
-- The part inside `( )` is the **condition**. It must be `true` or `false`.
-- If it is `true`, the code inside the **first** `{ }` runs.
-- If it is `false`, the code inside the `else { }` runs.
-- **Only one** of the two blocks runs, never both.
+- The part inside `( )` is the **condition**. It is either `true` or `false`.
+- If it is `true`, the lines inside the **first** `{ }` run.
+- If it is `false`, the lines inside the `else { }` run.
+- Only **one** of the two runs. Never both.
 
-The curly braces `{ }` group lines together into a **block**. Everything inside the braces belongs to that `if` or `else`.
+The curly braces `{ }` group lines together. Everything between `{` and `}` belongs to that `if` or `else`.
 
-### Comparison operators
+### Comparing values
 
-| Operator | Meaning | Example | Result |
+| Symbol | Meaning | Example | Result |
 |---|---|---|---|
 | `==` | is equal to | `5 == 5` | `true` |
-| `!=` | is NOT equal to | `5 != 3` | `true` |
+| `!=` | is **not** equal to | `5 != 3` | `true` |
 | `>` | is greater than | `90 > 75` | `true` |
 | `<` | is less than | `60 < 75` | `true` |
 | `>=` | is greater than **or equal to** | `75 >= 75` | `true` |
 | `<=` | is less than **or equal to** | `80 <= 75` | `false` |
 
 > [!WARNING]
-> **`=` and `==` are different!**
-> `=` **puts** a value into a box: `age = 18;`
-> `==` **compares** two values: `if (age == 18)`
-
-### Many choices: `else if`
-
-```cs
-if (grade >= 90)
-{
-    Console.WriteLine("Excellent!");
-}
-else if (grade >= 75)
-{
-    Console.WriteLine("Passed.");
-}
-else
-{
-    Console.WriteLine("Failed.");
-}
-```
-
-C# checks the conditions **from top to bottom** and runs the **first** one that is `true`. Then it skips the rest. If **none** are true, the `else` block runs.
+> `=` and `==` are different!
+> One `=` **puts** a value in a box: `age = 18;`
+> Two `==` **compare** two values: `if (age == 18)`
 
 ### Combining conditions
 
-| Operator | Meaning | Example | `true` when... |
+| Symbol | Say it as | Example | True when... |
 |---|---|---|---|
 | `&&` | AND | `age >= 18 && hasId` | **both** sides are true |
 | `\|\|` | OR | `day == "Sat" \|\| day == "Sun"` | **at least one** side is true |
 | `!` | NOT | `!isEnrolled` | the value is **false** |
 
+> The `|` key is above the **Enter** key on most keyboards. Hold **Shift** and press **\\** to type it. Type it twice for `||`.
+
+---
+
+## Step by Step
+
+### Step 1: Create a new project named `Lesson05`
+
+1. Open **Visual Studio**. (If it is already open, close it first and open it again.)
+2. Click **Create a new project**.
+3. Click **Console App** (the one with **C#**, not ".NET Framework"), then click **Next**.
+4. In **Project name**, type `Lesson05`. Check that **Location** says `C:\CSharpCourse`. Click **Next**.
+5. Click **Create**.
+
+### Step 2: Type the code
+
+1. Click inside the editor. Press **Ctrl + A**, then **Delete**.
+2. Type the code below.
+
 > [!TIP]
-> Read `!` out loud as **"not"**. `if (!isEnrolled)` reads as *"if not enrolled."*
-> The `||` symbol is two "pipe" keys. On most keyboards, the pipe `|` is above the Enter key (press **Shift + \\**).
+> When you type `{` and press **Enter**, Visual Studio adds the closing `}` and moves your next line a little to the right for you. That spacing (called **indentation**) makes the code easier to read.
 
-### Comparing text
-
-Text comparison is **case-sensitive**: `"yes" == "YES"` is `false`.
-
-To ignore capital letters, change the text to lowercase first with `.ToLower()`:
-
-```cs
-string answer = "YES";
-if (answer.ToLower() == "yes")
-{
-    Console.WriteLine("You said yes!");
-}
-```
-
----
-
-## 🧠 Checking If Input Is a Number: `TryParse`
-
-In Lesson 03, typing letters instead of a number crashed the program. `TryParse` fixes that. It **tries** to turn text into a number, and it tells you whether it worked.
-
-```cs
-bool isNumber = double.TryParse(input, out double grade);
-```
-
-| Piece | Meaning |
-|---|---|
-| `double.TryParse(input, ...)` | **Try** to turn the text `input` into a `double` |
-| `out double grade` | If it works, put the number into a new box called `grade` |
-| `bool isNumber =` | Keep the answer: `true` if it worked, `false` if not |
-
-Then you decide what to do:
-
-```cs
-if (!isNumber)
-{
-    Console.WriteLine("That is not a number.");
-}
-```
-
-`int.TryParse` works the same way for whole numbers.
-
----
-
-## 🛠️ Let's Build It: Grade Remarks
-
-### Step 1: Create the project
-
-```cmd
-cd C:\CSharpCourse
-dotnet new console -n Lesson05
-cd Lesson05
-code .
-```
-
-### Step 2: Write the code
+## The Code
 
 ```csharp
 // Lesson 5: Grade remarks using if / else if / else
@@ -177,11 +114,13 @@ else
 }
 ```
 
-### Step 3: Run it several times
+### Step 3: Run it five times
 
-Run `dotnet run` five times. Each time, type a different answer.
+Press **Ctrl + F5**, type an answer, and look at the result. Close the black window. Do this five times, with these five answers: `92`, `80`, `70`, `abc`, `150`.
 
-✅ **You should see:**
+## The Output
+
+✅ **You will see:**
 
 ```text
 Enter your final grade (0-100): 92
@@ -208,51 +147,66 @@ Enter your final grade (0-100): 150
 The grade must be from 0 to 100.
 ```
 
-No more crashing when the user types letters! 🎉
+The program did **not** crash when you typed `abc`. 🎉
 
 ---
 
-## 🔎 Line by Line
+## What the Code Means
+
+**Checking if the input is a number:**
 
 ```cs
 bool isNumber = double.TryParse(input, out double grade);
 ```
 
-Try to read the input as a number. `isNumber` becomes `true` or `false`.
+In Lesson 03, typing letters made the program crash. `TryParse` fixes that. It **tries** to turn the text into a number:
+
+- If it works, `isNumber` becomes `true`, and the number goes into a new box named `grade`.
+- If it does not work, `isNumber` becomes `false`. No crash.
+
+(`int.TryParse` does the same for whole numbers.)
+
+**Checking the conditions, from top to bottom:**
 
 ```cs
 if (!isNumber)
 ```
 
-"If it is **not** a number..." We check this **first**, because the other checks only make sense for real numbers.
+*"If it is **not** a number..."* We check this first, because the other checks only make sense for real numbers.
 
 ```cs
 else if (grade < 0 || grade > 100)
 ```
 
-"...otherwise, if the grade is below 0 **or** above 100..." This catches impossible grades.
+*"...otherwise, if the grade is below 0 **or** above 100..."*
 
 ```cs
 else if (grade >= 90)
 ...
 else if (grade >= 75)
-```
-
-The order matters. A grade of `92` is also `>= 75`, but because `>= 90` comes first, the student sees "Excellent!".
-
-```cs
+...
 else
 ```
 
-If nothing above was true, the grade is from 0 to 74, so the student failed.
+C# checks each condition **from top to bottom** and runs the **first one that is true**. Then it skips all the rest. If none is true, the `else` part runs.
+
+The order matters. A grade of `92` is also `>= 75`. But `>= 90` comes first, so the student sees "Excellent!".
+
+### Comparing text
+
+Text comparison cares about capital letters: `"yes" == "YES"` is `false`. To ignore capital letters, change the text to small letters first with `.ToLower()`:
+
+```cs
+if (answer.ToLower() == "yes")
+```
 
 ---
 
-## 🧠 Another Way to Choose: `switch`
+## Another Way to Choose: `switch`
 
-When you compare **one** variable against **many exact values** (like menu choices), `switch` is cleaner than a long `else if` chain.
+When you compare **one** variable with **several exact values** (like menu choices), `switch` is cleaner.
 
-Try it in your `Lesson05` project. Replace `Program.cs` with:
+**1.** Clear the editor (**Ctrl + A**, **Delete**) and type this:
 
 ```csharp
 Console.WriteLine("1 - Say hello");
@@ -276,7 +230,9 @@ switch (choice)
 }
 ```
 
-✅ **You should see** (when you type `1`):
+**2.** Press **Ctrl + F5** and type `1`.
+
+✅ **You will see:**
 
 ```text
 1 - Say hello
@@ -285,65 +241,38 @@ Choose an option: 1
 Hello there!
 ```
 
-| Piece | Meaning |
-|---|---|
-| `switch (choice)` | Look at the value of `choice` |
-| `case "1":` | If it is `"1"`, run the lines below this |
-| `break;` | **Stop here.** Every `case` must end with `break;` |
-| `default:` | If no `case` matched, run this. It works like `else` |
+- `switch (choice)` means: look at what is in `choice`.
+- `case "1":` means: if it is `"1"`, run the lines below.
+- `break;` means: stop here. Every `case` must end with `break;`
+- `default:` runs when no `case` matched. It works like `else`.
 
-**When to use which?**
+**Which one should I use?**
 
-- Use **`if` / `else if`** for ranges and complex conditions (`grade >= 75`, `age >= 18 && hasId`).
-- Use **`switch`** to pick one option from a list of exact values (menu choices `"1"`, `"2"`, `"3"`).
+- Use `if` for ranges and questions: `grade >= 75`, `age >= 18 && hasId`
+- Use `switch` to pick one of several exact values: `"1"`, `"2"`, `"3"`
 
 ---
 
-## ⚠️ Common Mistakes
+## If Something Goes Wrong
 
-### Mistake 1: Using `=` instead of `==`
+**Error List: `CS0029  Cannot implicitly convert type 'double' to 'bool'`**
+You wrote `if (grade = 75)` with one `=`. To compare, use two: `if (grade == 75)`
 
-```cs
-if (grade = 75)
-```
+**"Passed" always shows, even for a low grade.**
+You may have a `;` right after the condition: `if (grade >= 75);`. Remove that `;`. Never put `;` directly after `if (...)`.
 
-```text
-error CS0029: Cannot implicitly convert type 'double' to 'bool'
-```
+**The "Excellent" message never shows.**
+Your conditions are in the wrong order. Check the **highest** number first (`>= 90` before `>= 75`).
 
-**Fix:** To compare, use two equal signs: `if (grade == 75)`
+**Error List: `CS0163  Control cannot fall through from one case label`**
+A `case` is missing its `break;`. Add `break;` at the end of every `case`.
 
-### Mistake 2: Putting a semicolon after the condition
-
-```cs
-if (grade >= 75);
-{
-    Console.WriteLine("Passed.");
-}
-```
-
-The `;` ends the `if` immediately, so "Passed." **always** shows. C# warns you about this with `warning CS0642: Possible mistaken empty statement`. **Fix:** Never put `;` right after `if (...)`.
-
-### Mistake 3: Wrong order in `else if`
-
-```cs
-if (grade >= 75) { ... }
-else if (grade >= 90) { ... }   // never runs!
-```
-
-Any grade of 90 or more is also `>= 75`, so the first block always wins. **Fix:** Check the **highest** value first.
-
-### Mistake 4: Forgetting `break;` in a `switch`
-
-```text
-error CS0163: Control cannot fall through from one case label ('case "1":') to another
-```
-
-**Fix:** End every `case` with `break;`
+**Error List: `CS1513  } expected`**
+A `{` was opened but never closed. Every `{` needs a matching `}`.
 
 ---
 
-## 🏋️ Practice
+## Exercise
 
 **Exercise 1.** Ask for a whole number. Say if it is **even** or **odd**. (Hint: a number is even when `number % 2 == 0`.)
 
@@ -366,7 +295,37 @@ else
 
 </details>
 
-**Exercise 2.** Ask for the user's age **and** whether they have a valid ID (`yes` or `no`). They can vote only if they are **18 or older AND** have an ID. Use `int.TryParse` so the program does not crash on bad input.
+**Exercise 2.** **A simple login.** Ask for a username and a password. If the username is `admin` **and** the password is `1234`, show `Welcome, admin!`. Otherwise, show `Access denied.`
+
+<details>
+<summary>Show answer</summary>
+
+```csharp
+Console.Write("Username: ");
+string username = Console.ReadLine() ?? "";
+
+Console.Write("Password: ");
+string password = Console.ReadLine() ?? "";
+
+if (username == "admin" && password == "1234")
+{
+    Console.WriteLine("Welcome, admin!");
+}
+else
+{
+    Console.WriteLine("Access denied.");
+}
+```
+
+⚠️ This is only for practice. Writing a password inside the code is **not safe**. In Lessons 17 to 20, you will learn how real systems keep passwords safe.
+
+</details>
+
+## ⭐ Bonus Challenge
+
+**Can you vote?** Ask for the user's age. Then ask if they have a valid ID (`yes` or `no`). They can vote only if they are **18 or older AND** have an ID.
+
+Make it safe: use `int.TryParse` so the program does not crash if the user types letters for the age. Also accept `YES`, `Yes`, and `yes`.
 
 <details>
 <summary>Show answer</summary>
@@ -393,46 +352,20 @@ else
 }
 ```
 
-Notice `bool hasId = idAnswer.ToLower() == "yes";`. The comparison gives `true` or `false`, and we keep that answer in a `bool` box.
-
-</details>
-
-**Exercise 3.** **A simple login.** Ask for a username and password. If the username is `admin` **and** the password is `1234`, show `Welcome, admin!`. Otherwise, show `Access denied.`
-
-<details>
-<summary>Show answer</summary>
-
-```csharp
-Console.Write("Username: ");
-string username = Console.ReadLine() ?? "";
-
-Console.Write("Password: ");
-string password = Console.ReadLine() ?? "";
-
-if (username == "admin" && password == "1234")
-{
-    Console.WriteLine("Welcome, admin!");
-}
-else
-{
-    Console.WriteLine("Access denied.");
-}
-```
-
-⚠️ This is **only for practice**. Writing a password directly in code is **unsafe**. In Lessons 17 to 20, you will learn how real systems store passwords safely.
+Look at `bool hasId = idAnswer.ToLower() == "yes";`. The comparison gives `true` or `false`, and that answer goes into the `bool` box.
 
 </details>
 
 ---
 
-## 📌 Recap
+## Remember
 
-- `if (condition) { ... } else { ... }` runs one block or the other.
-- `else if` checks more conditions, from top to bottom. The first `true` one wins.
-- Compare with `== != > < >= <=`. Remember: `=` stores, `==` compares.
-- Combine with `&&` (AND), `||` (OR), `!` (NOT).
-- `double.TryParse(text, out double number)` safely checks if text is a number.
-- `switch` picks one option from exact values. End each `case` with `break;`.
+- `if (condition) { ... } else { ... }` runs one part or the other.
+- `else if` checks more conditions, from top to bottom. The first true one wins.
+- One `=` stores a value. Two `==` compare.
+- `&&` is AND, `||` is OR, `!` is NOT.
+- `double.TryParse(text, out double number)` checks if text is a number, without crashing.
+- `switch` picks from exact values. End every `case` with `break;`
 
 ---
 

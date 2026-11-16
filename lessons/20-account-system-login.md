@@ -1,43 +1,37 @@
-# Lesson 20: Account System, Part 2 (Log In, Change Password, Log Out) 🏆 Final Project
+# Lesson 20: Account System, Part 2 (Log In, Change Password, Log Out) 🏆
 
-| | |
-|---|---|
-| **Part** | 4: Security and Accounts |
-| **Time** | About 2 hours |
-| **Before this** | [Lesson 19](19-account-system-register.md) |
+**Part 4: Security and Accounts** · About 2 hours · **This is the final project!**
 
-## 🎯 Goal
+## What You Will Learn
 
-You will finish the **final project**. By the end of this lesson, your account system will be able to:
+You will finish the account system. At the end of this lesson, it can:
 
 - **Log in** with a username and a hidden password (3 tries)
-- Show a different menu for a **logged-in** user
+- Show a different menu for a user who is **logged in**
 - Show the user's **profile**
 - **Change the password** (only after typing the current one)
 - **Log out**
 
----
-
-## 🧠 The Big Idea
+## The Idea
 
 ### How login works
 
 ```text
-User types:  username "juan_dc", password "MyPass123"
-                │
-                ▼
-1. Find the user:     SELECT ... FROM Users WHERE Username = 'juan_dc'
-                      Not found? ──► "Invalid username or password."
-2. Check the password: PasswordHasher.Verify("MyPass123", savedHash)
-                      False? ──► "Invalid username or password."
-3. Both OK?           ──► Logged in! ✅
+The user types:  username "juan_dc", password "MyPass123"
+                   │
+                   ▼
+1. Find the user:       SELECT ... FROM Users WHERE Username = 'juan_dc'
+                        Not found? ──► "Invalid username or password."
+2. Check the password:  PasswordHasher.Verify("MyPass123", savedHash)
+                        False?     ──► "Invalid username or password."
+3. Both OK?             ──► Logged in! ✅
 ```
 
-### Why the same error message for both mistakes?
+### Why the same message for both mistakes?
 
-Notice that a wrong **username** and a wrong **password** show the **same** message: `Invalid username or password.`
+A wrong **username** and a wrong **password** show the **same** message: `Invalid username or password.`
 
-If the message said *"That username does not exist"*, a hacker could use your login screen to discover **which usernames are real**, and then attack only those accounts. A single, vague message gives hackers **nothing** to work with. Banks, Google, and Facebook all do this.
+Imagine the message said *"That username does not exist."* Then a hacker could use your login screen to find out **which usernames are real**, and attack only those. One vague message gives a hacker **nothing**. Banks, Google, and Facebook all do this.
 
 ### Remembering who is logged in
 
@@ -45,49 +39,60 @@ If the message said *"That username does not exist"*, a hacker could use your lo
 User? currentUser = null;
 ```
 
-- If `currentUser` is `null`, **nobody** is logged in. Show the **visitor menu** (Register, Log in...).
-- If `currentUser` holds a `User`, that person is logged in. Show **their** menu (Profile, Change password, Log out).
-- Logging out is as simple as setting `currentUser = null;` again.
+- When `currentUser` is `null`, **nobody** is logged in. Show the **visitor menu** (Register, Log in...).
+- When `currentUser` holds a `User`, that person is logged in. Show **their** menu (Profile, Change password, Log out).
+- To log out, just set `currentUser = null;` again.
 
 ---
 
-## 🛠️ Let's Build It
+## Step by Step
 
-### Step 1: Create the project and add SQLite
+### Step 1: Create a new project named `Lesson20`
 
-```cmd
-cd C:\CSharpCourse
-dotnet new console -n Lesson20
-cd Lesson20
-dotnet add package Microsoft.Data.Sqlite
+1. Open **Visual Studio**. (If it is already open, close it first and open it again.)
+2. Click **Create a new project**.
+3. Click **Console App** (the one with **C#**, not ".NET Framework"), then click **Next**.
+4. In **Project name**, type `Lesson20`. Check that **Location** says `C:\CSharpCourse`. Click **Next**.
+5. Click **Create**.
+
+### Step 2: Add the SQLite package
+
+1. In the **Solution Explorer**, right-click the project line **Lesson20**.
+2. Click **Manage NuGet Packages...**
+3. Click **Browse**. In the search box, type `Microsoft.Data.Sqlite`.
+4. Click the result named exactly **Microsoft.Data.Sqlite**. Then click **Install**.
+5. If **Preview Changes** appears, click **Apply**. If **License Acceptance** appears, click **I Accept**.
+6. Close the NuGet tab.
+
+### Step 3: Bring in five files from Lesson 19
+
+**1.** In the Solution Explorer, right-click the project line **Lesson20**.
+
+**2.** Move to **Add**, then click **Existing Item...**
+
+**3.** Click the address bar at the top of the window. Type `C:\CSharpCourse\Lesson19` and press **Enter**.
+
+**4.** Click **AccountService.cs** once. Then hold the **Ctrl** key, and click each of these: **ConsoleHelper.cs**, **Database.cs**, **PasswordHasher.cs**, **User.cs**.
+
+> You should have **5 files** highlighted. Do **not** select `Program.cs`.
+
+**5.** Click **Add**.
+
+✅ **You will see:** the five files appear in the Solution Explorer, under **Lesson20**.
+
+### Step 4: Add three new methods to `AccountService.cs`
+
+**1.** In the Solution Explorer, double-click **AccountService.cs**.
+
+**2.** Scroll down and find this line:
+
+```cs
+    public static List<User> GetAllUsers()
 ```
 
-### Step 2: Copy your files from Lesson 19
+**3.** Click at the very start of that line, and press **Enter** twice to make empty space above it.
 
-```cmd
-copy ..\Lesson19\*.cs .
-```
-
-The `*` means **"every file"**, so `*.cs` means *every file ending in `.cs`*. You should see the 6 file names and `6 file(s) copied.`
-
-> [!NOTE]
-> This also copies Lesson 19's `Program.cs` over the new one. That is fine, because you will replace `Program.cs` in Step 4.
-
-**Bring your accounts too!** Copy the database, so you can log in with the accounts you registered in Lesson 19:
-
-```cmd
-copy ..\Lesson19\accounts.db .
-```
-
-Now open VS Code:
-
-```cmd
-code .
-```
-
-### Step 3: Add three methods to `AccountService.cs`
-
-Open `AccountService.cs`. Find the line `public static List<User> GetAllUsers()`. **Just above** that line, add these three methods:
+**4.** In that empty space, paste these three methods:
 
 ```cs
     // Finds one user by username. Gives back null if there is no such user.
@@ -149,11 +154,12 @@ Open `AccountService.cs`. Find the line `public static List<User> GetAllUsers()`
         command.Parameters.AddWithValue("$id", userId);
         command.ExecuteNonQuery();
     }
-
 ```
 
 <details>
-<summary>Show the complete <code>AccountService.cs</code> after this change</summary>
+<summary>Not sure where they go? Show the complete <code>AccountService.cs</code></summary>
+
+You can replace the whole file with this (**Ctrl + A**, **Delete**, then paste):
 
 ```csharp
 // AccountService.cs - the rules and database commands for user accounts
@@ -338,9 +344,15 @@ public static class AccountService
 
 </details>
 
-### Step 4: Replace `Program.cs`
+### Step 5: Put the main program in `Program.cs`
 
-Replace everything in `Program.cs` with:
+1. In the Solution Explorer, double-click **Program.cs**.
+2. Press **Ctrl + A**, then **Delete**.
+3. Put in this code:
+
+## The Code
+
+**File: `Program.cs`**
 
 ```csharp
 // Lesson 20: FINAL PROJECT - Account System (Register, Log in, Change password, Log out)
@@ -551,15 +563,15 @@ string AskForNewPassword()
 }
 ```
 
-### Step 5: Run it
+### Step 6: Run it
 
-```cmd
-dotnet run
-```
+Press **Ctrl + F5**.
 
-Log in with an account from Lesson 19 (or register a new one first). Try a wrong password once, too.
+> This project has its **own new database**, so the accounts from Lesson 19 are not here. **Register a new account first** (option 1). Then log in with it (option 2).
 
-✅ **You should see something like this:**
+## The Output
+
+✅ **You will see something like this** (after registering `juan_dc`):
 
 ```text
 ========= ACCOUNT SYSTEM =========
@@ -620,20 +632,11 @@ Choose an option: 4
 Goodbye!
 ```
 
-Now test these on your own:
-
-- [ ] Log in with the **old** password after changing it. It should **fail**.
-- [ ] Log in with the **new** password. It should **work**.
-- [ ] Type `JUAN_DC` (capital letters) as the username. It should still work.
-- [ ] Type a username that does not exist. You should see the **same** message as for a wrong password.
-- [ ] Fail **3 times** in a row. You should go back to the main menu.
-- [ ] Choose option 3 on the main menu. The saved hash for Juan should be **different** from before, because you changed the password.
-
-**🎉 Congratulations! You have built a real account system with secure, hashed passwords!**
+**🎉 Congratulations! You have built a real account system with safe, hashed passwords!**
 
 ---
 
-## 🔎 Line by Line: `AccountService.cs`
+## What the Code Means: `AccountService.cs`
 
 ### `FindByUsername`: reading one row
 
@@ -646,7 +649,7 @@ if (!reader.Read())
 }
 ```
 
-We only expect **one** row (usernames are `UNIQUE`), so instead of `while (reader.Read())`, we call `reader.Read()` **once**. If it gives back `false`, there is no such user, so we return `null`.
+Only **one** row can match, because usernames are `UNIQUE`. So instead of `while (reader.Read())`, the code calls `reader.Read()` **once**. If it gives `false`, there is no such user, and the method gives back `null`.
 
 ### `Login`: two checks
 
@@ -666,7 +669,7 @@ if (!PasswordHasher.Verify(password, user.PasswordHash))
 return user;
 ```
 
-The method returns the same thing (`null`) for both mistakes, so the screen **cannot** tell them apart, and neither can a hacker.
+The method gives back the same thing (`null`) for both mistakes. The screen **cannot** tell them apart. Neither can a hacker.
 
 ### `ChangePassword`: hash the new one
 
@@ -676,11 +679,11 @@ string newHash = PasswordHasher.Hash(newPassword);
 command.CommandText = "UPDATE Users SET PasswordHash = $passwordHash WHERE Id = $id;";
 ```
 
-The new password gets a **new salt** and a **new hash**. Only that one user's row is updated, thanks to `WHERE Id = $id`.
+The new password gets a **new salt** and a **new hash**. Only that one user's row is changed, thanks to `WHERE Id = $id`.
 
 ---
 
-## 🔎 Line by Line: `Program.cs`
+## What the Code Means: `Program.cs`
 
 ### Two menus in one loop
 
@@ -689,16 +692,16 @@ while (running)
 {
     if (currentUser == null)
     {
-        // visitor menu
+        // the visitor menu
     }
     else
     {
-        // logged-in menu
+        // the menu for a logged-in user
     }
 }
 ```
 
-Each time around the loop, the program checks **who is logged in** and shows the right menu.
+Each time around the loop, the program checks **who is logged in**, and shows the right menu.
 
 ### Logging in
 
@@ -708,9 +711,9 @@ case "2":
     break;
 ```
 
-`LoginScreen` gives back a `User` if the login worked, or `null` if it failed. Either way, we store it in `currentUser`. Next time around the loop, the menu changes automatically.
+`LoginScreen` gives back a `User` when the login worked, or `null` when it failed. Either way, the result goes into `currentUser`. The next time around the loop, the menu changes by itself.
 
-### `LoginScreen`: 3 tries
+### `LoginScreen`: three tries
 
 ```cs
 for (int attempt = 1; attempt <= 3; attempt++)
@@ -729,7 +732,7 @@ Console.WriteLine("Too many failed attempts. Going back to the main menu.");
 return null;
 ```
 
-This is the **PIN example from Lesson 06**, now protecting real, hashed accounts. A successful login `return`s **immediately**, which also ends the loop. After 3 failures, the loop ends and we return `null`.
+This is the **PIN program from Lesson 06**, now protecting real, hashed accounts. A good login does `return user;` right away, which also ends the loop. After 3 failures, the loop ends, and the method gives back `null`.
 
 ### Changing the password safely
 
@@ -741,9 +744,7 @@ if (AccountService.Login(user.Username, currentPassword) == null)
 }
 ```
 
-Why ask for the **current** password, when the user is already logged in? Imagine someone leaves the computer for a minute while still logged in. Another person could sit down and change the password, locking the real owner out. Asking for the current password stops that.
-
-We reuse `AccountService.Login` to check it. Writing a check **once** and reusing it is less work and has fewer bugs.
+Why ask for the **current** password, when the user is already logged in? Imagine someone leaves the computer for a minute, still logged in. Another person could sit down and change the password, and lock the real owner out. Asking for the current password stops that.
 
 ### Logging out
 
@@ -758,95 +759,109 @@ Set `currentUser` back to `null`. The next time around the loop, the visitor men
 
 ---
 
-## ⚠️ Common Mistakes
+## If Something Goes Wrong
 
-### Mistake 1: `'AccountService' does not contain a definition for 'Login'`
+**Error List: `CS0117  'AccountService' does not contain a definition for 'Login'`**
+The three new methods are missing, or they were pasted **outside** the class. Use the complete `AccountService.cs` from Step 4.
 
-The new methods are missing, or were pasted **outside** the class's `{ }`. **Fix:** Compare your file with the complete `AccountService.cs` in Step 3.
+**Error List: `CS0103  The name 'Database' does not exist in the current context`** (or `ConsoleHelper`, `PasswordHasher`, `User`)
+A file from Lesson 19 is missing. Do Step 3 again, and check that all five files are in the Solution Explorer.
 
-### Mistake 2: "I can't log in with my Lesson 19 account"
+**I can't log in.**
+- This project has a new, empty database. Did you **register** an account in this project first?
+- Usernames are saved in small letters. Choose option 3 to see the exact usernames.
+- Forgot the password? Register a new account.
 
-- Did you copy `accounts.db` from Lesson 19? Run `dir` and look for it.
-- Usernames are in small letters. Check option 3 for the exact usernames.
-- If you forgot the password, register a new account.
-
-### Mistake 3: Comparing passwords directly
+**I compared the password with `==`, and it never matches.**
 
 ```cs
 if (password == user.PasswordHash)   // ❌ never true!
 ```
 
-`user.PasswordHash` is a hash, not a password. **Fix:** Always use `PasswordHasher.Verify(password, user.PasswordHash)`.
+`user.PasswordHash` is a hash, not a password. Always use `PasswordHasher.Verify(password, user.PasswordHash)`.
 
 ---
 
-## 🏆 Final Project Checklist
+## Exercise: Test Your Final Project
 
-Your project is complete when **all** of these are true:
+A real programmer **tests** their work. Go through this list. Tick each box only when you have seen it work with your own eyes.
+
+**Registering**
 
 - [ ] A new account can be registered
-- [ ] Usernames must be 4 to 20 characters long, using only letters, numbers, and `_`
-- [ ] Duplicate usernames are refused (even with different capital letters)
-- [ ] Passwords must be at least 8 characters, with a letter and a number
-- [ ] Passwords are typed twice, and show `*` on the screen
-- [ ] The database contains **only hashes**, never real passwords
-- [ ] Log in works with the correct password and fails with a wrong one
-- [ ] Wrong usernames and wrong passwords show the **same** message
-- [ ] After 3 failed tries, the user goes back to the main menu
-- [ ] A logged-in user can view their profile
-- [ ] Changing the password requires the current password
-- [ ] After changing it, the old password no longer works
-- [ ] Log out returns to the visitor menu
-- [ ] **All SQL uses parameters.** No user input is joined into SQL text
+- [ ] A username shorter than 4 characters is refused
+- [ ] A username with a space in it is refused
+- [ ] A username that is already taken is refused, even with different capital letters
+- [ ] A password shorter than 8 characters is refused
+- [ ] A password with no number is refused
+- [ ] The password shows as `*` while typing
+- [ ] Two different passwords in "Choose" and "Type again" are refused
 
----
+**Logging in**
 
-## 🚀 Optional Challenges
+- [ ] The correct password logs you in
+- [ ] A wrong password is refused
+- [ ] A username that does not exist shows the **same** message as a wrong password
+- [ ] Typing the username in CAPITAL letters still works
+- [ ] After 3 failed tries, you go back to the main menu
 
-Finished early? Try these. There are hints, but no full answers. Figuring it out is the challenge!
+**While logged in**
+
+- [ ] "View my profile" shows your information
+- [ ] "Change my password" refuses a wrong current password
+- [ ] After changing the password, the **old** password no longer works
+- [ ] After changing the password, the **new** password works
+- [ ] "Log out" brings back the visitor menu
+
+**Safety**
+
+- [ ] Option 3 shows **only hashes**. No real password is anywhere
+- [ ] After a password change, the saved hash for that user is **different**
+
+## ⭐ Bonus Challenges
+
+Finished early? Try these. They have hints, but no full answers. Working it out yourself **is** the challenge!
 
 > [!TIP]
-> Some challenges add **new columns** to the `Users` table. Remember from Lesson 14: `CREATE TABLE IF NOT EXISTS` does not change an existing table. While practicing, delete the old database (`del accounts.db`) so it is created again with your new columns. You will need to register your accounts again.
+> Some challenges add **new columns** to the `Users` table. Remember Lesson 14: `CREATE TABLE IF NOT EXISTS` does not change a table that already exists. While practicing, delete the old database (project → **bin** → **Debug** → **net10.0** → delete `accounts.db`). The program will create it again with your new columns. Then register your accounts again.
 
-**Challenge 1: Last login time.** Add a `LastLoginAt` column (TEXT). When a login succeeds, `UPDATE` it with the current date and time. Show it on the profile screen.
-*Hint:* `LastLoginAt TEXT` (no `NOT NULL`, since new accounts have not logged in yet). To read a column that might be empty, use `reader.IsDBNull(5) ? "Never" : reader.GetString(5)`.
+**Bonus 1: Last login time.** Add a `LastLoginAt` column (TEXT). When a login works, `UPDATE` it with the current date and time. Show it on the profile screen.
+*Hint:* write `LastLoginAt TEXT` with no `NOT NULL`, because a new account has not logged in yet. To read a column that may be empty: `reader.IsDBNull(5) ? "Never" : reader.GetString(5)`
 
-**Challenge 2: Delete my account.** Add option `4 - Delete my account` to the logged-in menu. Ask for the current password **and** for the user to type `DELETE` to confirm. Then delete the row and log the user out.
+**Bonus 2: Delete my account.** Add `4 - Delete my account` to the logged-in menu. Ask for the current password, **and** ask the user to type `DELETE` to confirm. Then delete the row, and log the user out.
 
-**Challenge 3: An admin.** Make option 3 ("View all accounts") work **only** when the logged-in user's username is `admin`. Move it to the logged-in menu.
+**Bonus 3: An admin.** Make "View all accounts" work **only** when the logged-in user's username is `admin`. Move it to the logged-in menu.
 
-**Challenge 4: Account lockout (advanced).** Add `FailedAttempts INTEGER NOT NULL DEFAULT 0` and `LockedUntil TEXT` columns. After 5 wrong passwords in a row, lock the account for 5 minutes, even if the program is restarted. Reset `FailedAttempts` to 0 after a successful login.
-*Hint:* save times with `DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")`, and read them back with `DateTime.Parse(text)`. Compare with `DateTime.Now < lockedUntil`.
+**Bonus 4: Lock the account (advanced).** Add two columns: `FailedAttempts INTEGER NOT NULL DEFAULT 0` and `LockedUntil TEXT`. After 5 wrong passwords in a row, lock the account for 5 minutes, even if the program is closed and opened again. Set `FailedAttempts` back to 0 after a good login.
+*Hint:* save a time with `DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")`. Read it back with `DateTime.Parse(text)`. Compare with `DateTime.Now < lockedUntil`.
 
 ---
 
-## 🎓 What's Next?
+## What's Next?
 
-You started with `Hello, World!` and finished with a secure account system backed by a database. That is a real achievement. 👏
+You started with `Hello, World!`. You finished with a safe account system that saves to a database. That is a real achievement. 👏
 
 Here is where you can go from here:
 
-| Topic | What it is |
-|---|---|
-| **Git and GitHub** | Save every version of your code and share it online |
-| **ASP.NET Core** | Build **websites** with C#. Your `AccountService` and `PasswordHasher` ideas work there too |
-| **Entity Framework Core** | A tool that writes most of the SQL for you |
-| **SQL Server or MySQL** | Bigger database servers used by companies. The same ideas apply: connection, command, parameters |
-| **ASP.NET Core Identity** | A ready-made, professional account system with password hashing, lockout, and more |
+- **Git and GitHub** → save every version of your code, and share it online
+- **ASP.NET Core** → build **websites** with C#. Your `AccountService` and `PasswordHasher` ideas work there too
+- **Entity Framework Core** → a tool that writes most of the SQL for you
+- **SQL Server or MySQL** → bigger databases used by companies. The same ideas apply: connection, command, parameters
+- **ASP.NET Core Identity** → a ready-made, professional account system
 
 > [!IMPORTANT]
-> In real projects, use well-tested, ready-made tools like **ASP.NET Core Identity** for accounts whenever you can. You built this system to **understand how it works inside**. That understanding will make you a much better programmer, whatever tools you use.
+> In real projects, use well-tested, ready-made tools like **ASP.NET Core Identity** for accounts whenever you can. You built this system to **understand how it works inside**. That understanding makes you a much better programmer, whatever tools you use.
 
 ---
 
-## 📌 Recap
+## Remember
 
 - **Login** = find the user by username, then `Verify` the password against the saved hash.
-- Use **one** error message for a wrong username and a wrong password.
+- Use **one** message for a wrong username and a wrong password.
 - `User? currentUser` remembers who is logged in. `null` means nobody.
-- Show different menus depending on whether someone is logged in.
 - Ask for the **current** password before allowing a password change.
 - A new password gets a **new salt** and a **new hash**.
+- **Test** your program before you say it is finished.
 
 ---
 
