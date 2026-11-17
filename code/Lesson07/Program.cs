@@ -1,27 +1,27 @@
-// Lesson 7: Collecting many names in a List
+// Lesson 7: Grade remarks using if / else if / else
 
-List<string> names = new List<string>();
+Console.Write("Enter your final grade (0-100): ");
+string input = Console.ReadLine() ?? "";
 
-Console.WriteLine("Type the names of your classmates.");
-Console.WriteLine("When you are done, just press Enter on an empty line.");
+bool isNumber = double.TryParse(input, out double grade);
 
-while (true)
+if (!isNumber)
 {
-    Console.Write("Name: ");
-    string name = Console.ReadLine() ?? "";
-
-    if (name == "")
-    {
-        break;
-    }
-
-    names.Add(name);
+    Console.WriteLine("That is not a number. Please run the program again.");
 }
-
-Console.WriteLine();
-Console.WriteLine($"You entered {names.Count} name(s):");
-
-for (int i = 0; i < names.Count; i++)
+else if (grade < 0 || grade > 100)
 {
-    Console.WriteLine($"{i + 1}. {names[i]}");
+    Console.WriteLine("The grade must be from 0 to 100.");
+}
+else if (grade >= 90)
+{
+    Console.WriteLine("Remarks: Excellent! You PASSED.");
+}
+else if (grade >= 75)
+{
+    Console.WriteLine("Remarks: Good job! You PASSED.");
+}
+else
+{
+    Console.WriteLine("Remarks: Sorry, you FAILED. Keep trying!");
 }

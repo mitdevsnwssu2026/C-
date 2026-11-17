@@ -1,30 +1,57 @@
-// Lesson 13: Connecting C# to a SQLite database
+// Lesson 13: Grade calculator organized with methods
 
-using Microsoft.Data.Sqlite;
+// ----- Main program -----
+PrintHeader("GRADE CALCULATOR");
 
-// 1. Tell C# where the database file is
-string connectionString = "Data Source=school.db";
+double prelim = ReadNumber("Prelim grade: ");
+double midterm = ReadNumber("Midterm grade: ");
+double finals = ReadNumber("Finals grade: ");
 
-// 2. Open the connection
-using var connection = new SqliteConnection(connectionString);
-connection.Open();
-Console.WriteLine("Connected to school.db!");
+double average = ComputeAverage(prelim, midterm, finals);
+string remarks = GetRemarks(average);
 
-// 3. Create the Students table (only if it does not exist yet)
-using var createCommand = connection.CreateCommand();
-createCommand.CommandText = @"
-    CREATE TABLE IF NOT EXISTS Students (
-        Id            INTEGER PRIMARY KEY AUTOINCREMENT,
-        StudentNumber TEXT    NOT NULL UNIQUE,
-        FullName      TEXT    NOT NULL,
-        Course        TEXT    NOT NULL,
-        YearLevel     INTEGER NOT NULL
-    );";
-createCommand.ExecuteNonQuery();
-Console.WriteLine("The Students table is ready.");
+Console.WriteLine();
+Console.WriteLine($"Average: {average:F2}");
+Console.WriteLine($"Remarks: {remarks}");
 
-// 4. Ask the database how many students are saved
-using var countCommand = connection.CreateCommand();
-countCommand.CommandText = "SELECT COUNT(*) FROM Students;";
-int count = Convert.ToInt32(countCommand.ExecuteScalar());
-Console.WriteLine($"Students saved in the database: {count}");
+
+// ----- Methods -----
+
+void PrintHeader(string title)
+{
+    Console.WriteLine("==============================");
+    Console.WriteLine($"  {title}");
+    Console.WriteLine("==============================");
+}
+
+double ReadNumber(string prompt)
+{
+    while (true)
+    {
+        Console.Write(prompt);
+        string input = Console.ReadLine() ?? "";
+
+        if (double.TryParse(input, out double number))
+        {
+            return number;
+        }
+
+        Console.WriteLine("Please type a valid number.");
+    }
+}
+
+double ComputeAverage(double a, double b, double c)
+{
+    double total = a + b + c;
+    return total / 3;
+}
+
+string GetRemarks(double grade)
+{
+    if (grade >= 75)
+    {
+        return "PASSED";
+    }
+
+    return "FAILED";
+}

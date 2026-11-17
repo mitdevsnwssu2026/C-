@@ -1,4 +1,4 @@
-# Lesson 16: Uploading Many Records From a CSV File
+# Lesson 22: Uploading Many Records From a CSV File
 
 **Part 3: Databases** · About 90 minutes
 
@@ -13,7 +13,7 @@ You will build an **upload tool** that:
 
 ## The Idea
 
-The registrar sends you an Excel file with **500 new students**. Typing them one by one into the Lesson 15 program would take all day, and you would surely make typing mistakes.
+The registrar sends you an Excel file with **500 new students**. Typing them one by one into the Lesson 21 program would take all day, and you would surely make typing mistakes.
 
 Real systems have an **upload** feature instead:
 
@@ -38,42 +38,42 @@ Think of sending money with GCash. The money must leave your account **and** arr
 
 ## Step by Step
 
-### Step 1: Create a new project named `Lesson16`
+### Step 1: Create a new project named `Lesson22`
 
 1. Open **Visual Studio**. (If it is already open, close it first and open it again.)
 2. Click **Create a new project**.
 3. Click **Console App** (the one with **C#**, not ".NET Framework"), then click **Next**.
-4. In **Project name**, type `Lesson16`. Check that **Location** says `C:\CSharpCourse`. Click **Next**.
+4. In **Project name**, type `Lesson22`. Check that **Location** says `C:\CSharpCourse`. Click **Next**.
 5. Click **Create**.
 
 ### Step 2: Add the SQLite package
 
-1. In the **Solution Explorer**, right-click the project line **Lesson16**.
+1. In the **Solution Explorer**, right-click the project line **Lesson22**.
 2. Click **Manage NuGet Packages...**
 3. Click **Browse**. In the search box, type `Microsoft.Data.Sqlite`.
 4. Click the result named exactly **Microsoft.Data.Sqlite**. Then click **Install**.
 5. If **Preview Changes** appears, click **Apply**. If **License Acceptance** appears, click **I Accept**.
 6. Close the NuGet tab.
 
-### Step 3: Bring in two files from Lesson 15
+### Step 3: Bring in two files from Lesson 21
 
 You already wrote `Student.cs` and `StudentDatabase.cs`. Do not type them again. **Reuse them!**
 
-**1.** In the **Solution Explorer**, right-click the project line **Lesson16**.
+**1.** In the **Solution Explorer**, right-click the project line **Lesson22**.
 
 **2.** Move to **Add**, then click **Existing Item...**
 
 ✅ **You will see:** a window for choosing files.
 
-**3.** Click the **address bar** at the top of that window. Type `C:\CSharpCourse\Lesson15` and press **Enter**.
+**3.** Click the **address bar** at the top of that window. Type `C:\CSharpCourse\Lesson21` and press **Enter**.
 
 **4.** Click **Student.cs** once. Then hold the **Ctrl** key and click **StudentDatabase.cs**. Both files are now highlighted.
 
 **5.** Click **Add**.
 
-✅ **You will see:** `Student.cs` and `StudentDatabase.cs` appear in the Solution Explorer, under **Lesson16**. Visual Studio made **copies** of them for this project.
+✅ **You will see:** `Student.cs` and `StudentDatabase.cs` appear in the Solution Explorer, under **Lesson22**. Visual Studio made **copies** of them for this project.
 
-> This project has its **own new database**, so it starts with **no students**. Your Lesson 15 data is safe in the Lesson 15 project.
+> This project has its **own new database**, so it starts with **no students**. Your Lesson 21 data is safe in the Lesson 21 project.
 
 ### Step 4: Add one new method to `StudentDatabase.cs`
 
@@ -323,7 +323,7 @@ public static class StudentDatabase
 
 ### Step 5: Create the CSV file
 
-**1.** In the Solution Explorer, right-click the project line **Lesson16**.
+**1.** In the Solution Explorer, right-click the project line **Lesson22**.
 
 **2.** Move to **Add**, then click **New Item...**
 
@@ -358,7 +358,7 @@ The first line is the **header**. It names the columns. Here are the mistakes hi
 
 ### Step 6: Tell Visual Studio to put the CSV file next to your program
 
-Remember Lesson 11? Your program runs inside the **bin → Debug → net10.0** folder. The CSV file must be there too. This setting makes Visual Studio copy it there for you, every time you run.
+Remember Lesson 17? Your program runs inside the **bin → Debug → net10.0** folder. The CSV file must be there too. This setting makes Visual Studio copy it there for you, every time you run.
 
 **1.** In the Solution Explorer, click **students.csv** once, so it is highlighted.
 
@@ -381,7 +381,7 @@ Remember Lesson 11? Your program runs inside the **bin → Debug → net10.0** f
 **File: `Program.cs`**
 
 ```csharp
-// Lesson 16: Uploading many students from a CSV file into the database
+// Lesson 22: Uploading many students from a CSV file into the database
 
 StudentDatabase.CreateTable();
 
@@ -584,7 +584,7 @@ if (parts.Length != 4)
 }
 ```
 
-If a check fails, the program writes down the problem, and `continue` **skips to the next line** (Lesson 06). Only rows that pass **every** check reach the end of the loop and are added to `validStudents`.
+If a check fails, the program writes down the problem, and `continue` **skips to the next line** (Lesson 10). Only rows that pass **every** check reach the end of the loop and are added to `validStudents`.
 
 ### Two lists
 
@@ -752,4 +752,4 @@ Console.WriteLine($"Exported {exportLines.Count - 1} student(s) to export.csv");
 
 ---
 
-[⬅️ Lesson 15](15-crud-app.md) | [🏠 Course Home](../README.md) | [Next: Lesson 17 (What Is Hashing?) ➡️](17-what-is-hashing.md)
+[⬅️ Lesson 21](21-crud-app.md) | [🏠 Course Home](../README.md) | [Next: Lesson 23 (What Is Hashing?) ➡️](23-what-is-hashing.md)

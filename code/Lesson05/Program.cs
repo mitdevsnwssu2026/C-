@@ -1,27 +1,19 @@
-// Lesson 5: Grade remarks using if / else if / else
+// Lesson 5: Grade average calculator
 
-Console.Write("Enter your final grade (0-100): ");
-string input = Console.ReadLine() ?? "";
+Console.WriteLine("=== GRADE AVERAGE CALCULATOR ===");
 
-bool isNumber = double.TryParse(input, out double grade);
+Console.Write("Enter your Prelim grade: ");
+double prelim = double.Parse(Console.ReadLine() ?? "");
 
-if (!isNumber)
-{
-    Console.WriteLine("That is not a number. Please run the program again.");
-}
-else if (grade < 0 || grade > 100)
-{
-    Console.WriteLine("The grade must be from 0 to 100.");
-}
-else if (grade >= 90)
-{
-    Console.WriteLine("Remarks: Excellent! You PASSED.");
-}
-else if (grade >= 75)
-{
-    Console.WriteLine("Remarks: Good job! You PASSED.");
-}
-else
-{
-    Console.WriteLine("Remarks: Sorry, you FAILED. Keep trying!");
-}
+Console.Write("Enter your Midterm grade: ");
+double midterm = double.Parse(Console.ReadLine() ?? "");
+
+Console.Write("Enter your Finals grade: ");
+double finals = double.Parse(Console.ReadLine() ?? "");
+
+double total = prelim + midterm + finals;
+double average = total / 3;
+
+Console.WriteLine();
+Console.WriteLine($"Total:   {total}");
+Console.WriteLine($"Average: {average:F2}");

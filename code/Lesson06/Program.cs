@@ -1,43 +1,35 @@
-// Lesson 6: A menu that repeats until the user chooses Exit
+// Lesson 6: Comparison, logical, and mixed operators
 
-bool running = true;
+Console.Write("Prelim grade: ");
+double prelim = double.Parse(Console.ReadLine() ?? "");
 
-while (running)
-{
-    Console.WriteLine();
-    Console.WriteLine("===== MAIN MENU =====");
-    Console.WriteLine("1 - Multiplication table");
-    Console.WriteLine("2 - Countdown");
-    Console.WriteLine("3 - Exit");
-    Console.Write("Choose an option: ");
-    string choice = Console.ReadLine() ?? "";
+Console.Write("Midterm grade: ");
+double midterm = double.Parse(Console.ReadLine() ?? "");
 
-    switch (choice)
-    {
-        case "1":
-            Console.Write("Which number? ");
-            int number = int.Parse(Console.ReadLine() ?? "");
-            for (int i = 1; i <= 10; i++)
-            {
-                Console.WriteLine($"{number} x {i} = {number * i}");
-            }
-            break;
+Console.Write("Finals grade: ");
+double finals = double.Parse(Console.ReadLine() ?? "");
 
-        case "2":
-            for (int count = 5; count >= 1; count--)
-            {
-                Console.WriteLine(count);
-            }
-            Console.WriteLine("Liftoff!");
-            break;
+Console.Write("Number of absences: ");
+int absences = int.Parse(Console.ReadLine() ?? "");
 
-        case "3":
-            running = false;
-            Console.WriteLine("Goodbye!");
-            break;
+// Arithmetic operators: do the math
+double average = (prelim + midterm + finals) / 3;
 
-        default:
-            Console.WriteLine("Invalid option. Please type 1, 2, or 3.");
-            break;
-    }
-}
+// Comparison operators: each answer is true or false
+bool passed = average >= 75;
+bool hasGoodAttendance = absences <= 3;
+
+// Logical operators: combine the answers
+bool canJoinHonors = average >= 90 && hasGoodAttendance;
+bool needsHelp = average < 75 || absences > 10;
+
+// Mixed operators: math, comparing, and combining in ONE line
+bool getsScholarship = (prelim + midterm + finals) / 3 >= 85 && absences <= 3;
+
+Console.WriteLine();
+Console.WriteLine($"Average:                 {average:F2}");
+Console.WriteLine($"Passed?                  {passed}");
+Console.WriteLine($"Good attendance?         {hasGoodAttendance}");
+Console.WriteLine($"Can join the honor roll? {canJoinHonors}");
+Console.WriteLine($"Needs extra help?        {needsHelp}");
+Console.WriteLine($"Gets a scholarship?      {getsScholarship}");

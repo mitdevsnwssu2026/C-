@@ -1,25 +1,43 @@
-// Lesson 10: Catching errors so the program does not crash
+// Lesson 10: A menu that repeats until the user chooses Exit
 
-Console.Write("Enter a whole number to divide 100 by: ");
-string input = Console.ReadLine() ?? "";
+bool running = true;
 
-try
+while (running)
 {
-    int number = int.Parse(input);
-    int result = 100 / number;
-    Console.WriteLine($"100 / {number} = {result}");
-}
-catch (FormatException)
-{
-    Console.WriteLine("Oops! That was not a whole number.");
-}
-catch (DivideByZeroException)
-{
-    Console.WriteLine("Oops! You cannot divide by zero.");
-}
-catch (Exception ex)
-{
-    Console.WriteLine($"Oops! Something else went wrong: {ex.Message}");
-}
+    Console.WriteLine();
+    Console.WriteLine("===== MAIN MENU =====");
+    Console.WriteLine("1 - Multiplication table");
+    Console.WriteLine("2 - Countdown");
+    Console.WriteLine("3 - Exit");
+    Console.Write("Choose an option: ");
+    string choice = Console.ReadLine() ?? "";
 
-Console.WriteLine("The program is still running. Goodbye!");
+    switch (choice)
+    {
+        case "1":
+            Console.Write("Which number? ");
+            int number = int.Parse(Console.ReadLine() ?? "");
+            for (int i = 1; i <= 10; i++)
+            {
+                Console.WriteLine($"{number} x {i} = {number * i}");
+            }
+            break;
+
+        case "2":
+            for (int count = 5; count >= 1; count--)
+            {
+                Console.WriteLine(count);
+            }
+            Console.WriteLine("Liftoff!");
+            break;
+
+        case "3":
+            running = false;
+            Console.WriteLine("Goodbye!");
+            break;
+
+        default:
+            Console.WriteLine("Invalid option. Please type 1, 2, or 3.");
+            break;
+    }
+}

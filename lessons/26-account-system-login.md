@@ -1,4 +1,4 @@
-# Lesson 20: Account System, Part 2 (Log In, Change Password, Log Out) 🏆
+# Lesson 26: Account System, Part 2 (Log In, Change Password, Log Out) 🏆
 
 **Part 4: Security and Accounts** · About 2 hours · **This is the final project!**
 
@@ -47,30 +47,30 @@ User? currentUser = null;
 
 ## Step by Step
 
-### Step 1: Create a new project named `Lesson20`
+### Step 1: Create a new project named `Lesson26`
 
 1. Open **Visual Studio**. (If it is already open, close it first and open it again.)
 2. Click **Create a new project**.
 3. Click **Console App** (the one with **C#**, not ".NET Framework"), then click **Next**.
-4. In **Project name**, type `Lesson20`. Check that **Location** says `C:\CSharpCourse`. Click **Next**.
+4. In **Project name**, type `Lesson26`. Check that **Location** says `C:\CSharpCourse`. Click **Next**.
 5. Click **Create**.
 
 ### Step 2: Add the SQLite package
 
-1. In the **Solution Explorer**, right-click the project line **Lesson20**.
+1. In the **Solution Explorer**, right-click the project line **Lesson26**.
 2. Click **Manage NuGet Packages...**
 3. Click **Browse**. In the search box, type `Microsoft.Data.Sqlite`.
 4. Click the result named exactly **Microsoft.Data.Sqlite**. Then click **Install**.
 5. If **Preview Changes** appears, click **Apply**. If **License Acceptance** appears, click **I Accept**.
 6. Close the NuGet tab.
 
-### Step 3: Bring in five files from Lesson 19
+### Step 3: Bring in five files from Lesson 25
 
-**1.** In the Solution Explorer, right-click the project line **Lesson20**.
+**1.** In the Solution Explorer, right-click the project line **Lesson26**.
 
 **2.** Move to **Add**, then click **Existing Item...**
 
-**3.** Click the address bar at the top of the window. Type `C:\CSharpCourse\Lesson19` and press **Enter**.
+**3.** Click the address bar at the top of the window. Type `C:\CSharpCourse\Lesson25` and press **Enter**.
 
 **4.** Click **AccountService.cs** once. Then hold the **Ctrl** key, and click each of these: **ConsoleHelper.cs**, **Database.cs**, **PasswordHasher.cs**, **User.cs**.
 
@@ -78,7 +78,7 @@ User? currentUser = null;
 
 **5.** Click **Add**.
 
-✅ **You will see:** the five files appear in the Solution Explorer, under **Lesson20**.
+✅ **You will see:** the five files appear in the Solution Explorer, under **Lesson26**.
 
 ### Step 4: Add three new methods to `AccountService.cs`
 
@@ -355,7 +355,7 @@ public static class AccountService
 **File: `Program.cs`**
 
 ```csharp
-// Lesson 20: FINAL PROJECT - Account System (Register, Log in, Change password, Log out)
+// Lesson 26: FINAL PROJECT - Account System (Register, Log in, Change password, Log out)
 
 Database.CreateTables();
 
@@ -567,7 +567,7 @@ string AskForNewPassword()
 
 Press **Ctrl + F5**.
 
-> This project has its **own new database**, so the accounts from Lesson 19 are not here. **Register a new account first** (option 1). Then log in with it (option 2).
+> This project has its **own new database**, so the accounts from Lesson 25 are not here. **Register a new account first** (option 1). Then log in with it (option 2).
 
 ## The Output
 
@@ -732,7 +732,7 @@ Console.WriteLine("Too many failed attempts. Going back to the main menu.");
 return null;
 ```
 
-This is the **PIN program from Lesson 06**, now protecting real, hashed accounts. A good login does `return user;` right away, which also ends the loop. After 3 failures, the loop ends, and the method gives back `null`.
+This is the **PIN program from Lesson 09**, now protecting real, hashed accounts. A good login does `return user;` right away, which also ends the loop. After 3 failures, the loop ends, and the method gives back `null`.
 
 ### Changing the password safely
 
@@ -765,7 +765,7 @@ Set `currentUser` back to `null`. The next time around the loop, the visitor men
 The three new methods are missing, or they were pasted **outside** the class. Use the complete `AccountService.cs` from Step 4.
 
 **Error List: `CS0103  The name 'Database' does not exist in the current context`** (or `ConsoleHelper`, `PasswordHasher`, `User`)
-A file from Lesson 19 is missing. Do Step 3 again, and check that all five files are in the Solution Explorer.
+A file from Lesson 25 is missing. Do Step 3 again, and check that all five files are in the Solution Explorer.
 
 **I can't log in.**
 - This project has a new, empty database. Did you **register** an account in this project first?
@@ -823,7 +823,7 @@ A real programmer **tests** their work. Go through this list. Tick each box only
 Finished early? Try these. They have hints, but no full answers. Working it out yourself **is** the challenge!
 
 > [!TIP]
-> Some challenges add **new columns** to the `Users` table. Remember Lesson 14: `CREATE TABLE IF NOT EXISTS` does not change a table that already exists. While practicing, delete the old database (project → **bin** → **Debug** → **net10.0** → delete `accounts.db`). The program will create it again with your new columns. Then register your accounts again.
+> Some challenges add **new columns** to the `Users` table. Remember Lesson 20: `CREATE TABLE IF NOT EXISTS` does not change a table that already exists. While practicing, delete the old database (project → **bin** → **Debug** → **net10.0** → delete `accounts.db`). The program will create it again with your new columns. Then register your accounts again.
 
 **Bonus 1: Last login time.** Add a `LastLoginAt` column (TEXT). When a login works, `UPDATE` it with the current date and time. Show it on the profile screen.
 *Hint:* write `LastLoginAt TEXT` with no `NOT NULL`, because a new account has not logged in yet. To read a column that may be empty: `reader.IsDBNull(5) ? "Never" : reader.GetString(5)`
@@ -865,4 +865,4 @@ Here is where you can go from here:
 
 ---
 
-[⬅️ Lesson 19](19-account-system-register.md) | [🏠 Course Home](../README.md)
+[⬅️ Lesson 25](25-account-system-register.md) | [🏠 Course Home](../README.md)

@@ -1,28 +1,76 @@
-// Lesson 18: Trying out the PasswordHasher
+// Lesson 18: SQL PLAYGROUND
+// A small tool for practicing SQL commands.
+// You do NOT need to understand this code yet.
+// By the end of Lesson 21 you will understand every line.
 
-Console.WriteLine("===== PASSWORD HASHER DEMO =====");
-Console.Write("Create a password: ");
-string password = Console.ReadLine() ?? "";
+using Microsoft.Data.Sqlite;
 
-string savedHash = PasswordHasher.Hash(password);
-Console.WriteLine();
-Console.WriteLine("This is what we would save in the database:");
-Console.WriteLine(savedHash);
+using var connection = new SqliteConnection("Data Source=playground.db");
+connection.Open();
 
-string secondHash = PasswordHasher.Hash(password);
-Console.WriteLine();
-Console.WriteLine("Hashing the SAME password again gives a DIFFERENT result (new salt):");
-Console.WriteLine(secondHash);
+Console.WriteLine("========== SQL PLAYGROUND ==========");
+Console.WriteLine("Type one SQL command and press Enter.");
+Console.WriteLine("Type EXIT to quit.");
 
-Console.WriteLine();
-Console.Write("Now type your password again to log in: ");
-string attempt = Console.ReadLine() ?? "";
-
-if (PasswordHasher.Verify(attempt, savedHash))
+while (true)
 {
-    Console.WriteLine("Correct password. Access granted!");
+    Console.WriteLine();
+    Console.Write("SQL> ");
+    string sql = (Console.ReadLine() ?? "").Trim();
+
+    if (sql.ToUpper() == "EXIT")
+    {
+        break;
+    }
+
+    if (sql == "")
+    {
+        continue;
+    }
+
+    try
+    {
+        using var command = connection.CreateCommand();
+        command.CommandText = sql;
+        using var reader = command.ExecuteReader();
+
+        // Commands like CREATE, INSERT, UPDATE and DELETE do not return a table
+        if (reader.FieldCount == 0)
+        {
+            Console.WriteLine("OK. Command finished.");
+            if (reader.RecordsAffected > 0)
+            {
+                Console.WriteLine($"Rows changed: {reader.RecordsAffected}");
+            }
+            continue;
+        }
+
+        // SELECT returns a table, so print the column names first...
+        for (int i = 0; i < reader.FieldCount; i++)
+        {
+            Console.Write(reader.GetName(i).PadRight(18));
+        }
+        Console.WriteLine();
+        Console.WriteLine(new string('-', 18 * reader.FieldCount));
+
+        // ...then print every row
+        int rowCount = 0;
+        while (reader.Read())
+        {
+            for (int i = 0; i < reader.FieldCount; i++)
+            {
+                string value = reader.GetValue(i).ToString() ?? "";
+                Console.Write(value.PadRight(18));
+            }
+            Console.WriteLine();
+            rowCount++;
+        }
+        Console.WriteLine($"({rowCount} row(s) found)");
+    }
+    catch (SqliteException ex)
+    {
+        Console.WriteLine($"SQL error: {ex.Message}");
+    }
 }
-else
-{
-    Console.WriteLine("Wrong password. Access denied!");
-}
+
+Console.WriteLine("Goodbye!");

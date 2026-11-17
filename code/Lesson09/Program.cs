@@ -1,72 +1,34 @@
-// Lesson 9: Keeping a list of Student objects
+// Lesson 9: The three loops working together (do-while, for, while)
 
-List<Student> students = new List<Student>();
+// 1. do-while: keep asking until the answer is valid
+int number;
 
-// Two sample students so the list is not empty
-students.Add(new Student
+do
 {
-    StudentNumber = "2026-0001",
-    FullName = "Juan Dela Cruz",
-    Course = "BSIT",
-    YearLevel = 1
-});
-
-students.Add(new Student
-{
-    StudentNumber = "2026-0002",
-    FullName = "Maria Santos",
-    Course = "BSCS",
-    YearLevel = 2
-});
-
-bool running = true;
-
-while (running)
-{
-    Console.WriteLine();
-    Console.WriteLine("===== STUDENT LIST =====");
-    Console.WriteLine("1 - Add a student");
-    Console.WriteLine("2 - Show all students");
-    Console.WriteLine("3 - Exit");
-    Console.Write("Choose an option: ");
-    string choice = Console.ReadLine() ?? "";
-
-    switch (choice)
-    {
-        case "1":
-            Student newStudent = new Student();
-
-            Console.Write("Student number: ");
-            newStudent.StudentNumber = Console.ReadLine() ?? "";
-
-            Console.Write("Full name: ");
-            newStudent.FullName = Console.ReadLine() ?? "";
-
-            Console.Write("Course: ");
-            newStudent.Course = Console.ReadLine() ?? "";
-
-            Console.Write("Year level: ");
-            newStudent.YearLevel = int.Parse(Console.ReadLine() ?? "");
-
-            students.Add(newStudent);
-            Console.WriteLine("Student added!");
-            break;
-
-        case "2":
-            Console.WriteLine($"There are {students.Count} student(s):");
-            foreach (Student student in students)
-            {
-                student.Display();
-            }
-            break;
-
-        case "3":
-            running = false;
-            Console.WriteLine("Goodbye!");
-            break;
-
-        default:
-            Console.WriteLine("Invalid option. Please type 1, 2, or 3.");
-            break;
-    }
+    Console.Write("Type a number from 1 to 10: ");
+    number = int.Parse(Console.ReadLine() ?? "");
 }
+while (number < 1 || number > 10);
+
+// 2. for: repeat exactly 10 times
+Console.WriteLine();
+Console.WriteLine($"The multiplication table of {number}:");
+
+for (int i = 1; i <= 10; i++)
+{
+    Console.WriteLine($"{number} x {i} = {number * i}");
+}
+
+// 3. while: repeat until something changes
+Console.WriteLine();
+Console.WriteLine($"Counting down from {number}:");
+
+int count = number;
+
+while (count >= 1)
+{
+    Console.WriteLine(count);
+    count--;
+}
+
+Console.WriteLine("Liftoff!");

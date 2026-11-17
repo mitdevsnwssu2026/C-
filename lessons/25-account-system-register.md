@@ -1,10 +1,10 @@
-# Lesson 19: Account System, Part 1 (Registering Accounts)
+# Lesson 25: Account System, Part 1 (Registering Accounts)
 
 **Part 4: Security and Accounts** · About 2 hours (you can split it into two sittings)
 
 ## What You Will Learn
 
-In Lessons 19 and 20, you build the **final project**: a complete **account system** with hashed passwords.
+In Lessons 25 and 26, you build the **final project**: a complete **account system** with hashed passwords.
 
 In this lesson (Part 1), you will build:
 
@@ -17,17 +17,17 @@ In this lesson (Part 1), you will build:
 
 Everything you have learned comes together here:
 
-- The **menu loop** (Lesson 06)
-- **Input methods** that never crash (Lesson 08)
-- **Classes** (Lesson 09)
-- **Database** connection, parameters, and reading rows (Lessons 13 to 15)
-- The **`PasswordHasher`** (Lesson 18)
+- The **menu loop** (Lesson 10)
+- **Input methods** that never crash (Lesson 13)
+- **Classes** (Lesson 14)
+- **Database** connection, parameters, and reading rows (Lessons 19 to 21)
+- The **`PasswordHasher`** (Lesson 24)
 
 ### The plan: six files, one job each
 
 | File | Its job |
 |---|---|
-| `PasswordHasher.cs` | Hashes and checks passwords (you wrote it in Lesson 18) |
+| `PasswordHasher.cs` | Hashes and checks passwords (you wrote it in Lesson 24) |
 | `User.cs` | Says what a user account **is** |
 | `Database.cs` | Opens the database and creates the `Users` table |
 | `ConsoleHelper.cs` | Reads what the user types, including **hidden** passwords |
@@ -53,35 +53,35 @@ The real password exists only for a moment, in memory. It is **never** written t
 
 ## Step by Step
 
-### Step 1: Create a new project named `Lesson19`
+### Step 1: Create a new project named `Lesson25`
 
 1. Open **Visual Studio**. (If it is already open, close it first and open it again.)
 2. Click **Create a new project**.
 3. Click **Console App** (the one with **C#**, not ".NET Framework"), then click **Next**.
-4. In **Project name**, type `Lesson19`. Check that **Location** says `C:\CSharpCourse`. Click **Next**.
+4. In **Project name**, type `Lesson25`. Check that **Location** says `C:\CSharpCourse`. Click **Next**.
 5. Click **Create**.
 
 ### Step 2: Add the SQLite package
 
-1. In the **Solution Explorer**, right-click the project line **Lesson19**.
+1. In the **Solution Explorer**, right-click the project line **Lesson25**.
 2. Click **Manage NuGet Packages...**
 3. Click **Browse**. In the search box, type `Microsoft.Data.Sqlite`.
 4. Click the result named exactly **Microsoft.Data.Sqlite**. Then click **Install**.
 5. If **Preview Changes** appears, click **Apply**. If **License Acceptance** appears, click **I Accept**.
 6. Close the NuGet tab.
 
-### Step 3: Bring in `PasswordHasher.cs` from Lesson 18
+### Step 3: Bring in `PasswordHasher.cs` from Lesson 24
 
-1. In the Solution Explorer, right-click the project line **Lesson19**.
+1. In the Solution Explorer, right-click the project line **Lesson25**.
 2. Move to **Add**, then click **Existing Item...**
-3. Click the address bar at the top of the window. Type `C:\CSharpCourse\Lesson18` and press **Enter**.
+3. Click the address bar at the top of the window. Type `C:\CSharpCourse\Lesson24` and press **Enter**.
 4. Click **PasswordHasher.cs**, then click **Add**.
 
-✅ **You will see:** `PasswordHasher.cs` in the Solution Explorer, under **Lesson19**.
+✅ **You will see:** `PasswordHasher.cs` in the Solution Explorer, under **Lesson25**.
 
 ### Step 4: Add the file `User.cs`
 
-1. Right-click the project line **Lesson19** → **Add** → **Class...**
+1. Right-click the project line **Lesson25** → **Add** → **Class...**
 2. In the **Name** box, type `User.cs`. Click **Add**.
 3. In the new tab, press **Ctrl + A**, then **Delete**.
 4. Put in this code:
@@ -105,7 +105,7 @@ public class User
 
 ### Step 5: Add the file `Database.cs`
 
-1. Right-click the project line **Lesson19** → **Add** → **Class...**
+1. Right-click the project line **Lesson25** → **Add** → **Class...**
 2. In the **Name** box, type `Database.cs`. Click **Add**.
 3. In the new tab, press **Ctrl + A**, then **Delete**.
 4. Put in this code:
@@ -149,7 +149,7 @@ This time, the database file is named `accounts.db`.
 
 ### Step 6: Add the file `ConsoleHelper.cs`
 
-1. Right-click the project line **Lesson19** → **Add** → **Class...**
+1. Right-click the project line **Lesson25** → **Add** → **Class...**
 2. In the **Name** box, type `ConsoleHelper.cs`. Click **Add**.
 3. In the new tab, press **Ctrl + A**, then **Delete**.
 4. Put in this code:
@@ -226,7 +226,7 @@ public static class ConsoleHelper
 
 ### Step 7: Add the file `AccountService.cs`
 
-1. Right-click the project line **Lesson19** → **Add** → **Class...**
+1. Right-click the project line **Lesson25** → **Add** → **Class...**
 2. In the **Name** box, type `AccountService.cs`. Click **Add**.
 3. In the new tab, press **Ctrl + A**, then **Delete**.
 4. Put in this code:
@@ -363,7 +363,7 @@ public static class AccountService
 **File: `Program.cs`**
 
 ```csharp
-// Lesson 19: Account System - Part 1 (Registering accounts with hashed passwords)
+// Lesson 25: Account System - Part 1 (Registering accounts with hashed passwords)
 
 Database.CreateTables();
 
@@ -483,10 +483,10 @@ string AskForNewPassword()
 
 ### Step 9: Check your files
 
-Look at the Solution Explorer. Under **Lesson19**, you should see these six files:
+Look at the Solution Explorer. Under **Lesson25**, you should see these six files:
 
 ```text
-Lesson19
+Lesson25
    Dependencies
    AccountService.cs
    ConsoleHelper.cs
@@ -652,7 +652,7 @@ string createdAt = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 
 The password is hashed **before** anything goes to the database. `DateTime.Now` is the date and time right now. `.ToString("yyyy-MM-dd HH:mm:ss")` writes it like `2026-11-16 14:45:42`.
 
-Then the `INSERT` saves the **hash**, never the password. And every value goes in as a **parameter** (Lesson 14).
+Then the `INSERT` saves the **hash**, never the password. And every value goes in as a **parameter** (Lesson 20).
 
 ---
 
@@ -782,4 +782,4 @@ string password = AskForNewPassword(username);
 
 ---
 
-[⬅️ Lesson 18](18-password-hashing.md) | [🏠 Course Home](../README.md) | [Next: Lesson 20 (Account System: Log In) ➡️](20-account-system-login.md)
+[⬅️ Lesson 24](24-password-hashing.md) | [🏠 Course Home](../README.md) | [Next: Lesson 26 (Account System: Log In) ➡️](26-account-system-login.md)

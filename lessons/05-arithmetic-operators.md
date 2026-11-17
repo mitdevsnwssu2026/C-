@@ -1,4 +1,4 @@
-# Lesson 04: Math and Operators
+# Lesson 05: Arithmetic Operators (Math)
 
 **Part 1: Beginner** · About 60 minutes
 
@@ -11,7 +11,7 @@
 
 ## The Idea
 
-A computer is a very good calculator. The math symbols are called **operators**.
+A computer is a very good calculator. The symbols that do math are called **arithmetic operators**.
 
 | Symbol | Meaning | Example | Result |
 |---|---|---|---|
@@ -36,12 +36,12 @@ When you divide **two whole numbers** (`int`), C# **cuts off** the decimals.
 
 ## Step by Step
 
-### Step 1: Create a new project named `Lesson04`
+### Step 1: Create a new project named `Lesson05`
 
 1. Open **Visual Studio**. (If it is already open, close it first and open it again.)
 2. Click **Create a new project**.
 3. Click **Console App** (the one with **C#**, not ".NET Framework"), then click **Next**.
-4. In **Project name**, type `Lesson04`. Check that **Location** says `C:\CSharpCourse`. Click **Next**.
+4. In **Project name**, type `Lesson05`. Check that **Location** says `C:\CSharpCourse`. Click **Next**.
 5. Click **Create**.
 
 ### Step 2: Try every operator
@@ -99,7 +99,7 @@ Press any key to close the black window.
 ## The Code
 
 ```csharp
-// Lesson 4: Grade average calculator
+// Lesson 5: Grade average calculator
 
 Console.WriteLine("=== GRADE AVERAGE CALCULATOR ===");
 
@@ -268,4 +268,4 @@ Console.WriteLine($"{totalMinutes} minutes = {hours} hour(s) and {minutes} minut
 
 ---
 
-[⬅️ Lesson 03](03-user-input.md) | [🏠 Course Home](../README.md) | [Next: Lesson 05 (Decisions) ➡️](05-decisions.md)
+[⬅️ Lesson 04](04-string-manipulation.md) | [🏠 Course Home](../README.md) | [Next: Lesson 06 (Comparison and Logical Operators) ➡️](06-comparison-and-logical-operators.md)

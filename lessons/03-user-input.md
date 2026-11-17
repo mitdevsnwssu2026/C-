@@ -140,7 +140,7 @@ Unhandled exception. System.FormatException: The input string 'eighteen' was not
 
 This is called a **crash**. `int.Parse` can only read digits like `18`. Close the black window, run again, and type a number.
 
-> Do not worry. In Lesson 05 you will learn to check the input first, and in Lesson 10 you will learn to stop crashes completely.
+> Do not worry. In Lesson 07 you will learn to check the input first, and in Lesson 16 you will learn to stop crashes completely.
 
 **Error List: `CS0029  Cannot implicitly convert type 'string' to 'int'`**
 You tried to do math with text, like `int result = ageText + 5;`. Turn the text into a number first: `int.Parse(ageText)`.
@@ -234,4 +234,4 @@ Console.WriteLine($"In 2030, you will be {ageIn2030} years old.");
 
 ---
 
-[⬅️ Lesson 02](02-variables.md) | [🏠 Course Home](../README.md) | [Next: Lesson 04 (Math) ➡️](04-math-and-operators.md)
+[⬅️ Lesson 02](02-variables.md) | [🏠 Course Home](../README.md) | [Next: Lesson 04 (String Manipulation) ➡️](04-string-manipulation.md)

@@ -11,7 +11,7 @@ Everything from the course on one page. Print it, and keep it next to your keybo
 1. Open **Visual Studio**.
 2. Click **Create a new project**.
 3. Click **Console App** (with **C#**, not ".NET Framework") → **Next**.
-4. Type the **Project name** (like `Lesson05`). Location: `C:\CSharpCourse` → **Next**.
+4. Type the **Project name** (like `Lesson07`). Location: `C:\CSharpCourse` → **Next**.
 5. Click **Create**.
 
 ### Everyday actions
@@ -76,6 +76,41 @@ sum += 10;            // add 10
 sum++;                // add 1
 ```
 
+## Text (Strings)
+
+```cs
+string name = "  Juan Dela Cruz  ";
+
+string full = "Juan" + " " + "Cruz";      // join text
+int count = name.Length;                   // count the characters
+string clean = name.Trim();                // remove spaces at the start and end
+string big = clean.ToUpper();              // CAPITAL letters
+string small = clean.ToLower();            // small letters
+string dashed = clean.Replace(" ", "-");   // replace every space with a dash
+bool hasJuan = clean.Contains("Juan");     // is "Juan" inside? true or false
+bool startsJ = clean.StartsWith("J");      // does it start with "J"?
+int position = clean.IndexOf("Dela");      // where is it? (positions start at 0)
+string firstFour = clean.Substring(0, 4);  // cut out 4 characters, from position 0
+```
+
+A tool gives back a **new** text. Keep the result: `name = name.Trim();`
+
+## Operators
+
+| Kind | Operators |
+|---|---|
+| **Arithmetic** | `+` `-` `*` `/` `%` |
+| **Comparison** | `==` `!=` `>` `<` `>=` `<=` |
+| **Logical** | `&&` (and), `\|\|` (or), `!` (not) |
+
+**Order when mixed:** parentheses → `!` → `* / %` → `+ -` → `< > <= >=` → `== !=` → `&&` → `||`
+
+```cs
+bool passed = average >= 75;                           // comparison
+bool canVote = age >= 18 && hasId;                     // logical
+bool scholarship = (a + b + c) / 3 >= 85 && absences <= 3;   // mixed
+```
+
 ## Decisions
 
 ```cs
@@ -103,17 +138,38 @@ switch (choice)
 }
 ```
 
-- **Compare:** `==` `!=` `>` `<` `>=` `<=`
-- **Combine:** `&&` (and), `||` (or), `!` (not)
+A **nested `if`** is an `if` inside another `if`:
+
+```cs
+if (age >= 18)
+{
+    if (hasId)
+    {
+        Console.WriteLine("You may enter.");
+    }
+}
+```
 
 ## Loops
 
 ```cs
 for (int i = 1; i <= 10; i++) { ... }   // count from 1 to 10
-while (condition) { ... }               // repeat while true
-foreach (string item in items) { ... }  // every item in a list
+while (condition) { ... }               // repeat while true (checks BEFORE each round)
+do { ... } while (condition);           // runs at least once (checks AFTER each round)
+foreach (string item in items) { ... }  // every item in an array or list
 break;                                  // leave the loop
 continue;                               // skip to the next round
+
+// Nested loops: the inner loop runs completely for each round of the outer loop
+for (int row = 1; row <= 3; row++)
+{
+    for (int column = 1; column <= 5; column++)
+    {
+        Console.Write("* ");
+    }
+
+    Console.WriteLine();
+}
 ```
 
 ## The Menu Loop
@@ -143,6 +199,25 @@ while (running)
 }
 ```
 
+## Arrays
+
+```cs
+int[] scores = { 85, 92, 78, 95, 88 };   // an array of whole numbers
+double[] prices = new double[3];         // an empty array with 3 slots
+
+int first = scores[0];                   // positions start at 0
+int last = scores[scores.Length - 1];    // the last item
+scores[2] = 80;                          // change an item
+int howMany = scores.Length;             // how many items
+
+for (int i = 0; i < scores.Length; i++) { ... }   // visit every item, with its index
+foreach (int score in scores) { ... }             // visit every item
+
+int total = scores.Sum();                // also .Average(), .Max(), .Min()
+Array.Sort(scores);                      // lowest to highest
+Array.Reverse(scores);                   // turn the order around
+```
+
 ## Lists
 
 ```cs
@@ -154,7 +229,7 @@ bool has = names.Contains("Ana");   // is it in the list?
 names.Remove("Ana");                // remove
 ```
 
-## Methods
+## Functions (Methods)
 
 ```cs
 double Average(double a, double b)   // gives back a double
@@ -184,6 +259,33 @@ public class Student
 
 Student s = new Student { Id = 1, FullName = "Juan Dela Cruz" };
 s.Display();
+```
+
+## Enums
+
+```cs
+CupSize size = CupSize.Large;            // use a choice
+int number = (int)size;                  // the number behind it: 2
+
+if (size == CupSize.Large) { ... }
+
+switch (size)
+{
+    case CupSize.Small:
+        Console.WriteLine("Small cup");
+        break;
+    default:
+        Console.WriteLine("Bigger cup");
+        break;
+}
+
+// In Program.cs, enums go at the very bottom of the file
+enum CupSize
+{
+    Small,
+    Medium,
+    Large
+}
 ```
 
 ## Catching Crashes

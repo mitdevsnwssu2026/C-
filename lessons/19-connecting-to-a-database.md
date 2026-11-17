@@ -1,4 +1,4 @@
-# Lesson 13: Connecting C# to a Database
+# Lesson 19: Connecting C# to a Database
 
 **Part 3: Databases** · About 60 minutes
 
@@ -11,7 +11,7 @@
 
 ## The Idea
 
-In Lesson 12, you typed SQL by hand. Real programs send SQL **by themselves**, from their code.
+In Lesson 18, you typed SQL by hand. Real programs send SQL **by themselves**, from their code.
 
 Talking to a database always has the **same four steps**. It is like a phone call:
 
@@ -26,24 +26,24 @@ Talking to a database always has the **same four steps**. It is like a phone cal
 
 ## Step by Step
 
-### Step 1: Create a new project named `Lesson13`
+### Step 1: Create a new project named `Lesson19`
 
 1. Open **Visual Studio**. (If it is already open, close it first and open it again.)
 2. Click **Create a new project**.
 3. Click **Console App** (the one with **C#**, not ".NET Framework"), then click **Next**.
-4. In **Project name**, type `Lesson13`. Check that **Location** says `C:\CSharpCourse`. Click **Next**.
+4. In **Project name**, type `Lesson19`. Check that **Location** says `C:\CSharpCourse`. Click **Next**.
 5. Click **Create**.
 
 ### Step 2: Add the SQLite package
 
-1. In the **Solution Explorer**, right-click the project line **Lesson13**.
+1. In the **Solution Explorer**, right-click the project line **Lesson19**.
 2. Click **Manage NuGet Packages...**
 3. Click **Browse**. In the search box, type `Microsoft.Data.Sqlite`.
 4. Click the result named exactly **Microsoft.Data.Sqlite**. Then click **Install**.
 5. If **Preview Changes** appears, click **Apply**. If **License Acceptance** appears, click **I Accept**.
-6. Close the NuGet tab (click the **X** on the tab **NuGet: Lesson13**).
+6. Close the NuGet tab (click the **X** on the tab **NuGet: Lesson19**).
 
-> Need more help with these clicks? Look at [Lesson 12](12-what-is-a-database.md), Step 2.
+> Need more help with these clicks? Look at [Lesson 18](18-what-is-a-database.md), Step 2.
 
 ### Step 3: Type the code
 
@@ -53,7 +53,7 @@ Talking to a database always has the **same four steps**. It is like a phone cal
 ## The Code
 
 ```csharp
-// Lesson 13: Connecting C# to a SQLite database
+// Lesson 19: Connecting C# to a SQLite database
 
 using Microsoft.Data.Sqlite;
 
@@ -104,7 +104,7 @@ Close the black window. **Run it a second time.** You will see the same result, 
 Your program just created a real database! It is a file named `school.db`.
 
 > [!NOTE]
-> **Where is `school.db`?** In the same place as the CSV file from Lesson 11: **your project → bin → Debug → net10.0**. (Right-click the project → **Open Folder in File Explorer** to go there.) You do not need to open it. Your programs will show you what is inside.
+> **Where is `school.db`?** In the same place as the CSV file from Lesson 17: **your project → bin → Debug → net10.0**. (Right-click the project → **Open Folder in File Explorer** to go there.) You do not need to open it. Your programs will show you what is inside.
 
 ---
 
@@ -170,7 +170,7 @@ CREATE TABLE IF NOT EXISTS Students (
 - `NOT NULL` → the column is **required**.
 - `UNIQUE` → **no two rows** can have the same value. Two students can never have the same student number.
 
-> `NOT NULL` and `UNIQUE` are **rules** that the database enforces for you. Remember the problems with files in Lesson 11? The database now protects your data from empty values and duplicates.
+> `NOT NULL` and `UNIQUE` are **rules** that the database enforces for you. Remember the problems with files in Lesson 17? The database now protects your data from empty values and duplicates.
 
 **Asking for one value:**
 
@@ -190,7 +190,7 @@ int count = Convert.ToInt32(countCommand.ExecuteScalar());
 | `ExecuteScalar()` | Asking for **one** value: `SELECT COUNT(*)` | That one value |
 | `ExecuteReader()` | Reading **many** rows: `SELECT * FROM ...` | A reader that goes through the rows |
 
-You used the first two today. You will use `ExecuteReader()` in Lesson 15.
+You used the first two today. You will use `ExecuteReader()` in Lesson 21.
 
 ---
 
@@ -201,7 +201,7 @@ Do you want to **see** your tables like an Excel sheet? There is a free tool cal
 1. Go to **https://sqlitebrowser.org/dl/** and download the installer for Windows.
 2. Install it (click **Next** on every page).
 3. Open **DB Browser for SQLite**, and click **Open Database**.
-4. Go to `C:\CSharpCourse\Lesson13\bin\Debug\net10.0` and choose `school.db`.
+4. Go to `C:\CSharpCourse\Lesson19\bin\Debug\net10.0` and choose `school.db`.
 5. Click the **Browse Data** tab to see the rows of a table.
 
 > [!WARNING]
@@ -304,4 +304,4 @@ The first run shows `Rows changed: 1`. The second run shows `Rows changed: 0`, b
 
 ---
 
-[⬅️ Lesson 12](12-what-is-a-database.md) | [🏠 Course Home](../README.md) | [Next: Lesson 14 (Inserting Data Safely) ➡️](14-inserting-data.md)
+[⬅️ Lesson 18](18-what-is-a-database.md) | [🏠 Course Home](../README.md) | [Next: Lesson 20 (Inserting Data Safely) ➡️](20-inserting-data.md)

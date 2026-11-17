@@ -1,4 +1,4 @@
-# Lesson 10: Handling Errors (try and catch)
+# Lesson 16: Handling Errors (try and catch)
 
 **Part 2: Intermediate** · About 60 minutes
 
@@ -43,12 +43,12 @@ If nothing goes wrong inside `try`, the `catch` part is skipped. If something go
 
 ## Step by Step
 
-### Step 1: Create a new project named `Lesson10`
+### Step 1: Create a new project named `Lesson16`
 
 1. Open **Visual Studio**. (If it is already open, close it first and open it again.)
 2. Click **Create a new project**.
 3. Click **Console App** (the one with **C#**, not ".NET Framework"), then click **Next**.
-4. In **Project name**, type `Lesson10`. Check that **Location** says `C:\CSharpCourse`. Click **Next**.
+4. In **Project name**, type `Lesson16`. Check that **Location** says `C:\CSharpCourse`. Click **Next**.
 5. Click **Create**.
 
 ### Step 2: Type the code
@@ -59,7 +59,7 @@ If nothing goes wrong inside `try`, the `catch` part is skipped. If something go
 ## The Code
 
 ```csharp
-// Lesson 10: Catching errors so the program does not crash
+// Lesson 16: Catching errors so the program does not crash
 
 Console.Write("Enter a whole number to divide 100 by: ");
 string input = Console.ReadLine() ?? "";
@@ -171,7 +171,7 @@ Both stop crashes. Here is a simple rule:
 
 ### Cleaning input with `.Trim()`
 
-Users often type extra spaces by accident, like `"  Juan  "`. `.Trim()` removes the spaces at the **start** and the **end**:
+Users often type extra spaces by accident, like `"  Juan  "`. You met `.Trim()` in Lesson 04: it removes the spaces at the **start** and the **end**. You can use it right when you read the input:
 
 ```cs
 string name = (Console.ReadLine() ?? "").Trim();
@@ -310,4 +310,4 @@ Console.WriteLine($"Hello, {fullName}!");
 
 ---
 
-[⬅️ Lesson 09](09-classes-and-objects.md) | [🏠 Course Home](../README.md) | [Next: Lesson 11 (Saving to Files) ➡️](11-saving-to-files.md)
+[⬅️ Lesson 15](15-enums.md) | [🏠 Course Home](../README.md) | [Next: Lesson 17 (Saving to Files) ➡️](17-saving-to-files.md)

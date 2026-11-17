@@ -1,206 +1,126 @@
-// Lesson 20: FINAL PROJECT - Account System (Register, Log in, Change password, Log out)
+// Lesson 20: Saving (inserting) a student into the database
 
-Database.CreateTables();
+using Microsoft.Data.Sqlite;
 
-User? currentUser = null; // null means "nobody is logged in"
-bool running = true;
+const string ConnectionString = "Data Source=school.db";
 
-while (running)
+// ----- Main program -----
+CreateStudentsTable();
+
+Console.WriteLine("=== ADD A NEW STUDENT ===");
+string studentNumber = ReadRequired("Student number (example: 2026-0001): ");
+
+if (StudentNumberExists(studentNumber))
 {
-    Console.WriteLine();
+    Console.WriteLine($"Student number {studentNumber} is already saved. Nothing was added.");
+}
+else
+{
+    string fullName = ReadRequired("Full name: ");
+    string course = ReadRequired("Course (example: BSIT): ");
+    int yearLevel = ReadYearLevel();
 
-    if (currentUser == null)
-    {
-        // ----- Menu for visitors (nobody is logged in) -----
-        Console.WriteLine("========= ACCOUNT SYSTEM =========");
-        Console.WriteLine("1 - Register a new account");
-        Console.WriteLine("2 - Log in");
-        Console.WriteLine("3 - View all accounts (for learning only)");
-        Console.WriteLine("4 - Exit");
-        Console.Write("Choose an option: ");
-        string choice = Console.ReadLine() ?? "";
-        Console.WriteLine();
-
-        switch (choice)
-        {
-            case "1":
-                RegisterScreen();
-                break;
-            case "2":
-                currentUser = LoginScreen();
-                break;
-            case "3":
-                ViewAllAccountsScreen();
-                break;
-            case "4":
-                running = false;
-                Console.WriteLine("Goodbye!");
-                break;
-            default:
-                Console.WriteLine("Invalid option. Please type a number from 1 to 4.");
-                break;
-        }
-    }
-    else
-    {
-        // ----- Menu for a logged-in user -----
-        Console.WriteLine($"========= Logged in as: {currentUser.Username} =========");
-        Console.WriteLine("1 - View my profile");
-        Console.WriteLine("2 - Change my password");
-        Console.WriteLine("3 - Log out");
-        Console.Write("Choose an option: ");
-        string choice = Console.ReadLine() ?? "";
-        Console.WriteLine();
-
-        switch (choice)
-        {
-            case "1":
-                ProfileScreen(currentUser);
-                break;
-            case "2":
-                ChangePasswordScreen(currentUser);
-                break;
-            case "3":
-                Console.WriteLine($"Goodbye, {currentUser.FullName}! You are now logged out.");
-                currentUser = null;
-                break;
-            default:
-                Console.WriteLine("Invalid option. Please type a number from 1 to 3.");
-                break;
-        }
-    }
+    long newId = InsertStudent(studentNumber, fullName, course, yearLevel);
+    Console.WriteLine($"Saved! {fullName} was given database ID {newId}.");
 }
 
+Console.WriteLine($"Total students in the database: {CountStudents()}");
 
-// ----- Screens -----
 
-void RegisterScreen()
+// ----- Database methods -----
+
+void CreateStudentsTable()
 {
-    Console.WriteLine("--- REGISTER A NEW ACCOUNT ---");
+    using var connection = new SqliteConnection(ConnectionString);
+    connection.Open();
 
-    string username = AskForUsername();
-    string fullName = ConsoleHelper.ReadRequired("Full name: ");
-    string password = AskForNewPassword();
-
-    Console.WriteLine("Creating your account...");
-    AccountService.Register(username, fullName, password);
-
-    Console.WriteLine($"Account created! You can now log in as \"{username}\".");
+    using var command = connection.CreateCommand();
+    command.CommandText = @"
+        CREATE TABLE IF NOT EXISTS Students (
+            Id            INTEGER PRIMARY KEY AUTOINCREMENT,
+            StudentNumber TEXT    NOT NULL UNIQUE,
+            FullName      TEXT    NOT NULL,
+            Course        TEXT    NOT NULL,
+            YearLevel     INTEGER NOT NULL
+        );";
+    command.ExecuteNonQuery();
 }
 
-User? LoginScreen()
+bool StudentNumberExists(string studentNumber)
 {
-    Console.WriteLine("--- LOG IN ---");
+    using var connection = new SqliteConnection(ConnectionString);
+    connection.Open();
 
-    for (int attempt = 1; attempt <= 3; attempt++)
-    {
-        string username = ConsoleHelper.ReadRequired("Username: ").ToLower();
-        string password = ConsoleHelper.ReadPassword("Password: ");
+    using var command = connection.CreateCommand();
+    command.CommandText = "SELECT COUNT(*) FROM Students WHERE StudentNumber = $studentNumber;";
+    command.Parameters.AddWithValue("$studentNumber", studentNumber);
 
-        User? user = AccountService.Login(username, password);
-
-        if (user != null)
-        {
-            Console.WriteLine($"Login successful! Welcome, {user.FullName}.");
-            return user;
-        }
-
-        // Same message for "wrong username" and "wrong password" (safer!)
-        Console.WriteLine($"Invalid username or password. Attempts left: {3 - attempt}");
-    }
-
-    Console.WriteLine("Too many failed attempts. Going back to the main menu.");
-    return null;
+    int count = Convert.ToInt32(command.ExecuteScalar());
+    return count > 0;
 }
 
-void ProfileScreen(User user)
+long InsertStudent(string studentNumber, string fullName, string course, int yearLevel)
 {
-    Console.WriteLine("--- MY PROFILE ---");
-    Console.WriteLine($"Account ID:   {user.Id}");
-    Console.WriteLine($"Username:     {user.Username}");
-    Console.WriteLine($"Full name:    {user.FullName}");
-    Console.WriteLine($"Member since: {user.CreatedAt}");
+    using var connection = new SqliteConnection(ConnectionString);
+    connection.Open();
+
+    using var command = connection.CreateCommand();
+    command.CommandText = @"
+        INSERT INTO Students (StudentNumber, FullName, Course, YearLevel)
+        VALUES ($studentNumber, $fullName, $course, $yearLevel);
+
+        SELECT last_insert_rowid();";
+
+    command.Parameters.AddWithValue("$studentNumber", studentNumber);
+    command.Parameters.AddWithValue("$fullName", fullName);
+    command.Parameters.AddWithValue("$course", course);
+    command.Parameters.AddWithValue("$yearLevel", yearLevel);
+
+    long newId = Convert.ToInt64(command.ExecuteScalar());
+    return newId;
 }
 
-void ChangePasswordScreen(User user)
+int CountStudents()
 {
-    Console.WriteLine("--- CHANGE MY PASSWORD ---");
-    string currentPassword = ConsoleHelper.ReadPassword("Current password: ");
+    using var connection = new SqliteConnection(ConnectionString);
+    connection.Open();
 
-    // Check the current password first, so nobody else can change it
-    if (AccountService.Login(user.Username, currentPassword) == null)
-    {
-        Console.WriteLine("Wrong current password. Your password was NOT changed.");
-        return;
-    }
-
-    string newPassword = AskForNewPassword();
-    AccountService.ChangePassword(user.Id, newPassword);
-
-    Console.WriteLine("Your password was changed!");
-}
-
-void ViewAllAccountsScreen()
-{
-    List<User> users = AccountService.GetAllUsers();
-
-    if (users.Count == 0)
-    {
-        Console.WriteLine("No accounts yet.");
-        return;
-    }
-
-    foreach (User user in users)
-    {
-        Console.WriteLine($"ID {user.Id}: {user.Username} ({user.FullName}) - created {user.CreatedAt}");
-        Console.WriteLine($"     Saved in database: {user.PasswordHash}");
-    }
-
-    Console.WriteLine();
-    Console.WriteLine("Notice: the real passwords are NOT saved anywhere. Only their hashes.");
+    using var command = connection.CreateCommand();
+    command.CommandText = "SELECT COUNT(*) FROM Students;";
+    return Convert.ToInt32(command.ExecuteScalar());
 }
 
 
 // ----- Input methods -----
 
-string AskForUsername()
+string ReadRequired(string prompt)
 {
     while (true)
     {
-        string username = ConsoleHelper.ReadRequired("Username: ").ToLower();
-        string error = AccountService.ValidateUsername(username);
+        Console.Write(prompt);
+        string input = (Console.ReadLine() ?? "").Trim();
 
-        if (error == "")
+        if (input != "")
         {
-            return username;
+            return input;
         }
 
-        Console.WriteLine(error);
+        Console.WriteLine("This field is required. Please type something.");
     }
 }
 
-string AskForNewPassword()
+int ReadYearLevel()
 {
-    Console.WriteLine("(Password: at least 8 characters, with at least one letter and one number.)");
-
     while (true)
     {
-        string password = ConsoleHelper.ReadPassword("Choose a password: ");
-        string error = AccountService.ValidatePassword(password);
+        Console.Write("Year level (1-5): ");
+        string input = Console.ReadLine() ?? "";
 
-        if (error != "")
+        if (int.TryParse(input, out int yearLevel) && yearLevel >= 1 && yearLevel <= 5)
         {
-            Console.WriteLine(error);
-            continue;
+            return yearLevel;
         }
 
-        string confirm = ConsoleHelper.ReadPassword("Type the password again: ");
-
-        if (password == confirm)
-        {
-            return password;
-        }
-
-        Console.WriteLine("The two passwords do not match. Please try again.");
+        Console.WriteLine("Please type a whole number from 1 to 5.");
     }
 }

@@ -35,7 +35,7 @@ Type `console` in the search box at the top. Set the first small menu under it t
 You chose **Console App (.NET Framework)**, or the box **Do not use top-level statements** was checked. Close Visual Studio and create the project again. Choose **Console App** (with the **C#** label, and **without** ".NET Framework"), and leave that box **empty**.
 
 **It says a project with this name already exists.**
-You already created this lesson's project. Either open it (start window → **Open recent**), or use a new name, like `Lesson05b`.
+You already created this lesson's project. Either open it (start window → **Open recent**), or use a new name, like `Lesson07b`.
 
 **Where are my projects saved?**
 In `C:\CSharpCourse`. Each lesson has its own folder there.
@@ -76,7 +76,7 @@ An old black window is still open, with your program still running. Close **ever
 The program is probably **waiting for you to type**. Click the black window, type an answer, and press **Enter**.
 
 **The black window keeps printing the same thing forever.**
-That is an **infinite loop**. Close the black window with the **X** at its top-right corner. Then fix your loop (see [Lesson 06](../lessons/06-loops.md)).
+That is an **infinite loop**. Close the black window with the **X** at its top-right corner. Then fix your loop (see [Lesson 09](../lessons/09-loops.md)).
 
 **Ctrl + F5 does nothing.**
 On some laptops, you must also hold the **Fn** key: **Ctrl + Fn + F5**. Or use the menu: **Debug** → **Start Without Debugging**.
@@ -106,10 +106,19 @@ Each row in the Error List has a **Code**, a **Description**, and a **Line** num
 | `CS0161` | not all code paths return a value | A method does not always `return` | Every path through the method must end with `return something;` |
 | `CS0163` | Control cannot fall through from one case label | A `case` is missing `break;` | Add `break;` at the end of every `case` |
 | `CS0246` | The type or namespace name '...' could not be found | C# cannot find that class | Is the class file in the Solution Explorer? Is the name spelled the same? Did you delete the starter code in the file? |
-| `CS0234` | 'Data' does not exist in the namespace 'Microsoft' | The SQLite package is missing | Install it: right-click the project → **Manage NuGet Packages...** (see [Lesson 12](../lessons/12-what-is-a-database.md)) |
+| `CS0234` | 'Data' does not exist in the namespace 'Microsoft' | The SQLite package is missing | Install it: right-click the project → **Manage NuGet Packages...** (see [Lesson 18](../lessons/18-what-is-a-database.md)) |
 | `CS1061` | '...' does not contain a definition for '...' | That property or method does not exist | Check the exact name in the class |
 | `CS0117` | '...' does not contain a definition for '...' | That method is missing from the class | Add the method **inside** the class's `{ }` |
 | `CS0160` | A previous catch clause already catches all exceptions | `catch (Exception)` is not last | Move `catch (Exception ex)` to the end |
+| `CS8803` | Top-level statements must precede namespace and type declarations | There is normal code **below** an enum (or a class) in `Program.cs` | Move the enum to the **very bottom** of the file (see [Lesson 15](../lessons/15-enums.md)) |
+| `CS0136` | A local or parameter named '...' cannot be declared in this scope | Two nested loops use the same counter name | Give them different names, like `row` and `column` |
+| `CS0139` | No enclosing loop out of which to break or continue | `break` or `continue` is outside a loop | Check your `{ }` |
+| `CS1955` | Non-invocable member 'string.Length' cannot be used like a method | You wrote `.Length()` | Remove the `( )`: it is just `.Length` |
+
+**No error, but the result is wrong?** Two common causes:
+
+- **A text tool whose result was not kept.** `name.ToUpper();` alone changes nothing. Write `name = name.ToUpper();` (see [Lesson 04](../lessons/04-string-manipulation.md)).
+- **The wrong order of operators.** Add parentheses around the part that should happen first (see [Lesson 06](../lessons/06-comparison-and-logical-operators.md)).
 
 **Green wavy lines** are **warnings**. The program still runs, but fix them. The most common one:
 
@@ -131,11 +140,11 @@ A crash shows `Unhandled exception.` in the black window. The first line says **
 
 | The black window says... | What it means | How to fix it |
 |---|---|---|
-| `FormatException: The input string '...' was not in a correct format.` | `int.Parse` got text that is not a number | Use `TryParse` (see [Lesson 05](../lessons/05-decisions.md) and [Lesson 08](../lessons/08-methods.md)) |
+| `FormatException: The input string '...' was not in a correct format.` | `int.Parse` got text that is not a number | Use `TryParse` (see [Lesson 07](../lessons/07-if-and-else.md) and [Lesson 13](../lessons/13-methods.md)) |
 | `DivideByZeroException` | A whole number was divided by 0 | Check that the number is not 0 first |
 | `ArgumentOutOfRangeException: Index was out of range.` | A List index that does not exist | The last index is `Count - 1` |
 | `IndexOutOfRangeException` | An array index that does not exist | The last index is `Length - 1` |
-| `FileNotFoundException: Could not find file '...'` | The file is not where the program looks | Check with `File.Exists(...)` first. For a data file in your project, set **Copy to Output Directory** to **Copy if newer** (see [Lesson 16](../lessons/16-uploading-csv-data.md)) |
+| `FileNotFoundException: Could not find file '...'` | The file is not where the program looks | Check with `File.Exists(...)` first. For a data file in your project, set **Copy to Output Directory** to **Copy if newer** (see [Lesson 22](../lessons/22-uploading-csv-data.md)) |
 | `NullReferenceException` | Something that is `null` (nothing) was used | Check `if (x == null)` first |
 | `ExecuteNonQuery can only be called when the connection is open.` | `connection.Open()` is missing | Add `connection.Open();` |
 | `Must add values for the following parameters: $name` | A SQL placeholder was not filled in | Add `command.Parameters.AddWithValue("$name", value);` with **exactly** the same spelling |
@@ -162,7 +171,7 @@ That is correct. Visual Studio made a **copy**. The two files are now separate.
 | `SQLite Error 1: 'no such table: Students'` | The table does not exist, or its name is misspelled | Check the spelling. Make sure the method that creates the table runs **first** |
 | `SQLite Error 1: 'no such column: Email'` | The table does not have that column | You changed `CREATE TABLE`, but the old table is still there. Delete the database file (see below) |
 | `SQLite Error 1: 'near "...": syntax error'` | A typing mistake in your SQL | Look at the word after `near` |
-| `SQLite Error 19: 'UNIQUE constraint failed: ...'` | A duplicate was saved | Check first if it exists (see [Lesson 14](../lessons/14-inserting-data.md)) |
+| `SQLite Error 19: 'UNIQUE constraint failed: ...'` | A duplicate was saved | Check first if it exists (see [Lesson 20](../lessons/20-inserting-data.md)) |
 | `SQLite Error 19: 'NOT NULL constraint failed: ...'` | A required column got no value | Give every `NOT NULL` column a value in your `INSERT` |
 | `SQLite Error 5: 'database is locked'` | Another program is using the database | In **DB Browser for SQLite**, click **Close Database**. Close other black windows |
 
@@ -170,14 +179,14 @@ That is correct. Visual Studio made a **copy**. The two files are now separate.
 Right-click the project → **Open Folder in File Explorer** → **bin** → **Debug** → **net10.0**. Right-click the `.db` file and click **Delete**. ⚠️ This deletes all the data in it.
 
 **My data from another lesson is not here.**
-Each project has its **own** database file. `Lesson15` and `Lesson16` do not share data.
+Each project has its **own** database file. `Lesson21` and `Lesson22` do not share data.
 
 ---
 
-## The Account System (Lessons 19 and 20)
+## The Account System (Lessons 25 and 26)
 
 **I can't log in.**
-- In Lesson 20, register an account **in that project** first. It has its own new database.
+- In Lesson 26, register an account **in that project** first. It has its own new database.
 - Usernames are saved in small letters. Use **View all accounts** to see them.
 - Forgot the password? Nobody can see it. Register a new account.
 

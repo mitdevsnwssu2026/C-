@@ -1,4 +1,4 @@
-# Lesson 12: What Is a Database? (and Your First SQL)
+# Lesson 18: What Is a Database? (and Your First SQL)
 
 **Part 3: Databases** · About 90 minutes
 
@@ -104,12 +104,12 @@ SELECT COUNT(*) FROM Students;
 
 You will build a small program where you can **type SQL commands and see the results right away**.
 
-### Step 1: Create a new project named `Lesson12`
+### Step 1: Create a new project named `Lesson18`
 
 1. Open **Visual Studio**. (If it is already open, close it first and open it again.)
 2. Click **Create a new project**.
 3. Click **Console App** (the one with **C#**, not ".NET Framework"), then click **Next**.
-4. In **Project name**, type `Lesson12`. Check that **Location** says `C:\CSharpCourse`. Click **Next**.
+4. In **Project name**, type `Lesson18`. Check that **Location** says `C:\CSharpCourse`. Click **Next**.
 5. Click **Create**.
 
 ### Step 2: Add the SQLite package
@@ -118,11 +118,11 @@ C# cannot talk to SQLite by itself. You need to add a **package**: an extra tool
 
 **You need an internet connection for this step.**
 
-**1.** In the **Solution Explorer**, **right-click** the project line **Lesson12**.
+**1.** In the **Solution Explorer**, **right-click** the project line **Lesson18**.
 
 **2.** Click **Manage NuGet Packages...**
 
-✅ **You will see:** a new tab opens, named **NuGet: Lesson12**.
+✅ **You will see:** a new tab opens, named **NuGet: Lesson18**.
 
 **3.** Near the top-left of that tab, click the word **Browse**.
 
@@ -141,14 +141,14 @@ C# cannot talk to SQLite by itself. You need to add a **package**: an extra tool
 
 ✅ **You will see:** after a few seconds, the **Install** button changes to **Uninstall**. That means the package is installed.
 
-**8.** Close the NuGet tab: click the small **X** on the tab named **NuGet: Lesson12**. You are back at `Program.cs`.
+**8.** Close the NuGet tab: click the small **X** on the tab named **NuGet: Lesson18**. You are back at `Program.cs`.
 
 > [!NOTE]
-> You add the package **once per project**. Every project that uses a database (Lessons 12 to 16, 19, and 20) needs these same steps.
+> You add the package **once per project**. Every project that uses a database (Lessons 18 to 22, 25, and 26) needs these same steps.
 
 ### Step 3: Paste the code
 
-This program is a **tool** for practicing SQL. You do **not** need to understand its code yet. By the end of Lesson 15, you will understand every line.
+This program is a **tool** for practicing SQL. You do **not** need to understand its code yet. By the end of Lesson 21, you will understand every line.
 
 **This time, you may copy and paste.**
 
@@ -158,10 +158,10 @@ This program is a **tool** for practicing SQL. You do **not** need to understand
 ## The Code
 
 ```csharp
-// Lesson 12: SQL PLAYGROUND
+// Lesson 18: SQL PLAYGROUND
 // A small tool for practicing SQL commands.
 // You do NOT need to understand this code yet.
-// By the end of Lesson 15 you will understand every line.
+// By the end of Lesson 21 you will understand every line.
 
 using Microsoft.Data.Sqlite;
 
@@ -508,4 +508,4 @@ Only `IT101` is shown. Here the primary key is the `Code`, which you type yourse
 
 ---
 
-[⬅️ Lesson 11](11-saving-to-files.md) | [🏠 Course Home](../README.md) | [Next: Lesson 13 (Connecting C# to a Database) ➡️](13-connecting-to-a-database.md)
+[⬅️ Lesson 17](17-saving-to-files.md) | [🏠 Course Home](../README.md) | [Next: Lesson 19 (Connecting C# to a Database) ➡️](19-connecting-to-a-database.md)

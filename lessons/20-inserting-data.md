@@ -1,4 +1,4 @@
-# Lesson 14: Saving User Input to the Database (Safely!)
+# Lesson 20: Saving User Input to the Database (Safely!)
 
 **Part 3: Databases** · About 90 minutes
 
@@ -65,22 +65,22 @@ Think of a bank deposit slip. You write the amount **in the box** for the amount
 
 ## Step by Step
 
-### Step 1: Create a new project named `Lesson14`
+### Step 1: Create a new project named `Lesson20`
 
 1. Open **Visual Studio**. (If it is already open, close it first and open it again.)
 2. Click **Create a new project**.
 3. Click **Console App** (the one with **C#**, not ".NET Framework"), then click **Next**.
-4. In **Project name**, type `Lesson14`. Check that **Location** says `C:\CSharpCourse`. Click **Next**.
+4. In **Project name**, type `Lesson20`. Check that **Location** says `C:\CSharpCourse`. Click **Next**.
 5. Click **Create**.
 
 ### Step 2: Add the SQLite package
 
-1. In the **Solution Explorer**, right-click the project line **Lesson14**.
+1. In the **Solution Explorer**, right-click the project line **Lesson20**.
 2. Click **Manage NuGet Packages...**
 3. Click **Browse**. In the search box, type `Microsoft.Data.Sqlite`.
 4. Click the result named exactly **Microsoft.Data.Sqlite**. Then click **Install**.
 5. If **Preview Changes** appears, click **Apply**. If **License Acceptance** appears, click **I Accept**.
-6. Close the NuGet tab (click the **X** on the tab **NuGet: Lesson14**).
+6. Close the NuGet tab (click the **X** on the tab **NuGet: Lesson20**).
 
 ### Step 3: Put in the code
 
@@ -94,7 +94,7 @@ The code has three parts: the **main program** at the top, then the **database m
 ## The Code
 
 ```csharp
-// Lesson 14: Saving (inserting) a student into the database
+// Lesson 20: Saving (inserting) a student into the database
 
 using Microsoft.Data.Sqlite;
 
@@ -351,7 +351,7 @@ Open a connection, do one job, and let `using` close it. Simple and safe.
 
 ### `ReadRequired` and `ReadYearLevel`
 
-These are the **crash-proof input** methods from Lessons 08 and 10. `ReadRequired` keeps asking until the user types something. `ReadYearLevel` keeps asking until the user types a whole number from 1 to 5:
+These are the **crash-proof input** methods from Lessons 13 and 16. `ReadRequired` keeps asking until the user types something. `ReadYearLevel` keeps asking until the user types a whole number from 1 to 5:
 
 ```cs
 if (int.TryParse(input, out int yearLevel) && yearLevel >= 1 && yearLevel <= 5)
@@ -467,4 +467,4 @@ Console.WriteLine($"Total students in the database: {CountStudents()}");
 
 ---
 
-[⬅️ Lesson 13](13-connecting-to-a-database.md) | [🏠 Course Home](../README.md) | [Next: Lesson 15 (Student Records Manager) ➡️](15-crud-app.md)
+[⬅️ Lesson 19](19-connecting-to-a-database.md) | [🏠 Course Home](../README.md) | [Next: Lesson 21 (Student Records Manager) ➡️](21-crud-app.md)

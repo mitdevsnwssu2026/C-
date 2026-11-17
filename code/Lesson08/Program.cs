@@ -1,57 +1,70 @@
-// Lesson 8: Grade calculator organized with methods
+// Lesson 8: Conditional Challenge - the movie ticket booth
 
-// ----- Main program -----
-PrintHeader("GRADE CALCULATOR");
+Console.WriteLine("===== MOVIE TICKET BOOTH =====");
+Console.Write("How old are you? ");
+bool isNumber = int.TryParse(Console.ReadLine() ?? "", out int age);
 
-double prelim = ReadNumber("Prelim grade: ");
-double midterm = ReadNumber("Midterm grade: ");
-double finals = ReadNumber("Finals grade: ");
-
-double average = ComputeAverage(prelim, midterm, finals);
-string remarks = GetRemarks(average);
-
-Console.WriteLine();
-Console.WriteLine($"Average: {average:F2}");
-Console.WriteLine($"Remarks: {remarks}");
-
-
-// ----- Methods -----
-
-void PrintHeader(string title)
+if (!isNumber || age < 0)
 {
-    Console.WriteLine("==============================");
-    Console.WriteLine($"  {title}");
-    Console.WriteLine("==============================");
+    Console.WriteLine("That is not a valid age.");
 }
-
-double ReadNumber(string prompt)
+else if (age <= 6)
 {
-    while (true)
-    {
-        Console.Write(prompt);
-        string input = Console.ReadLine() ?? "";
+    Console.WriteLine("Children 6 and below watch for FREE. Enjoy the movie!");
+}
+else
+{
+    // 1. Find the ticket price (a nested if)
+    int price;
 
-        if (double.TryParse(input, out double number))
+    if (age >= 60)
+    {
+        price = 120;
+        Console.WriteLine("Senior citizen price: 120 pesos");
+    }
+    else
+    {
+        Console.Write("Are you a student? (yes/no) ");
+        string answer = (Console.ReadLine() ?? "").Trim().ToLower();
+
+        if (answer == "yes")
         {
-            return number;
+            price = 150;
+            Console.WriteLine("Student price: 150 pesos");
         }
-
-        Console.WriteLine("Please type a valid number.");
+        else
+        {
+            price = 200;
+            Console.WriteLine("Regular price: 200 pesos");
+        }
     }
-}
 
-double ComputeAverage(double a, double b, double c)
-{
-    double total = a + b + c;
-    return total / 3;
-}
+    // 2. Add the price of the seat (a switch)
+    Console.WriteLine();
+    Console.WriteLine("1 - Regular seat (no extra charge)");
+    Console.WriteLine("2 - Premium seat (+50 pesos)");
+    Console.WriteLine("3 - VIP seat (+100 pesos)");
+    Console.Write("Choose your seat: ");
+    string seat = Console.ReadLine() ?? "";
 
-string GetRemarks(double grade)
-{
-    if (grade >= 75)
+    switch (seat)
     {
-        return "PASSED";
+        case "1":
+            break;
+
+        case "2":
+            price += 50;
+            break;
+
+        case "3":
+            price += 100;
+            break;
+
+        default:
+            Console.WriteLine("Unknown seat. You get a Regular seat.");
+            break;
     }
 
-    return "FAILED";
+    Console.WriteLine();
+    Console.WriteLine($"Please pay: {price} pesos. Enjoy the movie!");
 }

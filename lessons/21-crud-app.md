@@ -1,4 +1,4 @@
-# Lesson 15: Student Records Manager (Create, Read, Update, Delete)
+# Lesson 21: Student Records Manager (Create, Read, Update, Delete)
 
 **Part 3: Databases** · About 2 hours (you can split it into two sittings)
 
@@ -43,26 +43,26 @@ The front desk (`Program.cs`) never writes SQL. It just asks the records office 
 
 ## Step by Step
 
-### Step 1: Create a new project named `Lesson15`
+### Step 1: Create a new project named `Lesson21`
 
 1. Open **Visual Studio**. (If it is already open, close it first and open it again.)
 2. Click **Create a new project**.
 3. Click **Console App** (the one with **C#**, not ".NET Framework"), then click **Next**.
-4. In **Project name**, type `Lesson15`. Check that **Location** says `C:\CSharpCourse`. Click **Next**.
+4. In **Project name**, type `Lesson21`. Check that **Location** says `C:\CSharpCourse`. Click **Next**.
 5. Click **Create**.
 
 ### Step 2: Add the SQLite package
 
-1. In the **Solution Explorer**, right-click the project line **Lesson15**.
+1. In the **Solution Explorer**, right-click the project line **Lesson21**.
 2. Click **Manage NuGet Packages...**
 3. Click **Browse**. In the search box, type `Microsoft.Data.Sqlite`.
 4. Click the result named exactly **Microsoft.Data.Sqlite**. Then click **Install**.
 5. If **Preview Changes** appears, click **Apply**. If **License Acceptance** appears, click **I Accept**.
-6. Close the NuGet tab (click the **X** on the tab **NuGet: Lesson15**).
+6. Close the NuGet tab (click the **X** on the tab **NuGet: Lesson21**).
 
 ### Step 3: Add the file `Student.cs`
 
-1. In the **Solution Explorer**, right-click the project line **Lesson15**.
+1. In the **Solution Explorer**, right-click the project line **Lesson21**.
 2. Move to **Add**, then click **Class...**
 3. In the **Name** box, type `Student.cs`. Click **Add**.
 4. In the new **Student.cs** tab, press **Ctrl + A**, then **Delete**.
@@ -85,11 +85,11 @@ public class Student
 }
 ```
 
-This is the `Student` class from Lesson 09, with one new property: `Id`, for the database's primary key.
+This is the `Student` class from Lesson 14, with one new property: `Id`, for the database's primary key.
 
 ### Step 4: Add the file `StudentDatabase.cs`
 
-1. In the **Solution Explorer**, right-click the project line **Lesson15**.
+1. In the **Solution Explorer**, right-click the project line **Lesson21**.
 2. Move to **Add**, then click **Class...**
 3. In the **Name** box, type `StudentDatabase.cs`. Click **Add**.
 4. In the new **StudentDatabase.cs** tab, press **Ctrl + A**, then **Delete**.
@@ -271,7 +271,7 @@ public static class StudentDatabase
 **File: `Program.cs`**
 
 ```csharp
-// Lesson 15: Student Records Manager (Create, Read, Update, Delete)
+// Lesson 21: Student Records Manager (Create, Read, Update, Delete)
 
 StudentDatabase.CreateTable();
 
@@ -452,10 +452,10 @@ int ReadYearLevel()
 
 ### Step 6: Check your files
 
-Look at the **Solution Explorer**. You should see these three files under **Lesson15**:
+Look at the **Solution Explorer**. You should see these three files under **Lesson21**:
 
 ```text
-Lesson15
+Lesson21
    Dependencies
    Program.cs
    Student.cs
@@ -573,7 +573,7 @@ So for **each row**, the code makes one `Student` object, fills it in, and adds 
 public static class StudentDatabase
 ```
 
-In Lesson 09, you had to make an object (`new Student()`) before using it. A **`static`** class is different: you use it **directly by its name**, with no `new`.
+In Lesson 14, you had to make an object (`new Student()`) before using it. A **`static`** class is different: you use it **directly by its name**, with no `new`.
 
 ```cs
 StudentDatabase.CreateTable();
@@ -599,7 +599,7 @@ private static SqliteConnection OpenConnection()
 }
 ```
 
-In Lesson 14, every method repeated the same two lines to open a connection. Now they are written **once**. Every method just says `using var connection = OpenConnection();`
+In Lesson 20, every method repeated the same two lines to open a connection. Now they are written **once**. Every method just says `using var connection = OpenConnection();`
 
 ### `SearchByName`: finding part of a name with `LIKE`
 
@@ -697,7 +697,7 @@ if (answer == "YES" && StudentDatabase.DeleteStudent(student.Id))
 A delete cannot be undone. So the program asks the user to **confirm** first, and deletes only if they type exactly `YES`.
 
 > [!TIP]
-> Now look again at the **SQL Playground** code in [Lesson 12](12-what-is-a-database.md). You will recognize `using var`, `CreateCommand`, `ExecuteReader`, `reader.Read()`, and `try` / `catch`. You can understand all of it now!
+> Now look again at the **SQL Playground** code in [Lesson 18](18-what-is-a-database.md). You will recognize `using var`, `CreateCommand`, `ExecuteReader`, `reader.Read()`, and `try` / `catch`. You can understand all of it now!
 
 ---
 
@@ -821,4 +821,4 @@ Also change the `default` message to say `1 to 7`.
 
 ---
 
-[⬅️ Lesson 14](14-inserting-data.md) | [🏠 Course Home](../README.md) | [Next: Lesson 16 (Uploading a CSV File) ➡️](16-uploading-csv-data.md)
+[⬅️ Lesson 20](20-inserting-data.md) | [🏠 Course Home](../README.md) | [Next: Lesson 22 (Uploading a CSV File) ➡️](22-uploading-csv-data.md)

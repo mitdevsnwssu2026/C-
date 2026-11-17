@@ -1,35 +1,57 @@
-// Lesson 11: Saving students to a CSV file so they are not forgotten
+// Lesson 11: Arrays - a quiz score report
 
-string filePath = "students.csv";
+int[] scores = { 85, 92, 78, 95, 88 };
 
-Console.WriteLine("=== SAVE A STUDENT ===");
+// Array access: get items by their index
+Console.WriteLine($"First score: {scores[0]}");
+Console.WriteLine($"Last score:  {scores[scores.Length - 1]}");
 
-Console.Write("Student number: ");
-string studentNumber = (Console.ReadLine() ?? "").Trim();
-
-Console.Write("Full name: ");
-string fullName = (Console.ReadLine() ?? "").Trim();
-
-Console.Write("Course: ");
-string course = (Console.ReadLine() ?? "").Trim();
-
-// Join the values with commas to make one line of text
-string line = $"{studentNumber},{fullName},{course}";
-
-// Add the line to the end of the file (the file is created if it does not exist)
-File.AppendAllText(filePath, line + Environment.NewLine);
-Console.WriteLine("Saved to students.csv!");
-
-// Read every line back from the file
+// Array iteration: visit every item
 Console.WriteLine();
-Console.WriteLine("=== EVERYONE IN THE FILE ===");
+Console.WriteLine("All scores:");
 
-string[] lines = File.ReadAllLines(filePath);
-
-foreach (string savedLine in lines)
+for (int i = 0; i < scores.Length; i++)
 {
-    string[] parts = savedLine.Split(',');
-    Console.WriteLine($"Number: {parts[0]} | Name: {parts[1]} | Course: {parts[2]}");
+    Console.WriteLine($"  Quiz {i + 1}: {scores[i]}");
 }
 
-Console.WriteLine($"Total saved: {lines.Length}");
+// Array operations: total, average, highest, lowest
+double total = 0;
+int highest = scores[0];
+int lowest = scores[0];
+
+foreach (int score in scores)
+{
+    total += score;
+
+    if (score > highest)
+    {
+        highest = score;
+    }
+
+    if (score < lowest)
+    {
+        lowest = score;
+    }
+}
+
+double average = total / scores.Length;
+
+Console.WriteLine();
+Console.WriteLine($"Total:   {total}");
+Console.WriteLine($"Average: {average:F2}");
+Console.WriteLine($"Highest: {highest}");
+Console.WriteLine($"Lowest:  {lowest}");
+
+// Array operations: sort from lowest to highest
+Array.Sort(scores);
+
+Console.WriteLine();
+Console.Write("Sorted:  ");
+
+foreach (int score in scores)
+{
+    Console.Write($"{score} ");
+}
+
+Console.WriteLine();

@@ -1,4 +1,4 @@
-# Lesson 11: Saving Data to a File
+# Lesson 17: Saving Data to a File
 
 **Part 2: Intermediate** · About 60 minutes
 
@@ -11,7 +11,7 @@
 
 ## The Idea
 
-Open your Lesson 09 student list. Add a student. Exit. Run it again.
+Open your Lesson 14 student list. Add a student. Exit. Run it again.
 
 **The student you added is gone!** 😱
 
@@ -34,12 +34,12 @@ A CSV file is plain text, so Notepad can open it. Excel can open it too, and sho
 
 ## Step by Step
 
-### Step 1: Create a new project named `Lesson11`
+### Step 1: Create a new project named `Lesson17`
 
 1. Open **Visual Studio**. (If it is already open, close it first and open it again.)
 2. Click **Create a new project**.
 3. Click **Console App** (the one with **C#**, not ".NET Framework"), then click **Next**.
-4. In **Project name**, type `Lesson11`. Check that **Location** says `C:\CSharpCourse`. Click **Next**.
+4. In **Project name**, type `Lesson17`. Check that **Location** says `C:\CSharpCourse`. Click **Next**.
 5. Click **Create**.
 
 ### Step 2: Type the code
@@ -50,7 +50,7 @@ A CSV file is plain text, so Notepad can open it. Excel can open it too, and sho
 ## The Code
 
 ```csharp
-// Lesson 11: Saving students to a CSV file so they are not forgotten
+// Lesson 17: Saving students to a CSV file so they are not forgotten
 
 string filePath = "students.csv";
 
@@ -130,7 +130,7 @@ Total saved: 2
 
 Where is `students.csv`? Visual Studio keeps your running program, and the files it makes, in a folder deep inside your project. Let's go there.
 
-**1.** In the **Solution Explorer**, **right-click** the project line **Lesson11**.
+**1.** In the **Solution Explorer**, **right-click** the project line **Lesson17**.
 
 **2.** Click **Open Folder in File Explorer** (near the bottom of the menu).
 
@@ -285,7 +285,7 @@ else
 
 Write a program that reads `students.csv` and counts how many students are in `BSIT`. If the file does not exist, show `No students saved yet.` instead of crashing.
 
-(Write it in your `Lesson11` project, so it reads the file you already made.)
+(Write it in your `Lesson17` project, so it reads the file you already made.)
 
 <details>
 <summary>Show answer</summary>
@@ -329,4 +329,4 @@ else
 
 ---
 
-[⬅️ Lesson 10](10-handling-errors.md) | [🏠 Course Home](../README.md) | [Next: Lesson 12 (What Is a Database?) ➡️](12-what-is-a-database.md)
+[⬅️ Lesson 16](16-handling-errors.md) | [🏠 Course Home](../README.md) | [Next: Lesson 18 (What Is a Database?) ➡️](18-what-is-a-database.md)

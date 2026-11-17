@@ -1,4 +1,4 @@
-# Lesson 17: What Is Hashing? (Why We Never Save Real Passwords)
+# Lesson 23: What Is Hashing? (Why We Never Save Real Passwords)
 
 **Part 4: Security and Accounts** · About 75 minutes
 
@@ -62,12 +62,12 @@ The system **never** needs to know the real password. It only compares fingerpri
 
 ## Step by Step
 
-### Step 1: Create a new project named `Lesson17`
+### Step 1: Create a new project named `Lesson23`
 
 1. Open **Visual Studio**. (If it is already open, close it first and open it again.)
 2. Click **Create a new project**.
 3. Click **Console App** (the one with **C#**, not ".NET Framework"), then click **Next**.
-4. In **Project name**, type `Lesson17`. Check that **Location** says `C:\CSharpCourse`. Click **Next**.
+4. In **Project name**, type `Lesson23`. Check that **Location** says `C:\CSharpCourse`. Click **Next**.
 5. Click **Create**.
 
 > No package is needed this time. The hashing tools are already part of C#.
@@ -80,9 +80,9 @@ The system **never** needs to know the real password. It only compares fingerpri
 ## The Code
 
 ```csharp
-// Lesson 17: What is hashing? (A learning demo)
+// Lesson 23: What is hashing? (A learning demo)
 // IMPORTANT: Plain SHA-256 is NOT safe for passwords.
-// This lesson shows WHY. Lesson 18 shows the safe way.
+// This lesson shows WHY. Lesson 24 shows the safe way.
 
 using System.Security.Cryptography;
 using System.Text;
@@ -392,4 +392,4 @@ It shows `MATCH! The password is "iloveyou".`
 
 ---
 
-[⬅️ Lesson 16](16-uploading-csv-data.md) | [🏠 Course Home](../README.md) | [Next: Lesson 18 (Safe Password Hashing) ➡️](18-password-hashing.md)
+[⬅️ Lesson 22](22-uploading-csv-data.md) | [🏠 Course Home](../README.md) | [Next: Lesson 24 (Safe Password Hashing) ➡️](24-password-hashing.md)

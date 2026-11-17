@@ -1,19 +1,34 @@
-// Lesson 4: Grade average calculator
+// Lesson 4: Working with text (string manipulation)
 
-Console.WriteLine("=== GRADE AVERAGE CALCULATOR ===");
+Console.Write("Type your full name: ");
+string fullName = Console.ReadLine() ?? "";
 
-Console.Write("Enter your Prelim grade: ");
-double prelim = double.Parse(Console.ReadLine() ?? "");
+// 1. Remove extra spaces at the start and at the end
+string cleanName = fullName.Trim();
 
-Console.Write("Enter your Midterm grade: ");
-double midterm = double.Parse(Console.ReadLine() ?? "");
+// 2. Count the characters
+int length = cleanName.Length;
 
-Console.Write("Enter your Finals grade: ");
-double finals = double.Parse(Console.ReadLine() ?? "");
+// 3. Change the letters
+string upperName = cleanName.ToUpper();
+string lowerName = cleanName.ToLower();
 
-double total = prelim + midterm + finals;
-double average = total / 3;
+// 4. Ask questions about the text (the answer is true or false)
+bool hasSpace = cleanName.Contains(" ");
+bool startsWithJ = cleanName.StartsWith("J");
+
+// 5. Take a piece of the text
+string firstThree = cleanName.Substring(0, 3);
+
+// 6. Replace part of the text
+string dashedName = cleanName.Replace(" ", "-");
 
 Console.WriteLine();
-Console.WriteLine($"Total:   {total}");
-Console.WriteLine($"Average: {average:F2}");
+Console.WriteLine($"Clean name:      {cleanName}");
+Console.WriteLine($"Characters:      {length}");
+Console.WriteLine($"CAPITAL letters: {upperName}");
+Console.WriteLine($"small letters:   {lowerName}");
+Console.WriteLine($"Has a space?     {hasSpace}");
+Console.WriteLine($"Starts with J?   {startsWithJ}");
+Console.WriteLine($"First 3 letters: {firstThree}");
+Console.WriteLine($"With dashes:     {dashedName}");

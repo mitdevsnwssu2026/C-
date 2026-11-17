@@ -7,8 +7,15 @@ public class Student
     public string Course { get; set; } = "";
     public int YearLevel { get; set; }
 
+    // A class method: shows this student's information
     public void Display()
     {
         Console.WriteLine($"[{StudentNumber}] {FullName} - {Course} {YearLevel}");
+    }
+
+    // A class method that gives back an answer
+    public bool IsGraduating()
+    {
+        return YearLevel == 4;
     }
 }

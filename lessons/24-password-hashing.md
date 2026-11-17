@@ -1,4 +1,4 @@
-# Lesson 18: Safe Password Hashing With PBKDF2
+# Lesson 24: Safe Password Hashing With PBKDF2
 
 **Part 4: Security and Accounts** · About 75 minutes
 
@@ -12,7 +12,7 @@ After this lesson, you are ready to build a real account system.
 
 ## The Idea
 
-In Lesson 17, you learned the rules. A safe password hash needs:
+In Lesson 23, you learned the rules. A safe password hash needs:
 
 1. A **random salt** for every user
 2. A **slow** hash, repeated many times
@@ -39,17 +39,17 @@ Everything needed to check the password later is in this one value. But the **pa
 
 ## Step by Step
 
-### Step 1: Create a new project named `Lesson18`
+### Step 1: Create a new project named `Lesson24`
 
 1. Open **Visual Studio**. (If it is already open, close it first and open it again.)
 2. Click **Create a new project**.
 3. Click **Console App** (the one with **C#**, not ".NET Framework"), then click **Next**.
-4. In **Project name**, type `Lesson18`. Check that **Location** says `C:\CSharpCourse`. Click **Next**.
+4. In **Project name**, type `Lesson24`. Check that **Location** says `C:\CSharpCourse`. Click **Next**.
 5. Click **Create**.
 
 ### Step 2: Add the file `PasswordHasher.cs`
 
-1. In the **Solution Explorer**, right-click the project line **Lesson18**.
+1. In the **Solution Explorer**, right-click the project line **Lesson24**.
 2. Move to **Add**, then click **Class...**
 3. In the **Name** box, type `PasswordHasher.cs`. Click **Add**.
 4. In the new **PasswordHasher.cs** tab, press **Ctrl + A**, then **Delete**.
@@ -125,7 +125,7 @@ public static class PasswordHasher
 **File: `Program.cs`**
 
 ```csharp
-// Lesson 18: Trying out the PasswordHasher
+// Lesson 24: Trying out the PasswordHasher
 
 Console.WriteLine("===== PASSWORD HASHER DEMO =====");
 Console.Write("Create a password: ");
@@ -190,7 +190,7 @@ Wrong password. Access denied!
 
 Did you notice a tiny pause after typing the password? That is the **600,000 rounds** at work. It is a quarter of a second for you, and a **huge** problem for a hacker. 🐢
 
-> In this demo, the password is **visible** while you type. In Lesson 19, you will make it show `*****` instead.
+> In this demo, the password is **visible** while you type. In Lesson 25, you will make it show `*****` instead.
 
 ---
 
@@ -204,8 +204,8 @@ private const int HashSize = 32;
 private const int Iterations = 600_000;
 ```
 
-- `const` → values that never change (Lesson 14).
-- `private` → only this class uses them (Lesson 15).
+- `const` → values that never change (Lesson 20).
+- `private` → only this class uses them (Lesson 21).
 - `600_000` is the same as `600000`. C# lets you put `_` inside a number to make it easier to read, like the comma in "600,000".
 - **Iterations** is the programmer's word for "rounds". **600,000** is the number recommended by **OWASP**, a respected worldwide group for web security.
 
@@ -368,4 +368,4 @@ For a hacker, that means they could guess about **600 times faster**. This is ex
 
 ---
 
-[⬅️ Lesson 17](17-what-is-hashing.md) | [🏠 Course Home](../README.md) | [Next: Lesson 19 (Account System: Register) ➡️](19-account-system-register.md)
+[⬅️ Lesson 23](23-what-is-hashing.md) | [🏠 Course Home](../README.md) | [Next: Lesson 25 (Account System: Register) ➡️](25-account-system-register.md)
