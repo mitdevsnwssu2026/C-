@@ -35,7 +35,8 @@ Everything from the course on one page. Print it, and keep it next to your keybo
 | **Copy a file** from another lesson | Right-click the project → **Add** → **Existing Item...** → find the file → **Add** |
 | Add a **new data file** (like a `.csv`) | Right-click the project → **Add** → **New Item...** → type the name → **Add** |
 | Make a data file available to my program | Click the file → **Properties** panel (**F4**) → **Copy to Output Directory** → **Copy if newer** |
-| Add the **SQLite package** | Right-click the project → **Manage NuGet Packages...** → **Browse** → `Microsoft.Data.Sqlite` → **Install** |
+| Add a **package** (SQLite, Dapper...) | Right-click the project → **Manage NuGet Packages...** → **Browse** → type its name → **Install** |
+| Open the **Package Manager Console** | **Tools** → **NuGet Package Manager** → **Package Manager Console** |
 | Find files **made by my program** | Right-click the project → **Open Folder in File Explorer** → **bin** → **Debug** → **net10.0** |
 
 ### Panels gone missing?
@@ -337,7 +338,7 @@ INSERT OR IGNORE INTO ...                         -- skip rows that break a rule
 SELECT last_insert_rowid();                       -- the Id of the row just added
 ```
 
-## C# and SQLite Together
+## ADO.NET (C# and SQLite Together)
 
 ```cs
 using Microsoft.Data.Sqlite;   // at the very top of the file
@@ -363,6 +364,67 @@ while (reader.Read())
 // using var transaction = connection.BeginTransaction();
 // ... run commands ...
 // transaction.Commit();
+```
+
+## Three Ways to Talk to a Database
+
+The same job ("get all the students, sorted by name") in three ways:
+
+```cs
+// 1. ADO.NET (Lessons 20-23): you write the SQL, and you fill the objects
+using var command = connection.CreateCommand();
+command.CommandText = "SELECT Id, FullName FROM Students ORDER BY FullName;";
+using var reader = command.ExecuteReader();
+while (reader.Read()) { ... reader.GetInt32(0) ... reader.GetString(1) ... }
+
+// 2. Dapper (Lesson 24): you write the SQL, and Dapper fills the objects
+List<Student> students = connection.Query<Student>(
+    "SELECT Id, FullName FROM Students ORDER BY FullName;").ToList();
+
+// 3. EF Core (Lesson 25): EF Core writes the SQL and fills the objects
+List<Student> students = db.Students.OrderBy(s => s.FullName).ToList();
+```
+
+## Dapper
+
+```cs
+using Dapper;   // at the very top of the file
+
+connection.Execute(sql, student);                           // INSERT, UPDATE, DELETE
+int count = connection.ExecuteScalar<int>(sql);             // one value
+List<Student> all = connection.Query<Student>(sql).ToList();                      // many rows
+Student? one = connection.QueryFirstOrDefault<Student>(sql, new { Id = 5 });      // one row, or null
+
+// Placeholders use @ and the property name:
+// "INSERT INTO Students (FullName) VALUES (@FullName);"
+```
+
+## EF Core (Database First)
+
+```text
+Packages:  Microsoft.EntityFrameworkCore.Sqlite  +  Microsoft.EntityFrameworkCore.Tools
+           (the version must start with the same number as your .NET: .NET 10 → 10.x)
+
+Tools → NuGet Package Manager → Package Manager Console, then:
+
+Scaffold-DbContext "Data Source=C:\CSharpCourse\school.db" Microsoft.EntityFrameworkCore.Sqlite -OutputDir Models -Context SchoolContext
+```
+
+```cs
+using Lesson25.Models;   // at the very top of the file
+
+using var db = new SchoolContext();
+
+List<Student> all = db.Students.OrderBy(s => s.FullName).ToList();           // READ all
+List<Student> some = db.Students.Where(s => s.Course == "BSIT").ToList();    // READ some
+Student? one = db.Students.FirstOrDefault(s => s.Id == 5);                   // READ one, or null
+bool exists = db.Students.Any(s => s.StudentNumber == "2026-0001");          // is there one?
+int total = db.Students.Count();                                             // how many?
+
+db.Students.Add(student);        // CREATE
+one.YearLevel = 2;               // UPDATE (just change the object)
+db.Students.Remove(one);         // DELETE
+db.SaveChanges();                // nothing is saved until this line!
 ```
 
 ## Passwords

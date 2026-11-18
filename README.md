@@ -70,25 +70,28 @@ Then do the lessons in order. Each lesson uses what you learned in the one befor
 | 15 | [Enums](lessons/15-enums.md) | Make a list of named choices | 60 min |
 | 16 | [Handling Errors](lessons/16-handling-errors.md) | Stop crashes with `try` and `catch` | 60 min |
 | 17 | [Saving to Files](lessons/17-saving-to-files.md) | Keep data after the program closes | 60 min |
+| 18 | [Basic Data Entry](lessons/18-basic-data-entry.md) | Build a complete entry form that checks every answer (project) | 2 hrs |
 
-### Part 3: Databases
+### Part 3: Database Connections
 
 | # | Lesson | What you will do | Time |
 |---|---|---|---|
-| 18 | [What Is a Database?](lessons/18-what-is-a-database.md) | Learn tables and SQL in a practice tool | 90 min |
-| 19 | [Connecting to a Database](lessons/19-connecting-to-a-database.md) | Connect C# to a database and create a table | 60 min |
-| 20 | [Inserting Data Safely](lessons/20-inserting-data.md) | Save what the user types, and block hackers | 90 min |
-| 21 | [Student Records Manager](lessons/21-crud-app.md) | Build a full add / show / update / delete app | 2 hrs |
-| 22 | [Uploading a CSV File](lessons/22-uploading-csv-data.md) | Check and upload many records at once | 90 min |
+| 19 | [What Is a Database?](lessons/19-what-is-a-database.md) | Learn tables and SQL in a practice tool | 90 min |
+| 20 | [ADO.NET: Connecting to a Database](lessons/20-adonet-connecting-to-a-database.md) | Connect C# to a database and create a table | 60 min |
+| 21 | [ADO.NET: Data Entry Into a Database](lessons/21-adonet-inserting-data.md) | Save what the user types, and block hackers | 90 min |
+| 22 | [ADO.NET: Student Records Manager](lessons/22-adonet-crud-app.md) | Build a full add / show / update / delete app | 2 hrs |
+| 23 | [ADO.NET: Uploading a CSV File](lessons/23-adonet-uploading-csv-data.md) | Check and upload many records at once | 90 min |
+| 24 | [Dapper](lessons/24-dapper.md) | Do the same database work with much less code | 90 min |
+| 25 | [EF Core Database First](lessons/25-ef-core-database-first.md) | Let EF Core write your classes and your SQL | 2 hrs |
 
 ### Part 4: Security and Accounts
 
 | # | Lesson | What you will do | Time |
 |---|---|---|---|
-| 23 | [What Is Hashing?](lessons/23-what-is-hashing.md) | Learn why real passwords are never saved | 75 min |
-| 24 | [Safe Password Hashing](lessons/24-password-hashing.md) | Hash and check passwords the safe way | 75 min |
-| 25 | [Account System: Register](lessons/25-account-system-register.md) | Create accounts with hidden password typing | 2 hrs |
-| 26 | [Account System: Log In 🏆](lessons/26-account-system-login.md) | Log in, change password, log out (final project) | 2 hrs |
+| 26 | [What Is Hashing?](lessons/26-what-is-hashing.md) | Learn why real passwords are never saved | 75 min |
+| 27 | [Safe Password Hashing](lessons/27-password-hashing.md) | Hash and check passwords the safe way | 75 min |
+| 28 | [Account System: Register](lessons/28-account-system-register.md) | Create accounts with hidden password typing | 2 hrs |
+| 29 | [Account System: Log In 🏆](lessons/29-account-system-login.md) | Log in, change password, log out (final project) | 2 hrs |
 
 ### Help
 
@@ -138,15 +141,19 @@ Looking for one topic? This table shows where each one is taught.
 | **Enums** | Enums | [Lesson 15](lessons/15-enums.md) |
 | **More Tools** | Handling Errors (try / catch) | [Lesson 16](lessons/16-handling-errors.md) |
 | | Saving to Files | [Lesson 17](lessons/17-saving-to-files.md) |
-| **Database Connections** | SQL and tables | [Lesson 18](lessons/18-what-is-a-database.md) |
-| | Connecting C# to a database | [Lesson 19](lessons/19-connecting-to-a-database.md) |
-| | Uploading (inserting) data | [Lesson 20](lessons/20-inserting-data.md) |
-| | Create, Read, Update, Delete | [Lesson 21](lessons/21-crud-app.md) |
-| | Uploading a CSV file | [Lesson 22](lessons/22-uploading-csv-data.md) |
-| **Hashed Accounts** | Hashing and salt | [Lesson 23](lessons/23-what-is-hashing.md) |
-| | Safe password hashing | [Lesson 24](lessons/24-password-hashing.md) |
-| | Register with a hashed password | [Lesson 25](lessons/25-account-system-register.md) |
-| | Log in, change password, log out | [Lesson 26](lessons/26-account-system-login.md) |
+| **Data Entry** | Basic Data Entry (an entry form with checks) | [Lesson 18](lessons/18-basic-data-entry.md) |
+| | Data entry into a database | [Lesson 21](lessons/21-adonet-inserting-data.md) |
+| **Database Connections** | SQL and tables | [Lesson 19](lessons/19-what-is-a-database.md) |
+| | **ADO.NET**: connecting | [Lesson 20](lessons/20-adonet-connecting-to-a-database.md) |
+| | **ADO.NET**: inserting (uploading) data safely | [Lesson 21](lessons/21-adonet-inserting-data.md) |
+| | **ADO.NET**: Create, Read, Update, Delete | [Lesson 22](lessons/22-adonet-crud-app.md) |
+| | **ADO.NET**: uploading a CSV file | [Lesson 23](lessons/23-adonet-uploading-csv-data.md) |
+| | **Dapper** | [Lesson 24](lessons/24-dapper.md) |
+| | **EF Core Database First** | [Lesson 25](lessons/25-ef-core-database-first.md) |
+| **Hashed Accounts** | Hashing and salt | [Lesson 26](lessons/26-what-is-hashing.md) |
+| | Safe password hashing | [Lesson 27](lessons/27-password-hashing.md) |
+| | Register with a hashed password | [Lesson 28](lessons/28-account-system-register.md) |
+| | Log in, change password, log out | [Lesson 29](lessons/29-account-system-login.md) |
 
 ---
 
@@ -178,7 +185,7 @@ Look for this mark in every lesson:
 - A computer with **Windows 10** or **Windows 11**
 - An **internet connection**
 - About **10 GB** of free space
-- About **35 hours** in total, spread over several weeks
+- About **40 hours** in total, spread over several weeks
 
 Everything in this course is **free**.
 
@@ -186,11 +193,13 @@ Everything in this course is **free**.
 
 ## 5 Rules for Success
 
-1. **Type the code yourself** in Lessons 01 to 17. From Lesson 18, you may copy and paste, but **read every line**.
+1. **Type the code yourself** in Lessons 01 to 18. From Lesson 19, you may copy and paste, but **read every line**.
 2. **Run your program often.** After every small change, run it and check.
 3. **Mistakes are normal.** Every programmer makes them every day. Visual Studio tells you where the mistake is.
 4. **Capital letters matter.** `Console` is not the same as `console`.
 5. **Do the exercises** before you look at the answers.
+
+**Stuck on a lesson?** Read the lesson's **If Something Goes Wrong** part, then the [Troubleshooting guide](appendix/troubleshooting.md). Then ask your instructor.
 
 ---
 
@@ -198,12 +207,10 @@ Everything in this course is **free**.
 
 ```text
 README.md              ← You are here
-lessons/               ← The 27 lessons (00 to 26)
+lessons/               ← The 30 lessons (00 to 29)
 appendix/              ← Troubleshooting, cheat sheet, glossary
-code/                  ← The finished, working program for every lesson
 INSTRUCTOR-GUIDE.md    ← For teachers
+instructor-only/       ← Password-protected files for teachers (quizzes, finished programs)
 ```
 
-**Stuck on a lesson?** Compare your code with the finished program in the [`code/`](code/) folder. Every program there was built and tested.
-
-To open a finished program: start Visual Studio, click **Open a project or solution**, go to the lesson's folder inside `code`, and choose the file that ends in `.csproj`.
+The files in [`instructor-only/`](instructor-only/) are locked with a password. They are for instructors.

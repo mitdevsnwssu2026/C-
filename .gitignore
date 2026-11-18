@@ -14,3 +14,9 @@ export.csv
 # Editor folders
 .vs/
 .vscode/
+
+# Instructor materials: only the password-locked archive goes in the repository.
+# Never commit the unlocked folders.
+/code/
+/instructor-materials/
+/quiz-sources/

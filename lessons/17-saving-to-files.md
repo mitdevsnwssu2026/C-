@@ -210,7 +210,7 @@ Files work. But imagine your school's enrollment system with **10,000 students**
 - **Many users at once is a problem.** If two people save at the same moment, data can be lost.
 - **Commas break it.** A name like `Dela Cruz, Juan` has a comma, so `.Split(',')` cuts it in the wrong place.
 
-A **database** solves all of these. Starting in the next lesson, you will learn to use one. This is where your programs start to look like **real systems**.
+A **database** solves all of these. You will learn to use one starting in Lesson 19. First, in the next lesson, you will put together everything you know in one complete project: a **data entry form**.
 
 ---
 
@@ -325,8 +325,8 @@ else
 - `File.AppendAllText`, `File.ReadAllLines`, `File.Exists`
 - Files made by your program are in **your project → bin → Debug → net10.0**.
 - **CSV** = one record per line, with commas between the values. `.Split(',')` cuts a line into pieces.
-- Files have limits. A **database** fixes them. That is next!
+- Files have limits. A **database** fixes them. You will start using one in Lesson 19.
 
 ---
 
-[⬅️ Lesson 16](16-handling-errors.md) | [🏠 Course Home](../README.md) | [Next: Lesson 18 (What Is a Database?) ➡️](18-what-is-a-database.md)
+[⬅️ Lesson 16](16-handling-errors.md) | [🏠 Course Home](../README.md) | [Next: Lesson 18 (Basic Data Entry) ➡️](18-basic-data-entry.md)

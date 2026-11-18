@@ -342,7 +342,7 @@ else
 }
 ```
 
-⚠️ This is only for practice. Writing a password inside the code is **not safe**. In Lessons 23 to 26, you will learn how real systems keep passwords safe.
+⚠️ This is only for practice. Writing a password inside the code is **not safe**. In Lessons 26 to 29, you will learn how real systems keep passwords safe.
 
 </details>
 

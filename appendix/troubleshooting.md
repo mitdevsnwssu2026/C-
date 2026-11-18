@@ -106,7 +106,7 @@ Each row in the Error List has a **Code**, a **Description**, and a **Line** num
 | `CS0161` | not all code paths return a value | A method does not always `return` | Every path through the method must end with `return something;` |
 | `CS0163` | Control cannot fall through from one case label | A `case` is missing `break;` | Add `break;` at the end of every `case` |
 | `CS0246` | The type or namespace name '...' could not be found | C# cannot find that class | Is the class file in the Solution Explorer? Is the name spelled the same? Did you delete the starter code in the file? |
-| `CS0234` | 'Data' does not exist in the namespace 'Microsoft' | The SQLite package is missing | Install it: right-click the project → **Manage NuGet Packages...** (see [Lesson 18](../lessons/18-what-is-a-database.md)) |
+| `CS0234` | 'Data' does not exist in the namespace 'Microsoft' | The SQLite package is missing | Install it: right-click the project → **Manage NuGet Packages...** (see [Lesson 19](../lessons/19-what-is-a-database.md)) |
 | `CS1061` | '...' does not contain a definition for '...' | That property or method does not exist | Check the exact name in the class |
 | `CS0117` | '...' does not contain a definition for '...' | That method is missing from the class | Add the method **inside** the class's `{ }` |
 | `CS0160` | A previous catch clause already catches all exceptions | `catch (Exception)` is not last | Move `catch (Exception ex)` to the end |
@@ -144,7 +144,7 @@ A crash shows `Unhandled exception.` in the black window. The first line says **
 | `DivideByZeroException` | A whole number was divided by 0 | Check that the number is not 0 first |
 | `ArgumentOutOfRangeException: Index was out of range.` | A List index that does not exist | The last index is `Count - 1` |
 | `IndexOutOfRangeException` | An array index that does not exist | The last index is `Length - 1` |
-| `FileNotFoundException: Could not find file '...'` | The file is not where the program looks | Check with `File.Exists(...)` first. For a data file in your project, set **Copy to Output Directory** to **Copy if newer** (see [Lesson 22](../lessons/22-uploading-csv-data.md)) |
+| `FileNotFoundException: Could not find file '...'` | The file is not where the program looks | Check with `File.Exists(...)` first. For a data file in your project, set **Copy to Output Directory** to **Copy if newer** (see [Lesson 23](../lessons/23-adonet-uploading-csv-data.md)) |
 | `NullReferenceException` | Something that is `null` (nothing) was used | Check `if (x == null)` first |
 | `ExecuteNonQuery can only be called when the connection is open.` | `connection.Open()` is missing | Add `connection.Open();` |
 | `Must add values for the following parameters: $name` | A SQL placeholder was not filled in | Add `command.Parameters.AddWithValue("$name", value);` with **exactly** the same spelling |
@@ -171,7 +171,7 @@ That is correct. Visual Studio made a **copy**. The two files are now separate.
 | `SQLite Error 1: 'no such table: Students'` | The table does not exist, or its name is misspelled | Check the spelling. Make sure the method that creates the table runs **first** |
 | `SQLite Error 1: 'no such column: Email'` | The table does not have that column | You changed `CREATE TABLE`, but the old table is still there. Delete the database file (see below) |
 | `SQLite Error 1: 'near "...": syntax error'` | A typing mistake in your SQL | Look at the word after `near` |
-| `SQLite Error 19: 'UNIQUE constraint failed: ...'` | A duplicate was saved | Check first if it exists (see [Lesson 20](../lessons/20-inserting-data.md)) |
+| `SQLite Error 19: 'UNIQUE constraint failed: ...'` | A duplicate was saved | Check first if it exists (see [Lesson 21](../lessons/21-adonet-inserting-data.md)) |
 | `SQLite Error 19: 'NOT NULL constraint failed: ...'` | A required column got no value | Give every `NOT NULL` column a value in your `INSERT` |
 | `SQLite Error 5: 'database is locked'` | Another program is using the database | In **DB Browser for SQLite**, click **Close Database**. Close other black windows |
 
@@ -179,14 +179,34 @@ That is correct. Visual Studio made a **copy**. The two files are now separate.
 Right-click the project → **Open Folder in File Explorer** → **bin** → **Debug** → **net10.0**. Right-click the `.db` file and click **Delete**. ⚠️ This deletes all the data in it.
 
 **My data from another lesson is not here.**
-Each project has its **own** database file. `Lesson21` and `Lesson22` do not share data.
+Each project has its **own** database file. `Lesson22` and `Lesson23` do not share data.
 
 ---
 
-## The Account System (Lessons 25 and 26)
+## Dapper and EF Core (Lessons 24 and 25)
+
+**Error List: `CS0246  The type or namespace name 'Dapper' could not be found`**
+The Dapper package is not installed in this project. Install it with **Manage NuGet Packages...** (see [Lesson 24](../lessons/24-dapper.md)).
+
+**Error List: `CS1061  'SqliteConnection' does not contain a definition for 'Query'`**
+The line `using Dapper;` is missing at the top of the file.
+
+**Installing an EF Core package fails with `NU1202 ... is not compatible with net10.0`.**
+The version you picked is for a newer .NET. In the **Version** box, choose the highest version that starts with the same number as your .NET (see [Lesson 25](../lessons/25-ef-core-database-first.md)).
+
+**`Scaffold-DbContext` is "not recognized".**
+The package `Microsoft.EntityFrameworkCore.Tools` is not installed. Install it, then close and reopen the Package Manager Console.
+
+**`Scaffold-DbContext` says `Build failed.`**
+There is a mistake in your code. Fix what the **Error List** shows, then run the command again.
+
+**I changed or added a record with EF Core, but the database did not change.**
+You forgot `db.SaveChanges();`
+
+## The Account System (Lessons 28 and 29)
 
 **I can't log in.**
-- In Lesson 26, register an account **in that project** first. It has its own new database.
+- In Lesson 29, register an account **in that project** first. It has its own new database.
 - Usernames are saved in small letters. Use **View all accounts** to see them.
 - Forgot the password? Nobody can see it. Register a new account.
 
@@ -197,8 +217,8 @@ Check your internet connection. In the search box, the name must be exactly `Mic
 
 ## Still Stuck?
 
-1. Compare your code, line by line, with the finished program in the [`code/`](../code/) folder for that lesson.
-2. Copy the finished code into your file, and run it. If it works, the difference between the two is your mistake.
+1. Compare your code, line by line, with the code shown in the lesson. Most mistakes are one missing character.
+2. Clear your file (**Ctrl + A**, **Delete**), copy the lesson's code into it again, and run it. If it works now, the difference was your mistake.
 3. Ask your instructor or a classmate. Show them the **Error List** or the full message in the black window.
 
 [🏠 Course Home](../README.md)
